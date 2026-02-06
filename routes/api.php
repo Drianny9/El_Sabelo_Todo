@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\PermissionController;
-
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,4 +42,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 });
 
 Route::get('category-list', [CategoryController::class, 'getList']);
+Route::apiResource('posts', PostController::class);
+
+// Route::get('/posts', [PostController::class, 'index']);
+// Route::get('/posts/{post}', [PostController::class, 'show']);
+// Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+
 

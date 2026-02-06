@@ -23,6 +23,7 @@ class Controller extends BaseController
     protected function errorResponse( $code, $message = null)
     {
         return response()->json([
+            
             'success'=> false,
             'message' => $message,
             'data' => null
