@@ -2,18 +2,30 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class QuestionResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
+    public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'categories_id' => $this->categories_id,
+            'category' => new CategoryResource($this->whenLoaded('category')),
+            'tipo' => $this->tipo,
+            'enunciado' => $this->enunciado,
+            'creada_por_user_id' => $this->creada_por_user_id,
+            'created_by' => $this->whenLoaded('createdByUser', function() {
+                return [
+                    'id' => $this->createdByUser->id,
+                    'name' => $this->createdByUser->name,
+                    'email' => $this->createdByUser->email
+                ];
+            }),
+            'activa' => $this->activa,
+            'opciones' => QuestionOptionResource::collection($this->whenLoaded('options')),
+            'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updated_at?->format('Y-m-d H:i:s')
+        ];
     }
 }
