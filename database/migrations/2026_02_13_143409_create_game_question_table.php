@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+     /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('partida_pregunta', function (Blueprint $table) {
+            $table->id(); // id_partida_pregunta
+            $table->unsignedBigInteger('id_partida');
+            $table->unsignedBigInteger('pregunta_id');
+            $table->integer('orden_pregunta')->default(1);
+            $table->integer('tiempo_limite_seg')->default(30);
+            $table->integer('puntos_acierto')->default(100);
+            $table->integer('puntos_bonus_rapidez')->default(50);
+            $table->timestamps();
+
+            // Foreign Keys
+            $table->foreign('id_partida')->references('id')->on('partidas')->onDelete('cascade');
+            $table->foreign('pregunta_id')->references('id')->on('questions')->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('partida_pregunta');
+    }
+};

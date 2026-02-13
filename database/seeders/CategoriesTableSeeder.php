@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+use function Symfony\Component\Clock\now;
 
 class CategoriesTableSeeder extends Seeder
 {
@@ -14,62 +17,19 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        
+        //Borra lo que hay y reinicia autoincrement
+        DB::table('categories')->truncate();
 
-        \DB::table('categories')->delete();
+        $now = now();
         
-        \DB::table('categories')->insert(array (
-            0 => 
-            array (
-                'id' => 1,
-                'name' => 'Tecnología',
-            ),
-            1 => 
-            array (
-                'id' => 2,
-                'name' => 'Programación',
-            ),
-            2 => 
-            array (
-                'id' => 3,
-                'name' => 'Diseño Web',
-            ),
-            3 => 
-            array (
-                'id' => 4,
-                'name' => 'Tutoriales',
-            ),
-            4 => 
-            array (
-                'id' => 5,
-                'name' => 'Noticias',
-            ),
-            5 => 
-            array (
-                'id' => 6,
-                'name' => 'Opinión',
-            ),
-            6 => 
-            array (
-                'id' => 7,
-                'name' => 'Recursos',
-            ),
-            7 => 
-            array (
-                'id' => 8,
-                'name' => 'Laravel',
-            ),
-            8 => 
-            array (
-                'id' => 9,
-                'name' => 'Vue.js',
-            ),
-            9 => 
-            array (
-                'id' => 10,
-                'name' => 'General',
-            ),
-        ));
+        DB::table('categories')->insert([
+            ['name' => 'Ciencia', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Historia', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Geografía', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Deportes', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Arte', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Entretenimiento', 'created_at' => $now, 'updated_at' => $now],
+        ]);
         
         
     }

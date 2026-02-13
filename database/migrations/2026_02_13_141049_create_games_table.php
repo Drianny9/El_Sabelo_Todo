@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
-            $table->id(); // id_pregunta
-            $table->unsignedBigInteger('categories_id');
-            $table->enum('tipo', ['multiple', 'boolean'])->default('multiple'); //seran o 4 opciones o de true/false
-            $table->text('enunciado');
+        Schema::create('games', function (Blueprint $table) {
+            $table->id(); // id_partida
+            $table->enum('tipo', ['solo', 'multijugador'])->default('solo');
+            $table->enum('estado', ['en_curso', 'finalizada', 'abandonada'])->default('en_curso');
+            $table->string('pin_codigo')->nullable()->unique();
             $table->unsignedBigInteger('creada_por_user_id');
-            $table->boolean('activa')->default(true);
+            $table->timestamp('finalizada_at')->nullable();
             $table->timestamps();
 
-            // Foreign Keys
-            $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');
+            //Foreign Key
             $table->foreign('creada_por_user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('games');
     }
 };
