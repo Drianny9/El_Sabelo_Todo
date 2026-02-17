@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamp('respondida_at');
             
             // Foreign Keys
-            $table->foreign('id_partida')->references('id')->on('partidas')->onDelete('cascade');
+            $table->foreign('id_partida')->references('id')->on('games')->onDelete('cascade');
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('pregunta_id')->references('id')->on('questions')->onDelete('cascade');
             $table->foreign('opcion_id')->references('id')->on('question_options')->onDelete('set null');

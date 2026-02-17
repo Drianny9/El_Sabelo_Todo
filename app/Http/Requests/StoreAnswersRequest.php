@@ -14,7 +14,7 @@ class StoreRespuestaRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_partida' => 'required|exists:partidas,id',
+            'id_partida' => 'required|exists:games,id',
             'pregunta_id' => 'required|exists:questions,id',
             'opcion_id' => 'nullable|exists:question_options,id',
             'respuesta_texto' => 'nullable|string',

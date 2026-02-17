@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\AnswersController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Models\Post;
@@ -19,6 +21,8 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('roles', RoleController::class);
+    Route::apiResource('questions', QuestionController::class);
+    Route::apiResource('answers', AnswersController::class);
 
     Route::get('role-list', [RoleController::class, 'getList']);
     Route::get('role-permissions/{id}', [PermissionController::class, 'getRolePermissions']);

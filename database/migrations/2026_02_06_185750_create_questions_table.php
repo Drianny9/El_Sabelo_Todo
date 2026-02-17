@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->id(); // id_pregunta
+            $table->id();
             $table->unsignedBigInteger('categories_id');
-            $table->enum('tipo', ['multiple', 'boolean'])->default('multiple'); //seran o 4 opciones o de true/false
+            $table->enum('tipo', ['multiple', 'boolean'])->default('multiple');
             $table->text('enunciado');
             $table->unsignedBigInteger('creada_por_user_id');
             $table->boolean('activa')->default(true);
             $table->timestamps();
 
             // Foreign Keys
-            $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');          
             $table->foreign('creada_por_user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
