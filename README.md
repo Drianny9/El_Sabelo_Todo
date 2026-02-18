@@ -119,3 +119,5 @@ Accede a la aplicación en: `http://localhost:8000`
 - `pages` / `views`: Vistas de la aplicación organizadas por módulos.
 - `store`: Estados globales con Pinia (Auth, Lang, etc.).
 - `routes`: Definición de rutas y guards.
+
+

@@ -18,7 +18,7 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         //Borra lo que hay y reinicia autoincrement
-        DB::table('categories')->truncate();
+        DB::table('categories')->delete();
 
         $now = now();
         
