@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('pregunta_id');
             $table->text('texto');
             $table->boolean('es_correcta')->default(false);
-            $table->integer('orden')->default(1);
+            $table->integer('orden')->default(1);// orden de A, B, C, D
             $table->timestamps();
 
             // Foreign Key
