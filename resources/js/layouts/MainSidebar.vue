@@ -128,7 +128,8 @@ const menuModel = computed(() => {
         {
             label: 'Contenido',
             items: [
-                { label: 'Categorías', icon: 'pi pi-tags', route: '/admin/categories', permission: 'category-list' }
+                { label: 'Categorías', icon: 'pi pi-tags', route: '/admin/categories', permission: 'category-list' },
+                { label: 'Preguntas', icon: 'pi pi-tags', route: '/admin/questions', permission: 'all' }
             ]
         }
     ];
@@ -140,7 +141,7 @@ const menuModel = computed(() => {
         }
         if (item.items) {
             item.items = item.items.filter(child => {
-                return !child.permission || can(child.permission);
+                return !child.permission || child.permission === 'all' || can(child.permission);
             });
             return item.items.length > 0;
         }

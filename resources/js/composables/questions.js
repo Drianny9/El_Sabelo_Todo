@@ -83,9 +83,9 @@ export default function useQuestions() {
         if (!questionRecord?.id) return //Si no tiene ID, salir
 
         //Agregar la pregunta al inicio y filtrar los duplicados
-        question.value = [
+        questions.value = [
             questionRecord,
-            ...question.value.filter(item => item.id !== questionRecord.id) //Resto sin duplicados
+            ...questions.value.filter(item => item.id !== questionRecord.id) //Resto sin duplicados
         ]
     }
 
@@ -239,7 +239,58 @@ export default function useQuestions() {
     }
   }
 
-  //FALTA HACER LOS HELPERS PARA OPCIONES
+  // ============================================
+  // HELPERS PARA OPCIONES
+  // ============================================
+
+  /**
+   * Agregar una nueva opción vacía
+   */
+  const addOption = () => {
+    if (question.value.opciones.length >= 4) {
+      toast.warning('Máximo alcanzado', 'No puedes agregar más de 4 opciones')
+      return
+    }
+    
+    const newOrder = question.value.opciones.length + 1
+    question.value.opciones.push({
+      texto: '',
+      es_correcta: false,
+      orden: newOrder
+    })
+  }
+
+  /**
+   * Eliminar una opción por índice
+   */
+  const removeOption = (index) => {
+    if (question.value.opciones.length <= 2) {
+      toast.warning('Mínimo requerido', 'Debe haber al menos 2 opciones')
+      return
+    }
+    
+    question.value.opciones.splice(index, 1)
+    
+    // Reordenar
+    question.value.opciones.forEach((opcion, i) => {
+      opcion.orden = i + 1
+    })
+  }
+
+  /**
+   * Marcar una opción como correcta (y desmarcar las demás si es tipo boolean)
+   */
+  const markAsCorrect = (index) => {
+    // Si es tipo boolean, solo puede haber una correcta
+    if (question.value.tipo === 'boolean') {
+      question.value.opciones.forEach((opcion, i) => {
+        opcion.es_correcta = (i === index)
+      })
+    } else {
+      // Si es multiple, permitir varias correctas
+      question.value.opciones[index].es_correcta = !question.value.opciones[index].es_correcta
+    }
+  }
 
 
   return {

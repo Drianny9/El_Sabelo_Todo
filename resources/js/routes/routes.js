@@ -236,27 +236,39 @@ export default [
                 ]
             },
 
-             {
+            {
                 name: 'questions',
                 path: 'questions',
-                meta: { breadCrumb: 'Questions' },
+                meta: { breadCrumb: 'Preguntas' },
                 children: [
                     {
                         name: 'questions.index',
                         path: '',
                         component: () => import('../views/admin/questions/Index.vue'),
                         meta: {
-                            breadCrumb: 'questions',
-                            hideBreadcrumb: true
+                            breadCrumb: 'Lista',
+                            hideBreadcrumb: true,
+                            permission: 'all'
                         }
                     },
                     {
-                        name: 'admin.questions.edit',
-                        path: 'edit/:id',
+                        name: 'questions.create',
+                        path: 'create',
+                        component: () => import('../views/admin/questions/Create.vue'),
+                        meta: {
+                            breadCrumb: 'Crear pregunta',
+                            linked: false,
+                            permission: 'all'
+                        }
+                    },
+                    {
+                        name: 'questions.edit',
+                        path: ':id/edit',
                         component: () => import('../views/admin/questions/Edit.vue'),
                         meta: {
                             breadCrumb: 'Editar Pregunta',
-                            linked: false
+                            linked: false,
+                            permission: 'all'
                         }
                     }
                 ]
