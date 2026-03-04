@@ -262,6 +262,7 @@
 <script setup>
 import { ref, reactive, onMounted, inject } from 'vue'
 import { useRouter } from 'vue-router'
+import { debounce } from 'lodash'
 import useQuestions from '@/composables/questions'
 
 const router = useRouter()
@@ -294,9 +295,10 @@ const loadQuestions = async () => {
   await getQuestions(filters)
 }
 
-const onFilter = () => {
+// Debounce del filtro para evitar múltiples llamadas
+const onFilter = debounce(() => {
   loadQuestions()
-}
+}, 400)
 
 const viewQuestion = (question) => {
   selectedQuestion.value = question

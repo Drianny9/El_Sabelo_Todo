@@ -15,11 +15,31 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        // Cargar todas las preguntas con sus relaciones usando 'with' para evitar el problema N+1
-        // Esto hace que en una sola consulta se traigan todas las relaciones necesarias
-        $questions = Question::with(['category', 'createdByUser', 'options'])
-            ->orderBy('created_at', 'desc') // Ordenar por fecha de creación, las más recientes primero
-            ->get();
+        // Iniciar la consulta con las relaciones
+        $query = Question::with(['category', 'createdByUser', 'options']);
+
+        // Filtro por ID de pregunta
+        if (request()->has('search_id') && request()->search_id !== '' && request()->search_id !== null) {
+            $query->where('id', request()->search_id);
+        }
+
+        // Filtro por enunciado (búsqueda parcial)
+        if (request()->has('search_title') && request()->search_title !== '' && request()->search_title !== null) {
+            $query->where('enunciado', 'like', '%' . request()->search_title . '%');
+        }
+
+        // Filtro por tipo (multiple o boolean)
+        if (request()->has('tipo') && request()->tipo !== '' && request()->tipo !== null && request()->tipo !== 'null') {
+            $query->where('tipo', request()->tipo);
+        }
+
+        // Ordenamiento
+        $orderColumn = request()->get('order_column', 'created_at');
+        $orderDirection = request()->get('order_direction', 'desc');
+        $query->orderBy($orderColumn, $orderDirection);
+
+        // Ejecutar la consulta
+        $questions = $query->get();
 
         // Convertir la colección de preguntas a formato JSON usando el Resource
         return QuestionResource::collection($questions);

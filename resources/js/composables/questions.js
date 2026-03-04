@@ -45,7 +45,7 @@ export default function useQuestions() {
     //Helper para controlar loading
     //Funcion para asegurar que solo hay una operacion a la vez
     const withLoading = async (fn) => {
-        if (isLoading.value) throw new Error('Operación en curso')
+        if (isLoading.value) return null // Si ya hay una operación, ignorar esta
         isLoading.value = true //Activamos el loading
         try {
             return await fn() //Ejecutar la funcion que se pasó como parámetro
@@ -92,7 +92,6 @@ export default function useQuestions() {
 
     //GET - Obtenemos todas las preguntas
     const getQuestions = async (params = {}) => {
-        //Parametros por defecto
         try {
             const defaultParams = {
                 page: 1,                        // Página actual                        
@@ -103,13 +102,26 @@ export default function useQuestions() {
                 order_direction: 'desc'         // Dirección: 'asc' o 'desc'
             }
 
+            // Combinar parámetros
+            const mergedParams = { ...defaultParams, ...params }
+            
+            // Eliminar parámetros vacíos, null o "null"
+            const cleanParams = Object.fromEntries(
+                Object.entries(mergedParams).filter(([_, value]) => 
+                    value !== '' && value !== null && value !== 'null' && value !== undefined
+                )
+            )
+
             // Convertir a query string: ?page=1&search_global=...
-            const query = new URLSearchParams({ ...defaultParams, ...params }).toString()
+            const query = new URLSearchParams(cleanParams).toString()
 
             // Hacer petición GET a la API Laravel
             const response = await withLoading(() => axios.get(`/api/questions?${query}`))
 
-            // Guardar las categorías en el estado reactivo
+            // Si withLoading retorna null (operación en curso), salir
+            if (!response) return
+
+            // Guardar las preguntas en el estado reactivo
             // Maneja diferentes estructuras de respuesta (response.data.data o response.data)
             questions.value = response.data?.data ?? response.data ?? []
             return response
