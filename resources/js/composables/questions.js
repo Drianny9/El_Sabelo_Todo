@@ -29,14 +29,15 @@ export default function useQuestions() {
         handleRequestError,  // Maneja errores de peticiones HTTP
         clearErrors,         // Limpia todos los errores
         hasError,            // Verifica si un campo tiene error
-        getError             // Obtiene el mensaje de error de un campo
+        getError,            // Obtiene el mensaje de error de un campo
+        setFieldError        // Establece un error personalizado en un campo
     } = useValidation()
 
     //yup.object sirve para decir, este objeto debe tener estas claves, con estos tipos y estas reglas
     const questionSchema = yup.object({
         categories_id: yup.number().required('La categoría es obligatoria.'),
         tipo: yup.string().required().oneOf(['multiple', 'boolean'], 'Tipo invalido'),
-        enunciado: yup.string().trim().required('El enunciado es obligatorio').max(10, 'Mínimo 10 carácteres'),
+        enunciado: yup.string().trim().required('El enunciado es obligatorio').min(10, 'Mínimo 10 caracteres'),
         opciones: yup.array().min(2, 'Debe haber almenos 2 opciones').max(4, 'Máximo 4 opciones')
     })
 
@@ -168,6 +169,14 @@ export default function useQuestions() {
             toast.error('Error de validación', 'Revisa los campos resaltados.')
             throw new Error('Validación')
         }
+
+        // Validar que al menos una opción sea correcta
+        const hasCorrectOption = question.value.opciones.some(op => op.es_correcta)
+        if (!hasCorrectOption) {
+            toast.error('Error', 'Debe marcar al menos una opción como correcta')
+            throw new Error('Validación')
+        }
+
         try{
             //Enviar petición POST a la API con withLoading
             const response = await withLoading(() =>
@@ -201,12 +210,17 @@ export default function useQuestions() {
       throw new Error('Validación')
     }
 
+    // Validar que al menos una opción sea correcta
+    const hasCorrectOption = question.value.opciones.some(op => op.es_correcta)
+    if (!hasCorrectOption) {
+      toast.error('Error', 'Debe marcar al menos una opción como correcta')
+      throw new Error('Validación')
+    }
+
     try {
-      //ENVIAR petición PUT a la API con el ID de la categoría
+      //ENVIAR petición PUT a la API con el ID de la pregunta
       const response = await withLoading(() =>
-        axios.put(`/api/categories/${question.value.id}`, {
-          name: question.value.name
-        })
+        axios.put(`/api/questions/${question.value.id}`, question.value)
       )
       
       //OBTENER los datos actualizados
