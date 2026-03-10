@@ -3,7 +3,6 @@ import * as yup from 'yup'
 import axios from 'axios'
 import { useToast } from './useToast'
 import { useValidation } from './useValidation'
-import { initial } from 'lodash'
 
 export default function useQuestions() {
     const questions = ref([])
@@ -135,7 +134,7 @@ export default function useQuestions() {
     const getQuestionsByCategory = async (categoriesId) => {
         try{
             const response = await withLoading(() =>
-            axios.get(`/api/questions?categories_id=${categoryId}`)
+            axios.get(`/api/questions?categories_id=${categoriesId}`)
             )
             questions.value = response.data?.data ?? response.data ?? []
             return response
@@ -269,9 +268,7 @@ export default function useQuestions() {
   // HELPERS PARA OPCIONES
   // ============================================
 
-  /**
-   * Agregar una nueva opción vacía
-   */
+  //Agregar una nueva opción vacía
   const addOption = () => {
     if (question.value.opciones.length >= 4) {
       toast.warning('Máximo alcanzado', 'No puedes agregar más de 4 opciones')
