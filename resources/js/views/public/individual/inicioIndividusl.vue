@@ -6,7 +6,7 @@
         En este modo el objetivo es responder las maximas<br>
         preguntas en el menor tiempo posible. Si fallas<br>
         luego se te resta en la puntuacion final
-      </p>
+      </p>  
       <button class="play-button" @click="startGame">
         ¡JUGAR!
       </button>
