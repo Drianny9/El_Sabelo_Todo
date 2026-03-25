@@ -80,6 +80,11 @@ export default [
                 component: () => import('../views/auth/passwords/Reset.vue'),
                 beforeEnter: guest,
             },
+            {
+                path: 'game/individual',
+                name: 'game.individual',
+                component: () => import('../views/game/IndividualGame.vue'),
+            },
         ]
     },
 
