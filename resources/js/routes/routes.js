@@ -83,7 +83,7 @@ export default [
             {
                 path: 'game/individual',
                 name: 'game.individual',
-                component: () => import('../views/game/IndividualGame.vue'),
+                component: () => import('../views/game/individual/inicioIndividual.vue'),
             },
         ]
     },

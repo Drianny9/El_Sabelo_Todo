@@ -8,11 +8,12 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\GameController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
+//Lo que tengamos dentro del Route group solo lo podran usar los usuarios logueados
 Route::group(['middleware' => 'auth:sanctum'], function() {
 
     Route::apiResource('users', UserController::class);
@@ -45,8 +46,11 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     });
 });
 
+//Si esta fuera del grupo cualquiera puede usarlo
 Route::get('category-list', [CategoryController::class, 'getList']);
 Route::apiResource('posts', PostController::class);
+
+Route::get('/game/questions', [GameController::class, 'getRandomQuestions']);
 
 // Route::get('/posts', [PostController::class, 'index']);
 // Route::get('/posts/{post}', [PostController::class, 'show']);
