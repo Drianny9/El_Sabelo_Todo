@@ -11,7 +11,11 @@ export default function useGame(){
 
     //DEVOLVEMOS LA PREGUNTA ACTUAL
     const currentQuestion = computed(() => {
-        return questions.value[preguntaActualIndex.value]
+        if (questions.value.length > 0 && preguntaActualIndex.value < questions.value.length) {
+            return questions.value[preguntaActualIndex.value];
+        }
+        return null; //Devuelve null si no hay preguntas o el indice es incorrecto
+        
     });
 
     //Obtenemos preguntas de la API
@@ -21,10 +25,11 @@ export default function useGame(){
             try {
                 //Ruta del fichero routes
                 const response = await axios.get('/api/game/questions');
-                questions.value = response.data;
+                console.log('Preguntas recibidas de la API:', response.data); //ESTO ES PARA VER SI RECIBE PREGUNTAS EN LA CONSOLA
+                questions.value = response.data.data;
+                loading.value = false;
             } catch (error) {
                 console.error("Error al cargar las preguntas:", error);
-            } finally {
                 loading.value = false;
             }
     }
@@ -57,6 +62,9 @@ export default function useGame(){
         loading,
         gameover,
         puntuacion,
+        questions,
+        currentQuestion,
+        preguntaActualIndex,
         fetchQuestions,
         procesarRespuesta,
         reiniciarPartida

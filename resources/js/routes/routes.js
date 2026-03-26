@@ -85,6 +85,11 @@ export default [
                 name: 'game.individual',
                 component: () => import('../views/game/individual/inicioIndividual.vue'),
             },
+            {
+                path: 'game/individual/play',
+                name: 'game.individual.play',
+                component: () => import('../views/game/individual/partidaIndividual.vue'),
+            },
         ]
     },
 

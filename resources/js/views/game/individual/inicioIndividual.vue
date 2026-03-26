@@ -16,11 +16,13 @@
 
 <script setup>
 import { authStore } from "@/store/auth";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 // Función de ejemplo para el botón
 const startGame = () => {
-  console.log("Iniciando el juego...");
-  // Aquí puedes añadir la lógica para empezar la partida
+  router.push('/game/individual/play');
 };
 </script>
 
