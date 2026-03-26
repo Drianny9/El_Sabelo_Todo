@@ -26,7 +26,7 @@
             <div
                 class="bg-white/90 text-gray-800 rounded-3xl p-8 w-full max-w-md text-center border-4 border-purple-400 shadow-2xl relative">
                 <!-- Reemplaza este 'src' con tu propia imagen -->
-                <img src=" " alt=-"Gem" class="absolute -top-8 -right-8 w-24 h-24 transform rotate-12" />
+                <img src=" " alt="Gem" class="absolute -top-8 -right-8 w-24 h-24 transform rotate-12" />
                 <h2 class="text-4xl mb-4 text-purple-800">MODO INDIVIDUAL</h2>
                 <div class="flex justify-center items-center my-6">
                     <!-- Reemplaza este 'src' con tu propia imagen -->
@@ -34,7 +34,7 @@
                 </div>
                 <Button label="ENTRENAR"
                     class="w-full !bg-yellow-500 !hover:bg-yellow-600 !text-gray-900 !text-2xl !py-4 !rounded-2xl !border-b-8 !border-yellow-700"
-                    @click="startGame('solo')" />
+                      @click="startGame('solo')" />
             </div>
         </div>
     </div>
