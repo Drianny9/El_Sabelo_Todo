@@ -1,11 +1,18 @@
 import axios from 'axios';
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
 export const authStore = defineStore("authStore", () => {
 
     let user = ref({name:''});
     let authenticated = ref(false);
+
+    const isAdmin = computed(() => {
+        if (!user.value || !user.value.roles) {
+            return false;
+        }
+        return user.value.roles.some((role) => role?.name?.toLowerCase().includes('admin'));
+    });
 
     async function login(data) {
         axios.get('/api/user').then(response => {
@@ -46,8 +53,11 @@ export const authStore = defineStore("authStore", () => {
     }
 
     function is(roleName) {
+        if (!user.value || !user.value.roles) {
+            return false;
+        }
         return user.value.roles.some(role => role.name === roleName);
     }
 
-    return { user, authenticated, login, is, getUser,getUserSignIn, logout};
+    return { user, authenticated, login, is, getUser,getUserSignIn, logout, isAdmin};
 }, {persist: true});

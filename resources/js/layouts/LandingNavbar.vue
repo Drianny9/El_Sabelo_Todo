@@ -47,7 +47,10 @@
                         </router-link>
                     </template>
 
-                    <div v-else>
+                    <div v-else class="flex items-center gap-2">
+                        <router-link v-if="authStore().isAdmin" to="/admin">
+                            <Button label="Admin Panel" severity="contrast" size="small" />
+                        </router-link>
                         <button 
                             type="button" 
                             @click="toggle"
@@ -90,6 +93,14 @@
                     <!-- Nav Links -->
                     <div class="flex flex-col gap-1">
                         <router-link 
+                            v-if="authStore().isAdmin"
+                            to="/admin"
+                            @click="visibleMobileMenu = false"
+                            class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                            <i class="pi pi-cog"></i>
+                            <span>Admin Panel</span>
+                        </router-link>
+                        <router-link 
                             v-for="link in navLinks"
                             :key="link.route"
                             :to="link.route" 
@@ -100,10 +111,8 @@
                         </router-link>
                     </div>
 
-                    <div class="border-t border-gray-200 dark:border-gray-800"></div>
-
-                    <!-- Auth -->
-                    <div class="flex flex-col gap-3">
+                    <!-- Actions -->
+                    <div class="mt-auto border-t border-gray-200 dark:border-gray-800 -mx-4 px-4 pt-4">
                         <template v-if="!authStore().user?.name">
                             <router-link to="/login" @click="visibleMobileMenu = false">
                                 <Button label="Iniciar Sesión" outlined class="w-full" />
@@ -112,27 +121,14 @@
                                 <Button label="Registrarse" class="w-full" />
                             </router-link>
                         </template>
-                        <template v-else>
-                            <div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-800">
-                                <div class="font-medium">{{ authStore().user.name }}</div>
-                                <div class="text-xs text-gray-500">{{ authStore().user.email }}</div>
-                            </div>
-                            <Button label="Ir al Dashboard" icon="pi pi-th-large" outlined @click="navigateToDashboard" />
-                            <Button label="Cerrar Sesión" icon="pi pi-power-off" severity="danger" text @click="handleLogout" />
-                        </template>
-                    </div>
-                    
-                    <!-- Theme Toggle -->
-                    <div 
-                        class="mt-auto flex items-center justify-between p-3 rounded-lg"
-                        :class="isDarkTheme ? 'bg-gray-800' : 'bg-gray-50'">
-                        <span class="text-sm font-medium">Tema</span>
-                        <button 
-                            @click="toggleDarkMode"
-                            class="p-2 rounded-lg transition-colors"
-                            :class="isDarkTheme ? 'hover:bg-gray-700' : 'hover:bg-gray-200'">
-                            <i :class="isDarkTheme ? 'pi-moon' : 'pi-sun'" class="pi"></i>
-                        </button>
+                        <div v-else>
+                            <button 
+                                @click="handleLogout"
+                                class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                <i class="pi pi-sign-out"></i>
+                                <span>Logout</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
