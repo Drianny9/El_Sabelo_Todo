@@ -9,10 +9,10 @@
         <!-- Sidebar Header -->
         <div class="flex items-center justify-center p-4 border-b border-gray-100 dark:border-gray-800 shrink-0 transition-all duration-300"
              :class="props.isCollapsed ? 'h-16' : 'h-24'">
-            <div class="flex items-center gap-3 overflow-hidden whitespace-nowrap transition-all duration-300 w-full justify-center">
+            <router-link to="/" class="flex items-center gap-3 overflow-hidden whitespace-nowrap transition-all duration-300 w-full justify-center">
                 <img src="/images/logo.svg" alt="Logo" class="transition-all duration-300 object-contain" 
                      :class="props.isCollapsed ? 'h-8 w-8' : 'h-16 w-auto max-w-full'"/>
-            </div>
+            </router-link>
         </div>
 
         <!-- Sidebar Menu -->
@@ -68,6 +68,16 @@
                      </router-link>
                 </template>
             </template>
+        </div>
+
+        <!-- Botón para volver a Home -->
+        <div class="mt-auto p-3">
+            <router-link to="/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200">
+                <i class="pi pi-home text-lg shrink-0"></i>
+                <span class="whitespace-nowrap transition-all duration-300 origin-left" :class="[props.isCollapsed ? 'hidden' : 'w-auto opacity-100']">
+                    Volver a Home
+                </span>
+            </router-link>
         </div>
     </aside>
 
