@@ -48,11 +48,11 @@ const router = useRouter();
 
 const startGame = (mode) => {
     if (mode === 'solo') {
-        router.push('/game/individual');
+        router.push({ name: 'game.individual' });
     } else if (mode === 'duel') {
-        //Logica del modo 1vs1
+        //Redirigimos al lobby del modo 1vs1
+        router.push({ name: 'game.1vs1.lobby' });
     }
-
 }
 
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\GameController;
+use App\Http\Controllers\Api\RoomController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,13 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('/user', [ProfileController::class, 'user']);
     Route::get('/user/signin', [ProfileController::class, 'user']);
     Route::put('/user', [ProfileController::class, 'update']);
+
+    //Rutas para el juego 1vs1
+    Route::post('/rooms', [RoomController::class, 'create']);
+    Route::post('/rooms/join', [RoomController::class, 'join']);
+    Route::get('/rooms/{room:code}/questions', [RoomController::class, 'getQuestions']);
+    Route::post('/rooms/{room:code}/submit', [RoomController::class, 'submit']);
+    Route::get('/rooms/{room:code}/status', [RoomController::class, 'getStatus']);
 
     Route::get('abilities', function(Request $request) {
         return $request->user()->roles()->with('permissions')

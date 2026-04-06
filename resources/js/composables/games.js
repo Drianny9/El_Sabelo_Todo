@@ -1,7 +1,7 @@
 import { ref, computed } from "vue";
 import axios from 'axios';
 
-export default function useGame(){
+export default function useGame(roomCode = null){ //Aceptamos un roomCode opcional
     //Estado de la partida
     const questions = ref([]); //Lista que almacena  las preguntas de la partida
     const preguntaActualIndex = ref(0); //Para saber que pregunta mostrar
@@ -22,11 +22,24 @@ export default function useGame(){
     const fetchQuestions = async () => {
             loading.value = true;
             gameover.value = false;
+            puntuacion.value = 0;
+            preguntaActualIndex.value = 0;
+            questions.value = [];
+
             try {
-                //Ruta del fichero routes
-                const response = await axios.get('/api/game/questions');
-                console.log('Preguntas recibidas de la API:', response.data); //ESTO ES PARA VER SI RECIBE PREGUNTAS EN LA CONSOLA
+                let url;
+                if (roomCode) {
+                    url = `/api/rooms/${roomCode}/questions`;
+                } else {
+                    url = '/api/game/questions';
+                }
+                
+                const response = await axios.get(url);
+
+                // Ambos endpoints ahora devuelven una estructura con 'data' gracias a QuestionResource
                 questions.value = response.data.data;
+                
+                console.log('Preguntas recibidas de la API:', questions.value);
                 loading.value = false;
             } catch (error) {
                 console.error("Error al cargar las preguntas:", error);
@@ -45,16 +58,26 @@ export default function useGame(){
             preguntaActualIndex.value++;
         } else {
             gameover.value = true;
+            //Si es una partida 1vs1, enviamos la puntuación al servidor
+            if (roomCode) {
+                submitScore();
+            }
         }
     }
 
+    //Nueva función para enviar la puntuación en modo 1vs1
+    const submitScore = async () => {
+        try {
+            await axios.post(`/api/rooms/${roomCode}/submit`, { score: puntuacion.value });
+            console.log('Puntuación enviada con éxito');
+        } catch (error) {
+            console.error("Error al enviar la puntuación:", error);
+        }
+    };
+
     //Reiniciar la partida
     const reiniciarPartida = () => {
-        questions.value = [];
-        preguntaActualIndex.value = 0;
-        puntuacion.value = 0;
-        gameover.value = false;
-        fetchQuestions(); //Pide un nuevo set de preguntas
+        fetchQuestions(); //Simplemente pide un nuevo set de preguntas
     }
 
     //Lo que el componente de vue podra usar
@@ -67,7 +90,7 @@ export default function useGame(){
         preguntaActualIndex,
         fetchQuestions,
         procesarRespuesta,
-        reiniciarPartida
+        reiniciarPartida,
     }
 
 }

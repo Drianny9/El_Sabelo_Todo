@@ -90,6 +90,27 @@ export default [
                 name: 'game.individual.play',
                 component: () => import('../views/game/individual/partidaIndividual.vue'),
             },
+            //Rutas para el modo 1vs1
+            {
+                path: 'game/1vs1/lobby',
+                name: 'game.1vs1.lobby',
+                component: () => import('../views/game/1vs1/Lobby.vue'),
+                beforeEnter: requireLogin
+            },
+            {
+                path: 'game/1vs1/play/:code',
+                name: 'game.1vs1.play',
+                component: () => import('../views/game/individual/partidaIndividual.vue'),
+                props: true, //Pasa los parámetros de la ruta como props al componente
+                beforeEnter: requireLogin
+            },
+            {
+                path: 'game/1vs1/results/:code',
+                name: 'game.1vs1.results',
+                component: () => import('../views/game/1vs1/ResultsComparison.vue'),
+                props: true, //Pasamos code como una prop a partidaIndividual
+                beforeEnter: requireLogin
+            },
         ]
     },
 

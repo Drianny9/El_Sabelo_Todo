@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Room extends Model
+{
+    use HasFactory;
+
+    //Asignación masiva de campos
+    protected $fillable = [
+        'code',
+        'player_1_id',
+        'player_2_id',
+        'questions_ids',
+        'score_p1',
+        'score_p2',
+        'status',
+    ];
+
+    //Casteo de atributos para que Laravel los trate como tipos de datos específicos
+    protected $casts = [
+        'questions_ids' => 'array', //Convierte el JSON de la BD a un array de PHP automáticamente
+    ];
+
+    //Relación con el usuario que creó la sala (Jugador 1)
+    public function player1()
+    {
+        return $this->belongsTo(User::class, 'player_1_id');
+    }
+
+    //Relación con el usuario que se unió a la sala (Jugador 2)
+    public function player2()
+    {
+        return $this->belongsTo(User::class, 'player_2_id');
+    }
+}
