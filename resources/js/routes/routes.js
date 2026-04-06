@@ -90,6 +90,11 @@ export default [
                 name: 'game.individual.play',
                 component: () => import('../views/game/individual/partidaIndividual.vue'),
             },
+            {
+                path: 'game/individual/ranking',
+                name: 'game.individual.ranking',
+                component: () => import('../views/public/ranking/ranking.vue'),
+            },
         ]
     },
 
@@ -152,7 +157,7 @@ export default [
                 ]
             },
 
-             {
+            {
                 name: 'posts',
                 path: 'posts',
                 meta: { breadCrumb: 'Posts' },

@@ -36,6 +36,17 @@
                     class="w-full !bg-yellow-500 !hover:bg-yellow-600 !text-gray-900 !text-2xl !py-4 !rounded-2xl !border-b-8 !border-yellow-700"
                       @click="startGame('solo')" />
             </div>
+
+            <div class="bg-white/90 text-gray-800 rounded-3xl p-8 w-full max-w-sm text-center border-4 border-yellow-400 shadow-2xl flex flex-col justify-between border-dashed">
+                <h2 class="text-4xl mb-4 text-yellow-700">RANKING</h2>
+                <div class="flex justify-center items-center my-6">
+                    <span class="text-7xl">🏆</span>
+                </div>
+                <p class="text-gray-600 mb-4">Mira quién lidera la clasificación global</p>
+                <Button label="VER TOP"
+                    class="w-full !bg-purple-600 !hover:bg-purple-700 !text-white !text-2xl !py-4 !rounded-2xl !border-b-8 !border-purple-900"
+                      @click="goToRanking" />
+            </div>
         </div>
     </div>
 </template>
@@ -53,6 +64,12 @@ const startGame = (mode) => {
         //Logica del modo 1vs1
     }
 
+}
+
+// Función para ir al archivo de ranking que creamos
+const goToRanking = () => {
+    // Usamos el nombre que definiste en tu router
+    router.push({ name: 'game.individual.ranking' }); 
 }
 
 
