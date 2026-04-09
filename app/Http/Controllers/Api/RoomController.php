@@ -38,9 +38,9 @@ class RoomController extends Controller
     //Permite a un segundo jugador unirse a una sala existente
     public function join(Request $request) //Informacion que la app le envia al servidor
     {
-        $request->validate(['code' => 'required|string|exists:rooms,code']);//Validamos que en la base de datos existe codigo
+        $request->validate(['code' => 'required|string|exists:rooms,code']); //Validamos que en la base de datos existe codigo
 
-        $room = Room::where('code', $request->code)->first();//Comprobamos la primera fila donde coincide el codigo
+        $room = Room::where('code', $request->code)->first(); //Comprobamos la primera fila donde coincide el codigo
 
         //Verificamos si la sala ya está llena
         if ($room->player_2_id) {
@@ -58,6 +58,14 @@ class RoomController extends Controller
         $room->save();
 
         return response()->json(['message' => 'Te has unido a la sala con éxito.']);
+    }
+
+    //Obtiene todas las salas abiertas para mostrarlas en el lobby
+    public function getRooms()
+    {
+        //recuperamos las salas que tengan estado open y el creador no sea yo, cargando el player1
+        $rooms = Room::with('player1:id,name')->where('status', 'open')->where('player_1_id', '!=', Auth::id())->get();
+        return response()->json($rooms);
     }
 
     //Obtiene las preguntas para una sala específica
@@ -90,6 +98,9 @@ class RoomController extends Controller
         $roomData['player_1_name'] = $player1 ? $player1->name : 'Jugador 1';
         $roomData['player_2_name'] = $player2 ? $player2->name : 'Jugador 2';
 
+        //devolvemos el estado real de cada jugador para no bloquear la pantalla de resultados
+        $roomData['p1_finished'] = $room->p1_finished;
+        $roomData['p2_finished'] = $room->p2_finished;
 
         return response()->json($roomData);
     }
@@ -102,17 +113,19 @@ class RoomController extends Controller
         $user = Auth::user();
         $score = $request->score;
 
-        //Identificamos si el jugador es P1 o P2 y guardamos su puntuación
+        //Identificamos si el jugador es P1 o P2 y guardamos su puntuación y marcamos que terminó
         if ($user->id === $room->player_1_id) {
             $room->score_p1 = $score;
+            $room->p1_finished = true; //marcamos como finalizado
         } elseif ($user->id === $room->player_2_id) {
             $room->score_p2 = $score;
+            $room->p2_finished = true; //marcamos como finalizado
         } else {
             return response()->json(['message' => 'No eres parte de esta sala.'], 403);
         }
 
-        // Comprobamos si ambos jugadores han enviado su puntuación ANTES de guardar.
-        if ($room->score_p1 !== null && $room->score_p2 !== null) {
+        // Comprobamos si ambos jugadores han terminado usando las nuevas flags, así no importa si la puntuación es 0
+        if ($room->p1_finished && $room->p2_finished) {
             $room->status = 'finished';
         }
 

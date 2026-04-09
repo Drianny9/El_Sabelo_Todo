@@ -20,17 +20,17 @@
                         <h2 class="text-3xl font-bold mb-4 text-green-400">¡Partida Finalizada!</h2>
                         <div class="grid grid-cols-2 gap-4 text-xl">
                             <div class="p-4 bg-gray-700 rounded-lg">
-                                <p class="font-semibold">{{ player1Name }} (Tú)</p>
-                                <p class="text-4xl font-bold text-yellow-400">{{ myScore }}</p>
+                                <p class="font-semibold text-white">{{ player1Name }}</p>
+                                <p class="text-4xl font-bold text-yellow-400">{{ player1Score }}</p>
                             </div>
                             <div class="p-4 bg-gray-700 rounded-lg">
-                                <p class="font-semibold">{{ player2Name }} (Rival)</p>
-                                <p class="text-4xl font-bold text-yellow-400">{{ opponentScore }}</p>
+                                <p class="font-semibold text-white">{{ player2Name }}</p>
+                                <p class="text-4xl font-bold text-yellow-400">{{ player2Score }}</p>
                             </div>
                         </div>
                         <div class="mt-8">
-                            <h3 v-if="myScore > opponentScore" class="text-2xl font-bold text-green-400">¡Has ganado!</h3>
-                            <h3 v-else-if="myScore < opponentScore" class="text-2xl font-bold text-red-400">Has perdido.</h3>
+                            <h3 v-if="winStatus === 'win'" class="text-2xl font-bold text-green-400">¡Has ganado!</h3>
+                            <h3 v-else-if="winStatus === 'lose'" class="text-2xl font-bold text-red-400">Has perdido.</h3>
                             <h3 v-else class="text-2xl font-bold text-blue-400">¡Es un empate!</h3>
                         </div>
                     </div>
@@ -72,24 +72,32 @@ let pollInterval = null;
 const userId = computed(() => auth.user.id);
 
 
-const myScore = computed(() => {
-    // Devuelve un placeholder si los resultados no han llegado
+const player1Score = computed(() => {
     if (!results.value || results.value.score_p1 === null) return '...';
-    // Una vez que 'results' existe, calcula la puntuación correcta
-    return results.value.player_1_id === userId.value ? results.value.score_p1 : results.value.score_p2;
+    return results.value.score_p1;
 });
 
-const opponentScore = computed(() => {
-    // Devuelve un placeholder si los resultados no han llegado
+const player2Score = computed(() => {
     if (!results.value || results.value.score_p2 === null) return '...';
-    // Una vez que 'results' existe, calcula la puntuación correcta
-    return results.value.player_1_id === userId.value ? results.value.score_p2 : results.value.score_p1;
+    return results.value.score_p2;
 });
-
 
 const player1Name = computed(() => results.value?.player_1_name || 'Jugador 1');
 const player2Name = computed(() => results.value?.player_2_name || 'Jugador 2');
 
+const winStatus = computed(() => {
+    if (!results.value || results.value.status !== 'finished') return 'waiting';
+    let myScore = results.value.player_1_id === userId.value ? results.value.score_p1 : results.value.score_p2;
+    let opponentScore = results.value.player_1_id === userId.value ? results.value.score_p2 : results.value.score_p1;
+    
+    if (myScore > opponentScore) return 'win';
+    if (myScore < opponentScore) return 'lose';
+    return 'tie';
+});
+
+
+let pollAttempts = 0; //agregamos un contador para evitar polling infinito si el rival abandona
+const MAX_ATTEMPTS = 12; //12 intentos * 5 segundos = 1 minuto de espera
 
 const fetchResults = async () => {
     try {
@@ -99,6 +107,14 @@ const fetchResults = async () => {
             loading.value = false;
             if (pollInterval) {
                 clearInterval(pollInterval);
+            }
+        } else {
+            //si no ha terminado, incrementamos los intentos
+            pollAttempts++;
+            if(pollAttempts >= MAX_ATTEMPTS) {
+                //si el rival no termina en un tiempo razonable, paramos y avisamos
+                clearInterval(pollInterval);
+                error.value = "Parece que el oponente se ha desconectado. Finalizando espera.";
             }
         }
     } catch (e) {
@@ -117,7 +133,7 @@ const goToLobby = () => {
 
 onMounted(() => {
     fetchResults().then(() => {
-        if (results.value && results.value.status !== 'finished') {
+        if (results.value && results.value.status !== 'finished' && !error.value) {
             loading.value = false; //Dejamos de cargar para mostrar el mensaje de espera
             //Consultamos el estado cada 5 segundos
             pollInterval = setInterval(fetchResults, 5000);

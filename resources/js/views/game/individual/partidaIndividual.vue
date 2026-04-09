@@ -27,22 +27,26 @@ const {
     questions,
     fetchQuestions,
     procesarRespuesta,
+    avanzarPregunta,
     reiniciarPartida
 } = useGame(props.code); // Pasamos el código de la sala al composable
 
 onMounted(fetchQuestions);
 
-// Observador para redirigir cuando la partida 1vs1 termina
-// watch(gameover, (newValue) => {
-//     // Si el juego ha terminado y tenemos un código de sala (estamos en 1vs1)
-//     if (newValue && props.code) {
-//         router.push({ 
-//             name: 'game.1vs1.results', 
-//             params: { code: props.code },
-//             query: { score: puntuacion.value } // Pasamos la puntuación en la query
-//         });
-//     }
-// });
+// Observador para redirigir automáticamente cuando la partida 1vs1 termina
+watch(gameover, (newValue) => {
+    // Si el juego ha terminado y tenemos un código de sala (estamos en 1vs1)
+    if (newValue && props.code) {
+        //ponemos un timeout pequeño para que el jugador vea la transición y no se le corte de golpe
+        setTimeout(() => {
+            router.push({ 
+                name: 'game.1vs1.results', 
+                params: { code: props.code },
+                query: { score: puntuacion.value } // Pasamos la puntuación en la query
+            });
+        }, 1500);
+    }
+});
 
 const manejarSeleccionRespuesta = (option) => {
     if (respondido.value) return;
@@ -53,10 +57,9 @@ const manejarSeleccionRespuesta = (option) => {
 };
 
 const siguientePregunta = () => {
+    avanzarPregunta();
     opcionSeleccionada.value = null;
     respondido.value = false;
-    //El avance de pregunta ya lo hace `procesarRespuesta`, aquí solo reseteamos lo visual
-    //Si la siguiente pregunta es la última, el botón de "Siguiente" no aparecerá.
 };
 
 const claseOpcion = (option) => {
@@ -136,7 +139,7 @@ const claseOpcion = (option) => {
                             />
                             <Button
                                 v-else
-                                @click="gameover = true"
+                                @click="siguientePregunta"
                                 label="Finalizar Partida"
                                 icon="pi pi-check"
                                 class="p-button-success"

@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::put('/user', [ProfileController::class, 'update']);
 
     //Rutas para el juego 1vs1
+    Route::get('/rooms', [RoomController::class, 'getRooms']); //endpoint para listar las salas abiertas en el lobby
     Route::post('/rooms', [RoomController::class, 'create']);
     Route::post('/rooms/join', [RoomController::class, 'join']);
     Route::get('/rooms/{room:code}/questions', [RoomController::class, 'getQuestions']);

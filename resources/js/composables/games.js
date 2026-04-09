@@ -47,32 +47,34 @@ export default function useGame(roomCode = null){ //Aceptamos un roomCode opcion
             }
     }
 
-    //Procesar la respuesta del usuario
+    //Procesar la respuesta del usuario (sólo puntuar, no avanzar)
     const procesarRespuesta = (opcionSeleccionada) => {
         if (opcionSeleccionada.es_correcta) {
             puntuacion.value++;
         }
+    }
 
-        //Avanza a la siguiente pregunta o termina el juego
+    //Avanza a la siguiente pregunta o termina el juego al pulsar el botón
+    const avanzarPregunta = () => {
         if (preguntaActualIndex.value < questions.value.length - 1) {
             preguntaActualIndex.value++;
         } else {
             gameover.value = true;
-        }
-        
-        //Si es una partida 1vs1, enviamos la puntuación al servidor
-        if (gameover.value && roomCode) {
-            submitScore();
+            //Si es una partida 1vs1, enviamos la puntuación al servidor
+            if (roomCode) {
+                submitScore();
+            }
         }
     }
 
     //Nueva función para enviar la puntuación en modo 1vs1
     const submitScore = async () => {
+        console.log('Initiating submitScore for room:', roomCode, 'with score:', puntuacion.value);
         try {
-            await axios.post(`/api/rooms/${roomCode}/submit`, { score: puntuacion.value });
-            console.log('Puntuación enviada con éxito');
+            const response = await axios.post(`/api/rooms/${roomCode}/submit`, { score: puntuacion.value });
+            console.log('Puntuación enviada con éxito:', response.data);
         } catch (error) {
-            console.error("Error al enviar la puntuación:", error);
+            console.error("Error al enviar la puntuación:", error.response ? error.response.data : error);
         }
     };
 
@@ -91,6 +93,7 @@ export default function useGame(roomCode = null){ //Aceptamos un roomCode opcion
         preguntaActualIndex,
         fetchQuestions,
         procesarRespuesta,
+        avanzarPregunta,
         reiniciarPartida,
     }
 

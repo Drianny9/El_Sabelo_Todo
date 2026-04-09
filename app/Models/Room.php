@@ -17,6 +17,8 @@ class Room extends Model
         'questions_ids',
         'score_p1',
         'score_p2',
+        'p1_finished',
+        'p2_finished',
         'status',
     ];
 
