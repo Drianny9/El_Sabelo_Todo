@@ -58,10 +58,11 @@ export default function useGame(roomCode = null){ //Aceptamos un roomCode opcion
             preguntaActualIndex.value++;
         } else {
             gameover.value = true;
-            //Si es una partida 1vs1, enviamos la puntuación al servidor
-            if (roomCode) {
-                submitScore();
-            }
+        }
+        
+        //Si es una partida 1vs1, enviamos la puntuación al servidor
+        if (gameover.value && roomCode) {
+            submitScore();
         }
     }
 

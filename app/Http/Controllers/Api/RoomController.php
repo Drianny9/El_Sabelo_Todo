@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\QuestionResource;
+use App\Models\User;
 
 class RoomController extends Controller
 {
@@ -35,11 +36,11 @@ class RoomController extends Controller
     }
 
     //Permite a un segundo jugador unirse a una sala existente
-    public function join(Request $request)
+    public function join(Request $request) //Informacion que la app le envia al servidor
     {
-        $request->validate(['code' => 'required|string|exists:rooms,code']);
+        $request->validate(['code' => 'required|string|exists:rooms,code']);//Validamos que en la base de datos existe codigo
 
-        $room = Room::where('code', $request->code)->first();
+        $room = Room::where('code', $request->code)->first();//Comprobamos la primera fila donde coincide el codigo
 
         //Verificamos si la sala ya está llena
         if ($room->player_2_id) {
@@ -81,7 +82,16 @@ class RoomController extends Controller
             return response()->json(['message' => 'No autorizado'], 403);
         }
 
-        return response()->json($room);
+        // Cargamos los nombres de los jugadores para devolverlos en la respuesta
+        $player1 = User::find($room->player_1_id);
+        $player2 = User::find($room->player_2_id);
+
+        $roomData = $room->toArray();
+        $roomData['player_1_name'] = $player1 ? $player1->name : 'Jugador 1';
+        $roomData['player_2_name'] = $player2 ? $player2->name : 'Jugador 2';
+
+
+        return response()->json($roomData);
     }
 
     //Recibe la puntuación de un jugador y finaliza la partida si ambos han jugado
@@ -101,12 +111,15 @@ class RoomController extends Controller
             return response()->json(['message' => 'No eres parte de esta sala.'], 403);
         }
 
-        $room->save();
-
-        //Si ambos jugadores han enviado su puntuación, marcamos la partida como finalizada
+        // Comprobamos si ambos jugadores han enviado su puntuación ANTES de guardar.
         if ($room->score_p1 !== null && $room->score_p2 !== null) {
             $room->status = 'finished';
-            $room->save();
+        }
+
+        // Guardamos todos los cambios (puntuación y estado si aplica) en una sola operación.
+        $room->save();
+
+        if ($room->status === 'finished') {
             return response()->json(['message' => 'Partida finalizada. Ambos jugadores han enviado sus resultados.']);
         }
 

@@ -62,7 +62,7 @@ const router = useRouter();
 const auth = authStore();
 
 const roomCode = route.params.code;
-const finalScore = route.query.score;
+const finalScore = route.query.score; // Se usa solo para la pantalla de espera
 
 const results = ref(null);
 const loading = ref(true);
@@ -71,18 +71,24 @@ let pollInterval = null;
 
 const userId = computed(() => auth.user.id);
 
+
 const myScore = computed(() => {
-    if (!results.value) return finalScore;
+    // Devuelve un placeholder si los resultados no han llegado
+    if (!results.value || results.value.score_p1 === null) return '...';
+    // Una vez que 'results' existe, calcula la puntuación correcta
     return results.value.player_1_id === userId.value ? results.value.score_p1 : results.value.score_p2;
 });
 
 const opponentScore = computed(() => {
-    if (!results.value) return '...';
+    // Devuelve un placeholder si los resultados no han llegado
+    if (!results.value || results.value.score_p2 === null) return '...';
+    // Una vez que 'results' existe, calcula la puntuación correcta
     return results.value.player_1_id === userId.value ? results.value.score_p2 : results.value.score_p1;
 });
 
-const player1Name = computed(() => results.value?.player_1_id === userId.value ? 'Tú' : 'Rival');
-const player2Name = computed(() => results.value?.player_2_id === userId.value ? 'Tú' : 'Rival');
+
+const player1Name = computed(() => results.value?.player_1_name || 'Jugador 1');
+const player2Name = computed(() => results.value?.player_2_name || 'Jugador 2');
 
 
 const fetchResults = async () => {

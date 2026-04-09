@@ -2,6 +2,7 @@
 import { onMounted, watch, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import useGame from '@/composables/games';
+import ProgressSpinner from 'primevue/progressspinner';
 
 const route = useRoute();
 const router = useRouter();
@@ -32,16 +33,16 @@ const {
 onMounted(fetchQuestions);
 
 // Observador para redirigir cuando la partida 1vs1 termina
-watch(gameover, (newValue) => {
-    // Si el juego ha terminado y tenemos un código de sala (estamos en 1vs1)
-    if (newValue && props.code) {
-        router.push({ 
-            name: 'game.1vs1.results', 
-            params: { code: props.code },
-            query: { score: puntuacion.value } // Pasamos la puntuación en la query
-        });
-    }
-});
+// watch(gameover, (newValue) => {
+//     // Si el juego ha terminado y tenemos un código de sala (estamos en 1vs1)
+//     if (newValue && props.code) {
+//         router.push({ 
+//             name: 'game.1vs1.results', 
+//             params: { code: props.code },
+//             query: { score: puntuacion.value } // Pasamos la puntuación en la query
+//         });
+//     }
+// });
 
 const manejarSeleccionRespuesta = (option) => {
     if (respondido.value) return;
@@ -101,10 +102,7 @@ const claseOpcion = (option) => {
                 <div v-else-if="gameover && code" class="text-center p-10">
                     <h2 class="text-3xl font-bold mb-4">¡Partida Terminada!</h2>
                     <p class="text-xl mb-6">Tu puntuación final es: <span class="text-6xl font-bold text-yellow-400">{{ puntuacion }}</span></p>
-                    <div class="flex flex-col items-center justify-center p-10">
-                        <ProgressSpinner />
-                        <p class="mt-4 text-lg">Redirigiendo a la pantalla de resultados...</p>
-                    </div>
+                    <Button @click="() => router.push({ name: 'game.1vs1.results', params: { code: props.code }, query: { score: puntuacion } })" label="Ver Resultados" icon="pi pi-chart-bar" class="p-button-lg p-button-success" />
                 </div>
 
                 <!-- Estado de Juego Activo -->
@@ -128,8 +126,24 @@ const claseOpcion = (option) => {
                                 :disabled="respondido"
                             />
                         </div>
-                        <div v-if="respondido && preguntaActualIndex < questions.length - 1" class="text-center mt-8">
-                            <Button @click="siguientePregunta" label="Siguiente Pregunta" icon="pi pi-arrow-right" class="p-button-info" />
+                        <div v-if="respondido" class="text-center mt-8">
+                            <Button
+                                v-if="preguntaActualIndex < questions.length - 1"
+                                @click="siguientePregunta"
+                                label="Siguiente Pregunta"
+                                icon="pi pi-arrow-right"
+                                class="p-button-info"
+                            />
+                            <Button
+                                v-else
+                                @click="gameover = true"
+                                label="Finalizar Partida"
+                                icon="pi pi-check"
+                                class="p-button-success"
+                            />
+                        </div>
+                        <div v-else-if="respondido && gameover && !code" class="text-center mt-8">
+                             <!-- Este bloque no se mostrará si el gameover ya se maneja arriba, pero es un buen seguro -->
                         </div>
                     </div>
                 </div>
