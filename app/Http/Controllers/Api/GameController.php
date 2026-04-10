@@ -22,5 +22,18 @@ class GameController extends Controller
         //return response()->json($preguntas);
     }
 
+    public function saveScore(Request $request){
+        $request->validate([
+            'puntuacion' => 'required|integer|min:0'
+        ]);
 
+        $user = auth()->user();
+        if($user){
+            $user->puntuacion += $request->puntuacion;
+            $user->save();
+            return response()->json(['message' => 'Puntuación guardada correctamente', 'puntuacion' => $user->puntuacion]);
+        }
+
+        return response()->json(['message' => 'Usuario no autenticado'], 401);
+    }
 }

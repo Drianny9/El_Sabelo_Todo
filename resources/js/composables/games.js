@@ -34,6 +34,18 @@ export default function useGame(){
             }
     }
 
+    //Guardar puntuación en la base de datos
+    const guardarPuntuacion = async () => {
+        try {
+            // Solo enviamos si hay puntos que sumar, opcional, pero mejor siempre enviarlo para registrar partidas
+            await axios.post('/api/game/save-score', {
+                puntuacion: puntuacion.value
+            });
+        } catch (error) {
+            console.error("Error al guardar la puntuación:", error);
+        }
+    };
+
     //Procesar la respuesta del usuario
     const procesarRespuesta = (opcionSeleccionada) => {
         if (opcionSeleccionada.es_correcta) {
@@ -45,6 +57,7 @@ export default function useGame(){
             preguntaActualIndex.value++;
         } else {
             gameover.value = true;
+            guardarPuntuacion();
         }
     }
 
