@@ -30,18 +30,20 @@
                         </div>
                         <div class="mt-8">
                             <h3 v-if="winStatus === 'win'" class="text-2xl font-bold text-green-400">¡Has ganado!</h3>
-                            <h3 v-else-if="winStatus === 'lose'" class="text-2xl font-bold text-red-400">Has perdido.</h3>
+                            <h3 v-else-if="winStatus === 'lose'" class="text-2xl font-bold text-red-400">Has perdido.
+                            </h3>
                             <h3 v-else class="text-2xl font-bold text-blue-400">¡Es un empate!</h3>
                         </div>
                     </div>
                     <div v-else>
                         <h2 class="text-3xl font-bold mb-4 text-blue-400">Esperando al rival...</h2>
-                        <p class="text-lg">Tu puntuación final es: <span class="text-2xl font-bold text-yellow-400">{{ finalScore }}</span></p>
+                        <p class="text-lg">Tu puntuación final es: <span class="text-2xl font-bold text-yellow-400">{{
+                                finalScore }}</span></p>
                         <p class="mt-4">Los resultados se mostrarán aquí cuando tu oponente termine la partida.</p>
                         <p class="mt-2">Puedes cerrar esta ventana y volver más tarde usando la misma URL.</p>
                         <ProgressSpinner class="mt-6" />
                     </div>
-                     <Button @click="goToLobby" label="Volver al Lobby" icon="pi pi-home" class="p-button-info mt-8" />
+                    <Button @click="goToLobby" label="Volver al Lobby" icon="pi pi-home" class="p-button-info mt-8" />
                 </div>
             </template>
         </Card>
@@ -89,7 +91,7 @@ const winStatus = computed(() => {
     if (!results.value || results.value.status !== 'finished') return 'waiting';
     let myScore = results.value.player_1_id === userId.value ? results.value.score_p1 : results.value.score_p2;
     let opponentScore = results.value.player_1_id === userId.value ? results.value.score_p2 : results.value.score_p1;
-    
+
     if (myScore > opponentScore) return 'win';
     if (myScore < opponentScore) return 'lose';
     return 'tie';
@@ -106,12 +108,13 @@ const fetchResults = async () => {
         if (results.value.status === 'finished') {
             loading.value = false;
             if (pollInterval) {
+                //El otro jugador ha terminado y paramos el temporizador.
                 clearInterval(pollInterval);
             }
         } else {
             //si no ha terminado, incrementamos los intentos
             pollAttempts++;
-            if(pollAttempts >= MAX_ATTEMPTS) {
+            if (pollAttempts >= MAX_ATTEMPTS) {
                 //si el rival no termina en un tiempo razonable, paramos y avisamos
                 clearInterval(pollInterval);
                 error.value = "Parece que el oponente se ha desconectado. Finalizando espera.";
@@ -135,7 +138,7 @@ onMounted(() => {
     fetchResults().then(() => {
         if (results.value && results.value.status !== 'finished' && !error.value) {
             loading.value = false; //Dejamos de cargar para mostrar el mensaje de espera
-            //Consultamos el estado cada 5 segundos
+            //Consultamos el estado cada 5 segundos para verificar si el rival ha terminado
             pollInterval = setInterval(fetchResults, 5000);
         } else {
             loading.value = false;

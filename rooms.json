@@ -1,0 +1,114 @@
+[
+    {
+        "id": 1,
+        "name": null,
+        "status": "open",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 2,
+        "name": null,
+        "status": "playing",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 3,
+        "name": null,
+        "status": "playing",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 4,
+        "name": null,
+        "status": "playing",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 5,
+        "name": null,
+        "status": "open",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 6,
+        "name": null,
+        "status": "open",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 7,
+        "name": null,
+        "status": "playing",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 8,
+        "name": null,
+        "status": "playing",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 9,
+        "name": null,
+        "status": "playing",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 10,
+        "name": null,
+        "status": "finished",
+        "p1_finished": 1,
+        "p2_finished": 1
+    },
+    {
+        "id": 11,
+        "name": null,
+        "status": "finished",
+        "p1_finished": 1,
+        "p2_finished": 1
+    },
+    {
+        "id": 12,
+        "name": null,
+        "status": "finished",
+        "p1_finished": 1,
+        "p2_finished": 1
+    },
+    {
+        "id": 13,
+        "name": null,
+        "status": "finished",
+        "p1_finished": 1,
+        "p2_finished": 1
+    },
+    {
+        "id": 14,
+        "name": "Sala de David",
+        "status": "open",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 15,
+        "name": "Super Secreta",
+        "status": "playing",
+        "p1_finished": 0,
+        "p2_finished": 0
+    },
+    {
+        "id": 16,
+        "name": "Drianny",
+        "status": "open",
+        "p1_finished": 0,
+        "p2_finished": 0
+    }
+]

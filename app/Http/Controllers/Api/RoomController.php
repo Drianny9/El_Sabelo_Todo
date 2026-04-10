@@ -16,6 +16,11 @@ class RoomController extends Controller
     //Crea una nueva sala de juego
     public function create(Request $request)
     {
+        $request->validate([
+            'name' => 'nullable|string|max:20',
+            'is_public' => 'boolean'
+        ]);
+
         //Seleccionamos 10 IDs de preguntas de forma aleatoria
         $questionIds = Question::inRandomOrder()->limit(10)->pluck('id');
 
@@ -24,9 +29,13 @@ class RoomController extends Controller
             $code = Str::random(6);
         } while (Room::where('code', $code)->exists());
 
+        $roomName = $request->name ?: 'Sala de ' . Auth::user()->name;
+
         //Creamos la sala en la base de datos
         $room = Room::create([
             'code' => $code,
+            'name' => $roomName,
+            'is_public' => $request->has('is_public') ? $request->is_public : true,
             'player_1_id' => Auth::id(),
             'questions_ids' => $questionIds,
         ]);
@@ -38,10 +47,18 @@ class RoomController extends Controller
     //Permite a un segundo jugador unirse a una sala existente
     public function join(Request $request) //Informacion que la app le envia al servidor
     {
-        $request->validate(['code' => 'required|string|exists:rooms,code']); //Validamos que en la base de datos existe codigo
+        $request->validate(['code' => 'required|string']); 
 
-        $room = Room::where('code', $request->code)->first(); //Comprobamos la primera fila donde coincide el codigo
+        //Comprobamos la primera fila donde coincide el código exacto O el nombre exacto de una sala abierta
+        $room = Room::where('status', 'open')
+                    ->where(function($query) use ($request) {
+                        $query->where('code', $request->code)
+                              ->orWhere('name', $request->code);
+                    })->first();
 
+        if (!$room) {
+            return response()->json(['message' => 'No se ha encontrado ninguna sala disponible con ese código o nombre.'], 404);
+        }
         //Verificamos si la sala ya está llena
         if ($room->player_2_id) {
             return response()->json(['message' => 'La sala ya está llena.'], 403);
@@ -57,14 +74,23 @@ class RoomController extends Controller
         $room->status = 'playing';
         $room->save();
 
-        return response()->json(['message' => 'Te has unido a la sala con éxito.']);
+        return response()->json([
+            'message' => 'Te has unido a la sala con éxito.',
+            'code' => $room->code
+        ]);
     }
 
     //Obtiene todas las salas abiertas para mostrarlas en el lobby
     public function getRooms()
     {
-        //recuperamos las salas que tengan estado open y el creador no sea yo, cargando el player1
-        $rooms = Room::with('player1:id,name')->where('status', 'open')->where('player_1_id', '!=', Auth::id())->get();
+        //recuperamos las salas que tengan estado open, sean recientes (últimas 2h) y el creador no haya finalizado aún
+        $rooms = Room::with('player1:id,name')
+                    ->where('status', 'open')
+                    ->where('is_public', true)
+                    ->where('p1_finished', false) // Si el creador ya terminó, ocultarla de la pantalla
+                    ->where('created_at', '>=', now()->subHours(2)) // Ocultarlas si quedaron abandonadas
+                    ->where('player_1_id', '!=', Auth::id())
+                    ->get();
         return response()->json($rooms);
     }
 

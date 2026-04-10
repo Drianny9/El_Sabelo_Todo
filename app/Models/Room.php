@@ -12,6 +12,8 @@ class Room extends Model
     //Asignación masiva de campos
     protected $fillable = [
         'code',
+        'name',
+        'is_public',
         'player_1_id',
         'player_2_id',
         'questions_ids',
