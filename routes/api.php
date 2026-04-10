@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 //Lo que tengamos dentro del Route group solo lo podran usar los usuarios logueados
 Route::group(['middleware' => 'auth:sanctum'], function() {
 
+    Route::post('/game/save-score', [GameController::class, 'saveScore']);
+
     Route::apiResource('users', UserController::class);
     Route::post('users/updateimg', [UserController::class,'updateimg']);
 
@@ -60,6 +62,8 @@ Route::get('category-list', [CategoryController::class, 'getList']);
 Route::apiResource('posts', PostController::class);
 
 Route::get('/game/questions', [GameController::class, 'getRandomQuestions']);
+
+Route::get('ranking', [UserController::class, 'getRanking']);
 
 // Route::get('/posts', [PostController::class, 'index']);
 // Route::get('/posts/{post}', [PostController::class, 'show']);

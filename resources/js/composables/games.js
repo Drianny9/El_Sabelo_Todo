@@ -47,6 +47,17 @@ export default function useGame(roomCode = null){ //Aceptamos un roomCode opcion
             }
     }
 
+    //Guardar puntuación en la base de datos (ranking individual)
+    const guardarPuntuacion = async () => {
+        try {
+            await axios.post('/api/game/save-score', {
+                puntuacion: puntuacion.value
+            });
+        } catch (error) {
+            console.error("Error al guardar la puntuación:", error);
+        }
+    };
+
     //Procesar la respuesta del usuario (sólo puntuar, no avanzar)
     const procesarRespuesta = (opcionSeleccionada) => {
         if (opcionSeleccionada.es_correcta) {
@@ -60,9 +71,12 @@ export default function useGame(roomCode = null){ //Aceptamos un roomCode opcion
             preguntaActualIndex.value++;
         } else {
             gameover.value = true;
-            //Si es una partida 1vs1, enviamos la puntuación al servidor
+            //Si es una partida 1vs1, enviamos la puntuación al servidor de la sala
             if (roomCode) {
                 submitScore();
+            } else {
+                //Si es una partida normal individual, guardamos en el Ranking
+                guardarPuntuacion();
             }
         }
     }

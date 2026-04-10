@@ -111,6 +111,12 @@ export default [
                 props: true, //Pasamos code como una prop a partidaIndividual
                 beforeEnter: requireLogin
             },
+            //Ruta para el Ranking individual
+            {
+                path: 'game/individual/ranking',
+                name: 'game.individual.ranking',
+                component: () => import('../views/public/ranking/ranking.vue'),
+            },
         ]
     },
 
@@ -173,7 +179,7 @@ export default [
                 ]
             },
 
-             {
+            {
                 name: 'posts',
                 path: 'posts',
                 meta: { breadCrumb: 'Posts' },

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use Exception;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
@@ -33,18 +34,16 @@ class UserController extends Controller
         if (!in_array($orderDirection, ['asc', 'desc'])) {
             $orderDirection = 'desc';
         }
-        $users = User::
-        when(request('search_id'), function ($query) {
+        $users = User::when(request('search_id'), function ($query) {
             $query->where('id', request('search_id'));
         })
             ->when(request('search_title'), function ($query) {
-                $query->where('name', 'like', '%'.request('search_title').'%');
+                $query->where('name', 'like', '%' . request('search_title') . '%');
             })
             ->when(request('search_global'), function ($query) {
-                $query->where(function($q) {
+                $query->where(function ($q) {
                     $q->where('id', request('search_global'))
-                        ->orWhere('name', 'like', '%'.request('search_global').'%');
-
+                        ->orWhere('name', 'like', '%' . request('search_global') . '%');
                 });
             })
             ->orderBy($orderColumn, $orderDirection)
@@ -110,7 +109,7 @@ class UserController extends Controller
         $user->surname1 = $request->surname1;
         $user->surname2 = $request->surname2;
 
-        if(!empty($request->password)) {
+        if (!empty($request->password)) {
             $user->password = Hash::make($request->password) ?? $user->password;
         }
         if ($user->save()) {
@@ -126,11 +125,10 @@ class UserController extends Controller
     public function updateimg(Request $request)
     {
         $user = User::find($request->id);
-      
-        if($request->hasFile('picture')) {
+
+        if ($request->hasFile('picture')) {
             $user->media()->delete();
             $media = $user->addMediaFromRequest('picture')->preservingOriginal()->toMediaCollection('images-users');
-
         }
         $user =  User::with('media')->find($request->id);
         return new UserResource($user);
@@ -150,5 +148,13 @@ class UserController extends Controller
         return response()->noContent();
     }
 
-
+    // En RankingController.php o UserController.php
+    public function getRanking()
+    {
+        // Traemos solo alias y puntuacion, ordenados de mayor a menor
+        return User::select('alias', 'puntuacion')
+            ->orderBy('puntuacion', 'desc')
+            ->limit(10) // Opcional: solo el top 10
+            ->get();
+    }
 }
