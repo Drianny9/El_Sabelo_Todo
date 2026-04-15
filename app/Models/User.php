@@ -56,8 +56,13 @@ class User extends Authenticatable implements HasMedia
         $this->notify(new UserResetPasswordNotification($token));
     }
 
-    
 
+    //Relación N:M con los logros conseguidos por el usuario.
+
+    public function logros()
+    {
+        return $this->belongsToMany(Logro::class)->withTimestamps();
+    }
 
     public function registerMediaCollections(): void
     {
