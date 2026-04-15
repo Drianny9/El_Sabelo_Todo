@@ -8,6 +8,7 @@ export default function useGame(roomCode = null){ //Aceptamos un roomCode opcion
     const puntuacion = ref(0);
     const gameover = ref(false); //Para saber si la partida ha terminado
     const loading = ref(false); //Para mostrar un circulo de carga
+    const nuevosLogros = ref([]); //Logros recién desbloqueados en esta partida
 
     //DEVOLVEMOS LA PREGUNTA ACTUAL
     const currentQuestion = computed(() => {
@@ -50,9 +51,14 @@ export default function useGame(roomCode = null){ //Aceptamos un roomCode opcion
     //Guardar puntuación en la base de datos (ranking individual)
     const guardarPuntuacion = async () => {
         try {
-            await axios.post('/api/game/save-score', {
+            const response = await axios.post('/api/game/save-score', {
                 puntuacion: puntuacion.value
             });
+            //Si el backend devuelve logros nuevos, los almacenamos para mostrarlos en la vista
+            if (response.data.nuevos_logros && response.data.nuevos_logros.length > 0) {
+                nuevosLogros.value = response.data.nuevos_logros;
+                console.log('¡Logros desbloqueados!', nuevosLogros.value);
+            }
         } catch (error) {
             console.error("Error al guardar la puntuación:", error);
         }
@@ -105,6 +111,7 @@ export default function useGame(roomCode = null){ //Aceptamos un roomCode opcion
         questions,
         currentQuestion,
         preguntaActualIndex,
+        nuevosLogros,
         fetchQuestions,
         procesarRespuesta,
         avanzarPregunta,

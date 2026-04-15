@@ -25,6 +25,7 @@ const {
     currentQuestion,
     preguntaActualIndex,
     questions,
+    nuevosLogros,
     fetchQuestions,
     procesarRespuesta,
     avanzarPregunta,
@@ -98,7 +99,29 @@ const claseOpcion = (option) => {
                     <h2 class="text-3xl font-bold mb-4">¡Partida Terminada!</h2>
                     <p class="text-xl mb-6">Tu puntuación final es:</p>
                     <p class="text-6xl font-bold text-yellow-400 mb-8">{{ puntuacion }}</p>
-                    <Button @click="reiniciarPartida" label="Jugar de Nuevo" icon="pi pi-replay" class="p-button-lg p-button-warning" />
+
+                    <!-- Notificación de Logros Desbloqueados -->
+                    <div v-if="nuevosLogros.length > 0" class="mb-8 space-y-3">
+                        <div v-for="(logro, index) in nuevosLogros" :key="index"
+                             class="mx-auto max-w-md bg-gradient-to-r from-yellow-900/80 to-amber-900/80 border border-yellow-500/50 rounded-xl p-4 shadow-lg shadow-yellow-900/30 animate-bounce-in"
+                             :style="{ animationDelay: (index * 0.3) + 's' }">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                                    <i :class="logro.icono || 'pi pi-star'" class="text-xl text-yellow-400"></i>
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-yellow-400 text-xs font-bold uppercase tracking-widest">¡Logro Desbloqueado!</p>
+                                    <p class="text-white font-bold text-sm">{{ logro.nombre }}</p>
+                                </div>
+                                <span v-if="logro.puntos" class="ml-auto bg-yellow-500 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">+{{ logro.puntos }} pts</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center gap-4">
+                        <Button @click="reiniciarPartida" label="Jugar de Nuevo" icon="pi pi-replay" class="p-button-lg p-button-warning" />
+                        <Button @click="router.push({ name: 'home' })" label="Volver al Menú" icon="pi pi-home" class="p-button-lg p-button-secondary" />
+                    </div>
                 </div>
 
                 <!-- Estado de Juego Terminado (Modo 1vs1 - esperando redirección) -->
@@ -162,5 +185,27 @@ const claseOpcion = (option) => {
 <style scoped>
 .p-card {
     border: 2px solid #4a5568;
+}
+
+/* Animación de entrada para los banners de logros desbloqueados */
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-20px);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1) translateY(0);
+    }
+}
+
+.animate-bounce-in {
+    animation: bounceIn 0.6s ease-out both;
 }
 </style>

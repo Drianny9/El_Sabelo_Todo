@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Models\Question;
+use App\Models\Logro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -128,6 +129,13 @@ class RoomController extends Controller
         $roomData['p1_finished'] = $room->p1_finished;
         $roomData['p2_finished'] = $room->p2_finished;
 
+        //Si la partida está terminada, incluimos los logros recientes del usuario actual
+        //para que la vista de resultados pueda mostrar la notificación
+        if ($room->status === 'finished') {
+            $user = Auth::user();
+            $roomData['nuevos_logros'] = $this->obtenerLogrosRecientes($user);
+        }
+
         return response()->json($roomData);
     }
 
@@ -150,18 +158,75 @@ class RoomController extends Controller
             return response()->json(['message' => 'No eres parte de esta sala.'], 403);
         }
 
-        // Comprobamos si ambos jugadores han terminado usando las nuevas flags, así no importa si la puntuación es 0
+        // Comprobamos si ambos jugadores han terminado
         if ($room->p1_finished && $room->p2_finished) {
             $room->status = 'finished';
         }
 
-        // Guardamos todos los cambios (puntuación y estado si aplica) en una sola operación.
+        // Guardamos todos los cambios en la BD
         $room->save();
 
+        //Cuando la sala queda 'finished', evaluamos los logros de la partida 1vs1 para este jugador
         if ($room->status === 'finished') {
-            return response()->json(['message' => 'Partida finalizada. Ambos jugadores han enviado sus resultados.']);
+            $nuevosLogros = $this->evaluarLogros1vs1($user, $score, $room);
+            return response()->json([
+                'message' => 'Partida finalizada. Ambos jugadores han enviado sus resultados.',
+                'nuevos_logros' => $nuevosLogros
+            ]);
         }
 
         return response()->json(['message' => 'Puntuación guardada. Esperando al otro jugador.']);
+    }
+
+    //Evalua los logros relacionados con el modo de juego 1vs1
+    //Devuelve SOLO los logros que el usuario NO tenía antes de esta partida
+    private function evaluarLogros1vs1($user, int $puntuacion, Room $room): array
+    {
+        //1. Guardamos los IDs de logros que el usuario YA tenía
+        $logrosPrevios = $user->logros()->pluck('logros.id')->toArray();
+
+        $logros = Logro::all()->keyBy('codigo');
+        $logrosAConceder = [];
+
+        //LOGRO: Primera partida 1vs1 completada
+        if ($logros->has('PRIMERA_1VS1')) {
+            $logrosAConceder[] = $logros['PRIMERA_1VS1']->id;
+        }
+
+        //LOGRO: Ganar una partida 1vs1 comprobando si este usuario marcó más puntos que el rival
+        $esP1 = $user->id === $room->player_1_id;
+        $puntuacionRival = $esP1 ? $room->score_p2 : $room->score_p1;
+
+        if ($puntuacion > $puntuacionRival && $logros->has('GANADOR_1VS1')) {
+            $logrosAConceder[] = $logros['GANADOR_1VS1']->id;
+        }
+
+        //2. Asignamos todos de una vez
+        $user->logros()->syncWithoutDetaching($logrosAConceder);
+
+        //3. Filtramos solo los nuevos
+        $idsNuevos = array_diff($logrosAConceder, $logrosPrevios);
+
+        //4. Obtenemos la info completa de los logros nuevos
+        $nuevosLogros = Logro::whereIn('id', $idsNuevos)->get(['nombre', 'icono', 'puntos'])->toArray();
+
+        //5. Sumamos los puntos bonus de cada logro nuevo al total del usuario
+        $puntosBonus = array_sum(array_column($nuevosLogros, 'puntos'));
+        if ($puntosBonus > 0) {
+            $user->puntuacion += $puntosBonus;
+            $user->save();
+        }
+
+        return $nuevosLogros;
+    }
+
+    //Obtiene los logros que el usuario ha desbloqueado recientemente (últimos 60 segundos)
+    //Se usa en getStatus para que el polling pueda mostrar la notificación de logros al otro jugador
+    private function obtenerLogrosRecientes($user): array
+    {
+        return $user->logros()
+            ->wherePivot('created_at', '>=', now()->subMinutes(1))
+            ->get(['logros.nombre', 'logros.icono', 'logros.puntos'])
+            ->toArray();
     }
 }

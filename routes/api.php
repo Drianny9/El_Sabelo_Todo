@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\GameController;
 use App\Http\Controllers\Api\RoomController;
+use App\Http\Controllers\Api\LogroController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('/user', [ProfileController::class, 'user']);
     Route::get('/user/signin', [ProfileController::class, 'user']);
     Route::put('/user', [ProfileController::class, 'update']);
+
+    // Rutas para los Logros
+    Route::get('/logros', [LogroController::class, 'index']);
+    Route::get('/logros/mis-logros', [LogroController::class, 'misLogros']);
 
     //Rutas para el juego 1vs1
     Route::get('/rooms', [RoomController::class, 'getRooms']); //endpoint para listar las salas abiertas en el lobby

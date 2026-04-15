@@ -30,20 +30,39 @@
                         </div>
                         <div class="mt-8">
                             <h3 v-if="winStatus === 'win'" class="text-2xl font-bold text-green-400">¡Has ganado!</h3>
-                            <h3 v-else-if="winStatus === 'lose'" class="text-2xl font-bold text-red-400">Has perdido.
-                            </h3>
+                            <h3 v-else-if="winStatus === 'lose'" class="text-2xl font-bold text-red-400">Has perdido.</h3>
                             <h3 v-else class="text-2xl font-bold text-blue-400">¡Es un empate!</h3>
+                        </div>
+
+                        <!-- Notificación de Logros Desbloqueados -->
+                        <div v-if="nuevosLogros.length > 0" class="mt-8 space-y-3">
+                            <div v-for="(logro, index) in nuevosLogros" :key="index"
+                                 class="mx-auto max-w-md bg-gradient-to-r from-yellow-900/80 to-amber-900/80 border border-yellow-500/50 rounded-xl p-4 shadow-lg shadow-yellow-900/30 animate-bounce-in"
+                                 :style="{ animationDelay: (index * 0.3) + 's' }">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                                        <i :class="logro.icono || 'pi pi-star'" class="text-xl text-yellow-400"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-yellow-400 text-xs font-bold uppercase tracking-widest">¡Logro Desbloqueado!</p>
+                                        <p class="text-white font-bold text-sm">{{ logro.nombre }}</p>
+                                    </div>
+                                    <span v-if="logro.puntos" class="ml-auto bg-yellow-500 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">+{{ logro.puntos }} pts</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div v-else>
                         <h2 class="text-3xl font-bold mb-4 text-blue-400">Esperando al rival...</h2>
-                        <p class="text-lg">Tu puntuación final es: <span class="text-2xl font-bold text-yellow-400">{{
-                                finalScore }}</span></p>
+                        <p class="text-lg">Tu puntuación final es: <span class="text-2xl font-bold text-yellow-400">{{ finalScore }}</span></p>
                         <p class="mt-4">Los resultados se mostrarán aquí cuando tu oponente termine la partida.</p>
                         <p class="mt-2">Puedes cerrar esta ventana y volver más tarde usando la misma URL.</p>
                         <ProgressSpinner class="mt-6" />
                     </div>
-                    <Button @click="goToLobby" label="Volver al Lobby" icon="pi pi-home" class="p-button-info mt-8" />
+                    <div class="flex justify-center gap-4 mt-8">
+                        <Button @click="goToLobby" label="Volver al Lobby" icon="pi pi-users" class="p-button-info" />
+                        <Button @click="router.push({ name: 'home' })" label="Volver al Menú" icon="pi pi-home" class="p-button-secondary" />
+                    </div>
                 </div>
             </template>
         </Card>
@@ -69,10 +88,10 @@ const finalScore = route.query.score; // Se usa solo para la pantalla de espera
 const results = ref(null);
 const loading = ref(true);
 const error = ref('');
+const nuevosLogros = ref([]); //Logros recién desbloqueados en esta partida 1vs1
 let pollInterval = null;
 
 const userId = computed(() => auth.user.id);
-
 
 const player1Score = computed(() => {
     if (!results.value || results.value.score_p1 === null) return '...';
@@ -97,7 +116,6 @@ const winStatus = computed(() => {
     return 'tie';
 });
 
-
 let pollAttempts = 0; //agregamos un contador para evitar polling infinito si el rival abandona
 const MAX_ATTEMPTS = 12; //12 intentos * 5 segundos = 1 minuto de espera
 
@@ -107,6 +125,10 @@ const fetchResults = async () => {
         results.value = response.data;
         if (results.value.status === 'finished') {
             loading.value = false;
+            //Capturamos los logros nuevos que vienen del getStatus (solo la primera vez)
+            if (response.data.nuevos_logros && response.data.nuevos_logros.length > 0 && nuevosLogros.value.length === 0) {
+                nuevosLogros.value = response.data.nuevos_logros;
+            }
             if (pollInterval) {
                 //El otro jugador ha terminado y paramos el temporizador.
                 clearInterval(pollInterval);
@@ -153,3 +175,31 @@ onUnmounted(() => {
     }
 });
 </script>
+
+<style scoped>
+.p-card {
+    border: 2px solid #4a5568;
+}
+
+/* Animación de entrada para los banners de logros desbloqueados */
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-20px);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1) translateY(0);
+    }
+}
+
+.animate-bounce-in {
+    animation: bounceIn 0.6s ease-out both;
+}
+</style>
