@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('logro_user', function (Blueprint $table) {
+            //Añadimos el ondelete por si el usuario elimina su cuenta se eliminen todos los logros tambien
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('logro_id')->constrained('logros')->onDelete('cascade');
 

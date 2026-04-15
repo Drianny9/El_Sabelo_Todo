@@ -58,7 +58,7 @@ class User extends Authenticatable implements HasMedia
 
 
     //Relación N:M con los logros conseguidos por el usuario.
-
+    //Método para que el usuario pueda acceder a sus logros
     public function logros()
     {
         return $this->belongsToMany(Logro::class)->withTimestamps();

@@ -22,6 +22,6 @@ class Logro extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsToMany(User::class)->withTimestamps(); //Manejamos created_at y updated_at
     }
 }
