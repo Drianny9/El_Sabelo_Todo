@@ -150,9 +150,31 @@ class RoomController extends Controller
             return response()->json(['message' => 'No eres parte de esta sala.'], 403);
         }
 
-        // Comprobamos si ambos jugadores han terminado usando las nuevas flags, así no importa si la puntuación es 0
+        // Sumar puntuación al total del usuario
+        $userModel = User::find($user->id);
+        if ($userModel) {
+            $userModel->puntuacion += $score;
+            $userModel->save();
+        }
+
+        // Comprobamos si ambos jugadores han terminado usando las nuevas flags
         if ($room->p1_finished && $room->p2_finished) {
             $room->status = 'finished';
+
+            // Comprobar ganador y sumar victoria (empate = no suma a nadie)
+            if ($room->score_p1 > $room->score_p2) {
+                $p1 = User::find($room->player_1_id);
+                if ($p1) {
+                    $p1->victorias += 1;
+                    $p1->save();
+                }
+            } elseif ($room->score_p2 > $room->score_p1) {
+                $p2 = User::find($room->player_2_id);
+                if ($p2) {
+                    $p2->victorias += 1;
+                    $p2->save();
+                }
+            }
         }
 
         // Guardamos todos los cambios (puntuación y estado si aplica) en una sola operación.
