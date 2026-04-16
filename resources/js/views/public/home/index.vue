@@ -1,76 +1,256 @@
 <template>
-    <div class="bg-[#6A3EBE] min-h-[calc(100vh-100px)] text-white font-bold p-8 flex flex-col justify-center">
-        <div class="text-center mb-12">
-            <h1 class="text-5xl tracking-wider">DEMUESTRA LO QUE SABES</h1>
-            <p class="text-purple-300 text-xl mt-2">Pon a prueba tus conocimientos</p>
-        </div>
+    <div class="min-h-screen text-white overflow-x-hidden"
+        style="background: linear-gradient(180deg, #9333EA 0%, #7C3AED 35%, #6D28D9 100%);">
 
-        <div class="flex flex-col lg:flex-row justify-center items-center gap-8">
-            <!-- Card 1: 1 VS 1 -->
-            <div
-                class="bg-white/90 text-gray-800 rounded-3xl p-8 w-full max-w-md text-center border-4 border-purple-400 shadow-2xl">
-                <h2 class="text-4xl mb-4 text-purple-800">1 VS 1</h2>
-                <div class="flex justify-center items-center gap-4 my-6">
-                    <!-- Reemplaza este 'src' con tu propia imagen -->
-                    <img src="m" alt="Avatar 1" class="w-24 h-24 rounded-full border-4 border-purple-300">
-                    <span class="text-4xl text-purple-600">VS</span>
-                    <!-- Reemplaza este 'src' con tu propia imagen -->
-                    <img src=" " alt="Avatar 2" class="w-24 h-24 rounded-full border-4 border-purple-300">
+        <!-- ===== HERO ===== -->
+        <section class="relative text-center pt-20 pb-10 px-4">
+            <!-- Rayo decorativo izquierda -->
+            <img src="/images/Home/Rayo.webp" alt="Rayo"
+                class="absolute left-6 top-14 w-28 md:w-36 select-none pointer-events-none drop-shadow-xl" />
+
+            <h1 class="text-4xl md:text-6xl font-black tracking-widest uppercase text-white drop-shadow-2xl">
+                DEMUESTRA LO QUE SABES
+            </h1>
+            <p class="text-purple-200 text-lg md:text-xl mt-3 font-medium">
+                Pon a prueba tus conocimientos
+            </p>
+        </section>
+
+        <!-- ===== CARDS DE MODOS ===== -->
+        <section class="px-4 md:px-12 pb-10 max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <!-- Card 1VS1 -->
+                <div class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-yellow-400 cursor-pointer hover:scale-[1.03] transition-transform duration-200"
+                    @click="startGame('duel')">
+                    <h2 class="text-4xl font-black text-purple-700 italic tracking-wide mb-6">1 VS 1</h2>
+                    <!-- Avatares -->
+                    <div class="flex justify-center items-center gap-4 my-6">
+                        <div class="w-24 h-24 rounded-full bg-purple-100 border-4 border-purple-300 overflow-hidden">
+                            <img src="/images/Home/Avatar_solitario.webp" alt="Jugador 1"
+                                class="w-full h-full object-cover" />
+                        </div>
+                        <div
+                            class="w-14 h-14 rounded-full bg-purple-600 flex items-center justify-center shadow-lg flex-shrink-0">
+                            <span class="text-white font-black text-lg">VS</span>
+                        </div>
+                        <div class="w-24 h-24 rounded-full bg-purple-100 border-4 border-purple-300 overflow-hidden">
+                            <img src="/images/Home/Avatar_solitario.webp" alt="Jugador 2"
+                                class="w-full h-full object-cover" />
+                        </div>
+                    </div>
+                    <button
+                        class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-black text-2xl py-4 rounded-2xl shadow-[0_7px_0_#b45309] hover:shadow-[0_3px_0_#b45309] hover:translate-y-1 transition-all duration-150 uppercase tracking-wider mt-2">
+                        DUELO
+                    </button>
                 </div>
-                <Button label="DUELO"
-                    class="w-full !bg-yellow-500 !hover:bg-yellow-600 !text-gray-900 !text-2xl !py-4 !rounded-2xl !border-b-8 !border-yellow-700"
-                    @click="startGame('duel')" />
+
+                <!-- Card Modo Individual -->
+                <div class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-purple-300 cursor-pointer hover:scale-[1.03] transition-transform duration-200 relative"
+                    @click="startGame('solo')">
+                    <!-- Corazón decorativo esquina -->
+                    <img src="/images/Home/Corazon_lila.webp" alt="Corazón"
+                        class="absolute -top-6 -right-6 w-20 h-20 select-none pointer-events-none drop-shadow-lg" />
+                    <h2 class="text-4xl font-black text-purple-700 italic tracking-wide mb-6">MODO INDIVIDUAL</h2>
+                    <div class="flex justify-center my-6">
+                        <div class="w-32 h-32 rounded-2xl bg-purple-100 border-4 border-purple-200 overflow-hidden">
+                            <img src="/images/Home/Avatar_solitario.webp" alt="Avatar Individual"
+                                class="w-full h-full object-cover" />
+                        </div>
+                    </div>
+                    <button
+                        class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-black text-2xl py-4 rounded-2xl shadow-[0_7px_0_#b45309] hover:shadow-[0_3px_0_#b45309] hover:translate-y-1 transition-all duration-150 uppercase tracking-wider mt-2">
+                        ENTRENAR
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SOCIAL ===== -->
+        <section class="px-4 md:px-12 pb-12 max-w-5xl mx-auto">
+            <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 shadow-xl">
+                <!-- Header social -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-5">
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <i class="pi pi-users text-white text-xl"></i>
+                        <span class="text-white font-black text-xl tracking-widest uppercase">Social</span>
+                    </div>
+                    <!-- Buscador -->
+                    <div class="flex gap-2 flex-1 w-full">
+                        <div class="flex-1 relative">
+                            <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input v-model="busquedaJugador" type="text" placeholder="Buscar jugadores..."
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white text-gray-700 text-sm outline-none border-0 placeholder:text-gray-400 shadow-inner" />
+                        </div>
+                        <button
+                            class="bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-bold px-5 py-2.5 rounded-xl text-sm transition-colors shadow-[0_4px_0_#b45309] hover:shadow-[0_2px_0_#b45309] hover:translate-y-0.5">
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sugerencias -->
+                <p class="text-white/70 text-sm mb-4 font-medium">Personas que quizá conozcas</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div v-for="i in 4" :key="i"
+                        class="bg-white/10 rounded-2xl p-4 text-center border border-white/15 hover:bg-white/20 transition-colors cursor-pointer">
+                        <div
+                            class="w-16 h-16 rounded-full bg-purple-300/40 mx-auto mb-2 overflow-hidden border-2 border-white/30">
+                            <img src="/images/Home/Avatar_solitario.webp" alt="Usuario"
+                                class="w-full h-full object-cover" />
+                        </div>
+                        <p class="text-white font-bold text-sm">Usuario X</p>
+                        <p class="text-purple-200 text-xs mb-3">3 amigos en común</p>
+                        <button
+                            class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-bold text-xs py-1.5 rounded-lg transition-colors shadow-[0_3px_0_#b45309]">
+                            Añadir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MEJORES JUGADORES ===== -->
+        <section class="px-4 md:px-12 pb-12 max-w-5xl mx-auto">
+            <!-- Título con líneas decorativas -->
+            <div class="flex items-center gap-4 mb-10">
+                <div class="flex-1 h-px bg-white/30"></div>
+                <h2 class="text-white font-black text-2xl md:text-3xl tracking-widest uppercase whitespace-nowrap">
+                    MEJORES JUGADORES
+                </h2>
+                <div class="flex-1 h-px bg-white/30"></div>
             </div>
 
-            <!-- Card 2: Modo Individual -->
-            <div
-                class="bg-white/90 text-gray-800 rounded-3xl p-8 w-full max-w-md text-center border-4 border-purple-400 shadow-2xl relative">
-                <!-- Reemplaza este 'src' con tu propia imagen -->
-                <img src=" " alt="Gem" class="absolute -top-8 -right-8 w-24 h-24 transform rotate-12" />
-                <h2 class="text-4xl mb-4 text-purple-800">MODO INDIVIDUAL</h2>
-                <div class="flex justify-center items-center my-6">
-                    <!-- Reemplaza este 'src' con tu propia imagen -->
-                    <img src="/images/avatars/Avatar_solitario.webp" alt="Avatar Individual">
+            <!-- Podio: Oro en el centro más alto, Plata izquierda, Bronce derecha -->
+            <div class="flex justify-center items-end gap-6 md:gap-12 mb-10">
+
+                <!-- 2º Plata -->
+                <div class="flex flex-col items-center">
+                    <p class="text-white font-bold text-sm mb-2 text-center">{{ topJugadores[1]?.name }}</p>
+                    <p class="text-purple-200 text-sm font-semibold mb-3 text-center">
+                        {{ topJugadores[1]?.puntuacion?.toLocaleString() || '4.900' }} pts
+                    </p>
+                    <img src="/images/Home/Ranking_Plata.webp" alt="2º Puesto" class="w-32 md:w-40 drop-shadow-2xl" />
                 </div>
-                <Button label="ENTRENAR"
-                    class="w-full !bg-yellow-500 !hover:bg-yellow-600 !text-gray-900 !text-2xl !py-4 !rounded-2xl !border-b-8 !border-yellow-700"
-                      @click="startGame('solo')" />
+
+                <!-- 1º Oro (más grande, más alto) -->
+                <div class="flex flex-col items-center -mb-6">
+                    <p class="text-white font-black text-base mb-1 text-center">{{ topJugadores[0]?.name }}</p>
+                    <p class="text-yellow-300 font-black text-base mb-3 text-center">
+                        {{ topJugadores[0]?.puntuacion?.toLocaleString() || '5.200' }} pts
+                    </p>
+                    <img src="/images/Home/Ranking_Oro.webp" alt="1º Puesto" class="w-40 md:w-52 drop-shadow-2xl" />
+                </div>
+
+
+                <!-- 3º Bronce -->
+                <div class="flex flex-col items-center">
+                    <p class="text-white font-bold text-sm mb-2 text-center">{{ topJugadores[2]?.name }}</p>
+                    <p class="text-purple-200 text-sm font-semibold mb-3 text-center">
+                        {{ topJugadores[2]?.puntuacion?.toLocaleString() || '4.750' }} pts
+                    </p>
+                    <img src="/images/Home/Ranking_Bronce.webp" alt="3º Puesto" class="w-32 md:w-40 drop-shadow-2xl" />
+                </div>
             </div>
 
-            <div class="bg-white/90 text-gray-800 rounded-3xl p-8 w-full max-w-sm text-center border-4 border-yellow-400 shadow-2xl flex flex-col justify-between border-dashed">
-                <h2 class="text-4xl mb-4 text-yellow-700">RANKING</h2>
-                <div class="flex justify-center items-center my-6">
-                    <span class="text-7xl">🏆</span>
-                </div>
-                <p class="text-gray-600 mb-4">Mira quién lidera la clasificación global</p>
-                <Button label="VER TOP"
-                    class="w-full !bg-purple-600 !hover:bg-purple-700 !text-white !text-2xl !py-4 !rounded-2xl !border-b-8 !border-purple-900"
-                      @click="goToRanking" />
+            <!-- Botón ver ranking completo -->
+            <div class="flex justify-center">
+                <button @click="goToRanking"
+                    class="bg-purple-600/80 hover:bg-purple-500 text-white font-bold px-14 py-3.5 rounded-full border border-purple-400/40 shadow-lg hover:shadow-purple-900/50 transition-all text-base tracking-wide">
+                    Ver ranking completo
+                </button>
             </div>
-        </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="relative bg-[#111827] pt-14 pb-0 mt-4 overflow-hidden">
+            <!-- Monedas decorativas -->
+            <img src="/images/Home/Monedas_izquierda.webp" alt=""
+                class="absolute bottom-0 left-0 w-52 md:w-72 select-none pointer-events-none" />
+            <img src="/images/Home/Monedas_derecha.webp" alt=""
+                class="absolute bottom-0 right-0 w-52 md:w-72 select-none pointer-events-none" />
+            <img src="/images/Home/Medio_monedas.webp" alt=""
+                class="absolute bottom-0 left-1/2 -translate-x-1/2 w-36 md:w-52 select-none pointer-events-none" />
+
+            <div class="relative z-10 max-w-4xl mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-10 pb-40">
+                <!-- Col 1: Marca -->
+                <div>
+                    <img src="/images/Logo_ElSabeloTodo.svg" alt="El Sabelotodo" class="h-9 mb-4 brightness-0 invert" />
+                    <p class="text-gray-400 text-sm leading-relaxed">Pon a prueba tu sabiduría</p>
+                    <p class="text-gray-600 text-xs mt-4">© 2026 EL SABELOTODO</p>
+                </div>
+
+                <!-- Col 2: Legal & juego -->
+                <div>
+                    <h4 class="text-white font-bold text-xs uppercase tracking-widest mb-5">Legal & Juego</h4>
+                    <ul class="space-y-2.5 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Reglas del Juego</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Cómo Jugar</a></li>
+                        <li><a href="#" @click.prevent="goToRanking" class="hover:text-white transition-colors">Ranking
+                                global</a></li>
+                        <li class="pt-2"><a href="#" class="hover:text-white transition-colors">Política Privacidad</a>
+                        </li>
+                        <li><a href="#" class="hover:text-white transition-colors">Términos de Uso</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Cookies</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Comunidad -->
+                <div>
+                    <h4 class="text-white font-bold text-xs uppercase tracking-widest mb-5">Comunidad</h4>
+                    <div class="flex gap-3 mb-5">
+                        <a href="#"
+                            class="w-9 h-9 bg-gray-700 hover:bg-purple-600 rounded-lg flex items-center justify-center transition-colors">
+                            <i class="pi pi-instagram text-white"></i>
+                        </a>
+                        <a href="#"
+                            class="w-9 h-9 bg-gray-700 hover:bg-purple-600 rounded-lg flex items-center justify-center transition-colors">
+                            <i class="pi pi-twitter text-white"></i>
+                        </a>
+                        <a href="#"
+                            class="w-9 h-9 bg-gray-700 hover:bg-purple-600 rounded-lg flex items-center justify-center transition-colors">
+                            <i class="pi pi-discord text-white"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400 text-sm">¿Necesitas ayuda?</p>
+                </div>
+            </div>
+        </footer>
     </div>
 </template>
 
 <script setup>
-import { authStore } from "@/store/auth";
-import { useRouter } from "vue-router";
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 const router = useRouter();
+const busquedaJugador = ref('');
+const topJugadores = ref([]);
+
+const fetchTopJugadores = async () => {
+    try {
+        const res = await axios.get('/api/ranking');
+        const data = Array.isArray(res.data) ? res.data : res.data.data ?? [];
+        topJugadores.value = data.slice(0, 3);
+    } catch (e) {
+        console.warn('No se pudo cargar el ranking:', e);
+    }
+};
 
 const startGame = (mode) => {
     if (mode === 'solo') {
         router.push({ name: 'game.individual' });
     } else if (mode === 'duel') {
-        //Redirigimos al lobby del modo 1vs1
         router.push({ name: 'game.1vs1.lobby' });
     }
-}
+};
 
-// Función para ir al archivo de ranking que creamos
 const goToRanking = () => {
-    // Usamos el nombre que definiste en tu router
-    router.push({ name: 'game.individual.ranking' }); 
-}
+    router.push({ name: 'game.individual.ranking' });
+};
 
-
+onMounted(() => {
+    fetchTopJugadores();
+});
 </script>

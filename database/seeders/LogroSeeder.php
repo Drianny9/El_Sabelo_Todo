@@ -12,6 +12,7 @@ class LogroSeeder extends Seeder
     public function run(): void
     {
         //Definimos los logros disponibles en el sistema con su código único, nombre, descripción e icono
+        //Usamos la libreria Carbon para trabajar con fechas y horas
         $logros = [
             ['codigo' => 'PRIMERA_PARTIDA', 'nombre' => 'Primeros Pasos',    'descripcion' => 'Completa tu primera partida individual.',   'icono' => 'pi pi-play-circle',    'puntos' => 10,  'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['codigo' => 'PUNTUACION_50',   'nombre' => 'Medio Centenar',    'descripcion' => 'Acumula 50 puntos en total.',                'icono' => 'pi pi-chart-bar',      'puntos' => 20,  'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
