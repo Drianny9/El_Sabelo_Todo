@@ -39,9 +39,6 @@
                     </template>
 
                     <div v-else class="flex items-center gap-2">
-                        <router-link v-if="authStore().isAdmin" to="/admin">
-                            <Button label="Admin Panel" severity="contrast" size="small" />
-                        </router-link>
                         <button type="button" @click="toggle"
                             class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                             <Avatar :image="authStore().user.avatar" :label="authStore().user.name[0]" shape="circle"
@@ -66,7 +63,7 @@
                 <!-- Header -->
                 <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
                     <div class="flex items-center gap-2">
-                        <img src="/images/logo.svg" alt="logo" class="h-8" />
+                        <img src="/images/Logo_ElSabeloTodo.svg" alt="logo" class="h-8" />
                         <span class="font-bold text-lg">Menu</span>
                     </div>
                     <button @click="visibleMobileMenu = false"
@@ -147,8 +144,8 @@ const items = computed(() => [
             {
                 label: 'Panel Admin',
                 icon: 'pi pi-cog',
-                route: '/admin',
-                visible: authStore().user?.roles?.some(r => r.name.includes('admin')) || false
+                command: () => router.push('/admin'),
+                visible: authStore().isAdmin
             },
             { label: 'Mis Logros', icon: 'pi pi-th-large', command: () => router.push('/mis-logros') },
             { separator: true },
