@@ -62,6 +62,12 @@
                                             </router-link>
                                         </li>
                                         <li>
+                                            <router-link to="/" class="dropdown-menu-item">
+                                                <i class="pi pi-home"></i>
+                                                <span>Inicio</span>
+                                            </router-link>
+                                        </li>
+                                        <li>
                                             <router-link v-if="auth.is('admin') || auth.is('docent')" to="/admin" class="dropdown-menu-item">
                                                 <i class="pi pi-shield"></i>
                                                 <span>Panel Admin</span>
