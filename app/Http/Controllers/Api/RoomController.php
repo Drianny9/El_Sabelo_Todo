@@ -161,20 +161,36 @@ class RoomController extends Controller
         if ($room->p1_finished && $room->p2_finished) {
             $room->status = 'finished';
 
-            // Comprobar ganador y sumar victoria (empate = no suma a nadie)
-            if ($room->score_p1 > $room->score_p2) {
-                $p1 = User::find($room->player_1_id);
-                if ($p1) {
-                    $p1->victorias += 1;
-                    $p1->save();
-                }
-            } elseif ($room->score_p2 > $room->score_p1) {
-                $p2 = User::find($room->player_2_id);
-                if ($p2) {
-                    $p2->victorias += 1;
-                    $p2->save();
-                }
+            $p1 = User::find($room->player_1_id);
+            $p2 = User::find($room->player_2_id);
+
+            // Obtener o crear entidades UserStat
+            $stat1 = null;
+            if ($p1) {
+                $stat1 = \App\Models\UserStat::firstOrCreate(['users_id' => $p1->id]);
+                $stat1->partidas_totales += 1;
             }
+
+            $stat2 = null;
+            if ($p2) {
+                $stat2 = \App\Models\UserStat::firstOrCreate(['users_id' => $p2->id]);
+                $stat2->partidas_totales += 1;
+            }
+
+            // Comprobar ganador y sumar victorias, empates y derrotas
+            if ($room->score_p1 > $room->score_p2) {
+                if ($stat1) $stat1->victorias += 1;
+                if ($stat2) $stat2->derrotas += 1;
+            } elseif ($room->score_p2 > $room->score_p1) {
+                if ($stat1) $stat1->derrotas += 1;
+                if ($stat2) $stat2->victorias += 1;
+            } else {
+                if ($stat1) $stat1->empates += 1;
+                if ($stat2) $stat2->empates += 1;
+            }
+
+            if ($stat1) $stat1->save();
+            if ($stat2) $stat2->save();
         }
 
         // Guardamos todos los cambios (puntuación y estado si aplica) en una sola operación.

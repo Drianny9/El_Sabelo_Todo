@@ -75,4 +75,9 @@ class User extends Authenticatable implements HasMedia
                 ->height(env('IMAGE_HEIGHT', 300));
         }
     }
+
+    public function stats()
+    {
+        return $this->hasOne(UserStat::class, 'users_id');
+    }
 }

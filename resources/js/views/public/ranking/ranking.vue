@@ -14,7 +14,7 @@
         <div class="position">
           <span v-if="index === 0">🥇</span>
           <span v-else-if="index === 1">🥈</span>
-          <span v-else-if="index === 2">🥉</span>
+          <span v-else-if="index === 2">                                                        🥉</span>
           <span v-else>{{ index + 1 }}</span>
         </div>
 
