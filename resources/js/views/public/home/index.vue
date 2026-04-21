@@ -21,8 +21,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
                 <!-- Card 1VS1 -->
-                <div class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-yellow-400 cursor-pointer hover:scale-[1.03] transition-transform duration-200"
-                    @click="startGame('duel')">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-yellow-400 flex flex-col h-full">
                     <h2 class="text-4xl font-black text-purple-700 italic tracking-wide mb-6">1 VS 1</h2>
                     <!-- Avatares -->
                     <div class="flex justify-center items-center gap-4 my-6">
@@ -39,15 +38,14 @@
                                 class="w-full h-full object-cover" />
                         </div>
                     </div>
-                    <button
-                        class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-black text-2xl py-4 rounded-2xl shadow-[0_7px_0_#b45309] hover:shadow-[0_3px_0_#b45309] hover:translate-y-1 transition-all duration-150 uppercase tracking-wider mt-2">
+                    <button @click="startGame('duel')"
+                        class="w-full bg-gradient-to-b from-yellow-300 to-yellow-400 hover:from-yellow-200 hover:to-yellow-300 text-yellow-900 font-black text-2xl py-4 rounded-full border-4 border-yellow-200/50 shadow-[0_8px_0_#b45309] hover:shadow-[0_5px_0_#b45309] hover:translate-y-1 active:shadow-[0_0px_0_#b45309] active:translate-y-3 transition-all duration-150 uppercase tracking-wider mt-auto sans-serif">
                         DUELO
                     </button>
                 </div>
 
                 <!-- Card Modo Individual -->
-                <div class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-purple-300 cursor-pointer hover:scale-[1.03] transition-transform duration-200 relative"
-                    @click="startGame('solo')">
+                <div class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-purple-300 relative flex flex-col h-full">
                     <!-- Corazón decorativo esquina -->
                     <img src="/images/Home/Corazon_lila.webp" alt="Corazón"
                         class="absolute -top-6 -right-22 w-40 h-40 select-none pointer-events-none drop-shadow-lg" />
@@ -58,8 +56,8 @@
                                 class="w-full h-full object-cover" />
                         </div>
                     </div>
-                    <button
-                        class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-black text-2xl py-4 rounded-2xl shadow-[0_7px_0_#b45309] hover:shadow-[0_3px_0_#b45309] hover:translate-y-1 transition-all duration-150 uppercase tracking-wider mt-2">
+                    <button @click="startGame('solo')"
+                        class="w-full bg-gradient-to-b from-yellow-300 to-yellow-400 hover:from-yellow-200 hover:to-yellow-300 text-yellow-900 font-black text-2xl py-4 rounded-full border-4 border-yellow-200/50 shadow-[0_8px_0_#b45309] hover:shadow-[0_5px_0_#b45309] hover:translate-y-1 active:shadow-[0_0px_0_#b45309] active:translate-y-3 transition-all duration-150 uppercase tracking-wider mt-auto sans-serif">
                         ENTRENAR
                     </button>
                 </div>
