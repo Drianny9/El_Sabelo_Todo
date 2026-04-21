@@ -106,7 +106,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import useRooms from '@/composables/rooms';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
@@ -116,12 +116,21 @@ import Dialog from 'primevue/dialog';
 
 const router = useRouter();
 
+//Usamos el composable que encapsula toda la lógica de salas y comunicación con la API
+const {
+    openRooms,
+    loadingRooms,
+    roomCode,
+    fetchRooms,
+    createRoom: createRoomApi,
+    joinRoom: joinRoomApi
+} = useRooms();
+
 // Modals state
 const showCreateModal = ref(false);
 const showSearchModal = ref(false);
 const showConfirmModal = ref(false);
 
-const roomCode = ref('');
 const joinSearchQuery = ref('');
 const isCreating = ref(false);
 const isJoining = ref(false);
@@ -134,25 +143,19 @@ const newRoom = ref({
 
 const selectedRoom = ref(null);
 
-// Variables para la lista de salas abiertas
-const openRooms = ref([]);
-const loadingRooms = ref(true);
 let pullInterval = null;
 
-// Función para traer las salas de la bbdd
-const fetchRooms = async () => {
+const fetchRoomsWithLoading = async () => {
+    loadingRooms.value = true;
     try {
-        const response = await axios.get('/api/rooms');
-        openRooms.value = response.data;
-    } catch (e) {
-        console.error("Error al cargar las salas", e);
+        await fetchRooms();
     } finally {
         loadingRooms.value = false;
     }
 };
 
 onMounted(() => {
-    fetchRooms();
+    fetchRoomsWithLoading();
     pullInterval = setInterval(fetchRooms, 5000);
 });
 
@@ -164,11 +167,9 @@ onUnmounted(() => {
 const createRoom = async () => {
     isCreating.value = true;
     try {
-        const response = await axios.post('/api/rooms', newRoom.value);
-        roomCode.value = response.data.code;
+        await createRoomApi(newRoom.value);
         fetchRooms(); // actualizamos la lista global por detrás
     } catch (error) {
-        console.error("Error al crear la sala:", error);
         alert("No se pudo crear la sala.");
     } finally {
         isCreating.value = false;
@@ -190,14 +191,13 @@ const joinRoom = async (codeOrName) => {
 
     isJoining.value = true;
     try {
-        const response = await axios.post('/api/rooms/join', { code: codeOrName.trim() });
+        const data = await joinRoomApi(codeOrName);
         showConfirmModal.value = false;
         showSearchModal.value = false;
         // El servidor ahora devuelve el código real de la sala que se emparejó (útil si buscaron por nombre)
-        const matchedCode = response.data.code; 
+        const matchedCode = data.code;
         router.push({ name: 'game.1vs1.play', params: { code: matchedCode } });
     } catch (error) {
-        console.error("Error al unirse a la sala:", error);
         alert(error.response?.data?.message || "No se pudo unir a la sala. Verifica que existe y que hay un hueco libre.");
     } finally {
         isJoining.value = false;

@@ -168,21 +168,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import useRanking from '@/composables/ranking';
 
 const router = useRouter();
 const busquedaJugador = ref('');
-const topJugadores = ref([]);
 
-const fetchTopJugadores = async () => {
-    try {
-        const respuesta = await axios.get('/api/ranking');
-        const data = Array.isArray(respuesta.data) ? respuesta.data : respuesta.data.data ?? [];
-        topJugadores.value = data.slice(0, 3);
-    } catch (e) {
-        console.warn('No se pudo cargar el ranking:', e);
-    }
-};
+//Usamos el composable que encapsula la lógica del ranking y comunicación con la API
+const { topJugadores, fetchTopJugadores } = useRanking();
 
 const startGame = (mode) => {
     if (mode === 'solo') {

@@ -31,32 +31,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { onMounted } from 'vue';
+import useRanking from '@/composables/ranking';
 
-const ranking = ref([]);
-const loading = ref(true);
-
-const fetchRanking = async () => {
-  try {
-    const response = await axios.get('/api/ranking');
-    console.log("Respuesta completa de Axios:", response);
-    
-    // Si usas UserResource::collection, la ruta es response.data.data
-    // Si devuelves User::all(), la ruta suele ser solo response.data
-    if (response.data.data) {
-        ranking.value = response.data.data;
-    } else {
-        ranking.value = response.data;
-    }
-    
-    console.log("Lo que se guardó en ranking:", ranking.value);
-  } catch (error) {
-    console.error("Error cargando el ranking:", error);
-  } finally {
-    loading.value = false;
-  }
-};
+//Usamos el composable que encapsula toda la lógica del ranking y comunicación con la API
+const { ranking, loading, fetchRanking } = useRanking();
 
 onMounted(() => {
   fetchRanking();
