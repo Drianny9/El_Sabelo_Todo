@@ -25,6 +25,12 @@ const items = ref([
                 label: 'Perfil',
                 icon: 'pi pi-user',
                 route: '/app/profile'
+            },
+
+            {
+                label: 'Mis Logros',
+                icon: 'pi pi-trophy',
+                route: '/app/mis-logros'
             }
         ]
     }

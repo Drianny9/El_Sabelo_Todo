@@ -147,7 +147,6 @@ const items = computed(() => [
                 command: () => router.push('/admin'),
                 visible: authStore().isAdmin
             },
-            { label: 'Mis Logros', icon: 'pi pi-th-large', command: () => router.push('/mis-logros') },
             { separator: true },
             {
                 label: 'Cerrar sesión',

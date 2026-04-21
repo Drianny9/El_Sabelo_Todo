@@ -116,14 +116,7 @@ export default [
                 path: 'game/individual/ranking',
                 name: 'game.individual.ranking',
                 component: () => import('../views/public/ranking/ranking.vue'),
-            },
-            //Ruta para Mi Panel (Logros y Puntuacion)
-            {
-                path: 'mis-logros',
-                name: 'app.mis-logros',
-                component: () => import('../views/user/MisLogros.vue'),
-                beforeEnter: requireLogin,
-            },
+            }
         ]
     },
 
@@ -142,7 +135,13 @@ export default [
                     breadCrumb: 'Perfil',
                 },
             },
-
+            //Ruta para Mi Panel (Logros y Puntuacion)
+            {
+                path: 'mis-logros',
+                name: 'app.mis-logros',
+                component: () => import('../views/user/MisLogros.vue'),
+                beforeEnter: requireLogin,
+            },
         ]
     },
 
