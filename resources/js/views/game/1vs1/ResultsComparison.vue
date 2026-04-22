@@ -73,7 +73,7 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { authStore } from '@/store/auth';
-import axios from 'axios';
+import useRooms from '@/composables/rooms';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
@@ -85,10 +85,11 @@ const auth = authStore();
 const roomCode = route.params.code;
 const finalScore = route.query.score; // Se usa solo para la pantalla de espera
 
-const results = ref(null);
+//Usamos el composable que encapsula la comunicación con la API de salas
+const { results, nuevosLogros, fetchRoomStatus } = useRooms();
+
 const loading = ref(true);
 const error = ref('');
-const nuevosLogros = ref([]); //Logros recién desbloqueados en esta partida 1vs1
 let pollInterval = null;
 
 const userId = computed(() => auth.user.id);
@@ -121,14 +122,9 @@ const MAX_ATTEMPTS = 12; //12 intentos * 5 segundos = 1 minuto de espera
 
 const fetchResults = async () => {
     try {
-        const response = await axios.get(`/api/rooms/${roomCode}/status`);
-        results.value = response.data;
+        await fetchRoomStatus(roomCode);
         if (results.value.status === 'finished') {
             loading.value = false;
-            //Capturamos los logros nuevos que vienen del getStatus (solo la primera vez)
-            if (response.data.nuevos_logros && response.data.nuevos_logros.length > 0 && nuevosLogros.value.length === 0) {
-                nuevosLogros.value = response.data.nuevos_logros;
-            }
             if (pollInterval) {
                 //El otro jugador ha terminado y paramos el temporizador.
                 clearInterval(pollInterval);
@@ -148,7 +144,6 @@ const fetchResults = async () => {
         if (pollInterval) {
             clearInterval(pollInterval);
         }
-        console.error("Error al cargar resultados:", e);
     }
 };
 
