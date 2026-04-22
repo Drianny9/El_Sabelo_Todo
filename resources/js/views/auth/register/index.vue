@@ -58,6 +58,19 @@
                             </div>
                         </div>
 
+                        <div class="flex flex-col gap-2">
+                                <label for="alias" class="font-medium">{{ $t('Alias') }}</label>
+                                <InputText
+                                    id="alias"
+                                    v-model="registerForm.alias"
+                                    placeholder="Alias"
+                                    :invalid="!!validationErrors?.alias"
+                                />
+                                <small v-if="validationErrors?.alias" class="text-red-500">
+                                    {{ validationErrors.alias[0] }}
+                                </small>
+                            </div>
+
                         <!-- Email -->
                         <div class="flex flex-col gap-2">
                             <label for="email" class="font-medium">{{ $t('email') }}</label>

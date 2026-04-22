@@ -82,6 +82,7 @@ class AuthenticatedSessionController extends Controller
             'name' => $request['name'],
             'surname1' => $request['surname1'],
             'surname2' => $request['surname2'],
+            'alias' => $request['alias'],
         ]);
 
         $role = Role::where('name', 'user')->first();

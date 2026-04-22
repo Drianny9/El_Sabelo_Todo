@@ -38,6 +38,7 @@ export default function useAuth() {
         name: '',
         surname1: '',
         surname2: '',
+        alias: '',
         email: '',
         password: '',
         password_confirmation: ''
