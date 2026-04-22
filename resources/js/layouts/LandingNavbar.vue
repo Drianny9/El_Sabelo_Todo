@@ -31,10 +31,16 @@
 
                     <template v-if="!authStore().user?.name">
                         <router-link to="/login">
-                            <Button label="Login" text size="small" />
+                            <button
+                                class="bg-gradient-to-b from-yellow-300 to-yellow-500 hover:from-yellow-200 hover:to-yellow-400 text-yellow-900 font-bold sans-serif px-6 py-2 rounded-full border-2 border-yellow-200 shadow-[0_4px_0_#b45309] hover:shadow-[0_2px_0_#b45309] hover:translate-y-0.5 transition-all text-sm tracking-wider uppercase flex items-center justify-center">
+                                Login
+                            </button>
                         </router-link>
                         <router-link to="/register">
-                            <Button label="Registro" severity="primary" size="small" />
+                            <button
+                                class="bg-gradient-to-b from-yellow-300 to-yellow-500 hover:from-yellow-200 hover:to-yellow-400 text-yellow-900 font-bold sans-serif px-6 py-2 rounded-full border-2 border-yellow-200 shadow-[0_4px_0_#b45309] hover:shadow-[0_2px_0_#b45309] hover:translate-y-0.5 transition-all text-sm tracking-wider uppercase flex items-center justify-center">
+                                Registro
+                            </button>
                         </router-link>
                     </template>
 
