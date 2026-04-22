@@ -158,7 +158,14 @@ class RoomController extends Controller
             return response()->json(['message' => 'No eres parte de esta sala.'], 403);
         }
 
-        // Comprobamos si ambos jugadores han terminado
+        // Sumar puntuación al total del usuario
+        $userModel = User::find($user->id);
+        if ($userModel) {
+            $userModel->puntuacion += $score;
+            $userModel->save();
+        }
+
+        // Comprobamos si ambos jugadores han terminado usando las nuevas flags
         if ($room->p1_finished && $room->p2_finished) {
             $room->status = 'finished';
         }
