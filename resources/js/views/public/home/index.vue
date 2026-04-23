@@ -68,7 +68,7 @@
 
         <!-- ===== SOCIAL ===== -->
         <section class="px-4 md:px-12 pb-12 max-w-5xl mx-auto">
-            <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 shadow-xl">
+            <div class="bg-black/20 backdrop-blur-sm rounded-3xl p-6 border border-white/10 shadow-xl">
                 <!-- Header social -->
                 <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-5">
                     <div class="flex items-center gap-2 flex-shrink-0">
@@ -89,23 +89,57 @@
                     </div>
                 </div>
 
-                <!-- Sugerencias -->
+                <!-- Carrusel de sugerencias -->
                 <p class="text-white/70 text-sm mb-4 font-medium">Personas que quizá conozcas</p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div v-for="i in 4" :key="i"
-                        class="bg-white/10 rounded-2xl p-4 text-center border border-white/15 hover:bg-white/20 transition-colors cursor-pointer">
-                        <div
-                            class="w-16 h-16 rounded-full bg-purple-300/40 mx-auto mb-2 overflow-hidden border-2 border-white/30">
-                            <img src="/images/Home/Avatar_solitario.webp" alt="Usuario"
-                                class="w-full h-full object-cover" />
+
+                <!-- Estado de carga -->
+                <div v-if="socialLoading" class="flex justify-center py-6">
+                    <i class="pi pi-spin pi-spinner text-white text-2xl"></i>
+                </div>
+
+                <!-- Sin usuarios -->
+                <p v-else-if="socialUsers.length === 0" class="text-white/50 text-sm text-center py-4">
+                    No hay jugadores disponibles ahora mismo.
+                </p>
+
+                <!-- Carrusel -->
+                <div v-else class="relative">
+                    <!-- Flecha izquierda -->
+                    <button @click="scrollCarouselLeft"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-3 w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 text-white font-bold flex items-center justify-center transition-all shadow-lg">
+                        ‹
+                    </button>
+
+                    <!-- Contenedor deslizable -->
+                    <div ref="carouselRef"
+                        class="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-2 pb-2"
+                        style="scrollbar-width: none; -ms-overflow-style: none;">
+                        <div v-for="u in socialUsers" :key="u.id"
+                            class="snap-start flex-shrink-0 w-36 bg-white/10 rounded-2xl p-4 text-center border border-white/15 hover:bg-white/20 transition-colors cursor-pointer">
+                            <!-- Avatar -->
+                            <div class="w-14 h-14 rounded-full bg-purple-300/40 mx-auto mb-2 overflow-hidden border-2 border-white/30">
+                                <img
+                                    :src="u.avatar || '/images/Home/Avatar_solitario.webp'"
+                                    :alt="u.alias"
+                                    class="w-full h-full object-cover" />
+                            </div>
+                            <!-- Alias -->
+                            <p class="text-white font-bold text-sm truncate">{{ u.alias }}</p>
+                            <!-- Puntos -->
+                            <p class="text-purple-200 text-xs mb-3">{{ u.puntuacion.toLocaleString() }} pts</p>
+                            <!-- Botón añadir -->
+                            <button
+                                class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-bold text-xs py-1.5 rounded-lg transition-colors shadow-[0_3px_0_#b45309] hover:shadow-[0_1px_0_#b45309] hover:translate-y-0.5">
+                                Añadir
+                            </button>
                         </div>
-                        <p class="text-white font-bold text-sm">Usuario X</p>
-                        <p class="text-purple-200 text-xs mb-3">3 amigos en común</p>
-                        <button
-                            class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-bold text-xs py-1.5 rounded-lg transition-colors shadow-[0_3px_0_#b45309]">
-                            Añadir
-                        </button>
                     </div>
+
+                    <!-- Flecha derecha -->
+                    <button @click="scrollCarouselRight"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-3 w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 text-white font-bold flex items-center justify-center transition-all shadow-lg">
+                        ›
+                    </button>
                 </div>
             </div>
         </section>
@@ -204,12 +238,20 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import useRanking from '@/composables/ranking';
+import useSocialUsers from '@/composables/socialUsers';
 
 const router = useRouter();
 const busquedaJugador = ref('');
 
-//Usamos el composable que encapsula la lógica del ranking y comunicación con la API
+// Ranking podio
 const { topJugadores, fetchTopJugadores } = useRanking();
+
+// Carrusel social
+const { socialUsers, loading: socialLoading, fetchSocialUsers } = useSocialUsers();
+const carouselRef = ref(null);
+
+const scrollCarouselLeft  = () => carouselRef.value?.scrollBy({ left: -300, behavior: 'smooth' });
+const scrollCarouselRight = () => carouselRef.value?.scrollBy({ left:  300, behavior: 'smooth' });
 
 const startGame = (mode) => {
     if (mode === 'solo') {
@@ -225,5 +267,6 @@ const goToRanking = () => {
 
 onMounted(() => {
     fetchTopJugadores();
+    fetchSocialUsers();
 });
 </script>

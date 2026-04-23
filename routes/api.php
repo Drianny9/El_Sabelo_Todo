@@ -69,6 +69,8 @@ Route::apiResource('posts', PostController::class);
 Route::get('/game/questions', [GameController::class, 'getRandomQuestions']);
 
 Route::get('ranking', [UserController::class, 'getRanking']);
+Route::get('social/users', [UserController::class, 'getSocialUsers']);
+
 
 // Route::get('/posts', [PostController::class, 'index']);
 // Route::get('/posts/{post}', [PostController::class, 'show']);
