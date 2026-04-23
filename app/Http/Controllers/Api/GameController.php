@@ -14,6 +14,7 @@ class GameController extends Controller
     public function getRandomQuestions(){
         //Suponemos que queremos uns partida de 10 preguntas
         $preguntas = Question::with('options', 'category', 'createdByUser') //Cargamos las respuestas
+                    ->where('activa', 1) //Solo preguntas activas
                     ->inRandomOrder() //Desordena la tabla
                     ->limit(10) //Coge las 10 primeras de la lista desordenadas
                     ->get();
