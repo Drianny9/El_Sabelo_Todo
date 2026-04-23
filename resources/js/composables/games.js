@@ -1,8 +1,10 @@
 import { ref, computed } from "vue";
 import axios from 'axios';
+import { authStore } from "@/store/auth";
 
 export default function useGame(roomCode = null){ //Aceptamos un roomCode opcional
     //Estado de la partida
+    const auth = authStore();//Inicializamos el store de auth
     const questions = ref([]); //Lista que almacena  las preguntas de la partida
     const preguntaActualIndex = ref(0); //Para saber que pregunta mostrar
     const puntuacion = ref(0);
@@ -54,6 +56,10 @@ export default function useGame(roomCode = null){ //Aceptamos un roomCode opcion
             const response = await axios.post('/api/game/save-score', {
                 puntuacion: puntuacion.value
             });
+
+            //Sumamos los puntos visualmente al usuario
+            auth.addScore(puntuacion.value);
+
             //Si el backend devuelve logros nuevos, los almacenamos para mostrarlos en la vista
             if (response.data.nuevos_logros && response.data.nuevos_logros.length > 0) {
                 nuevosLogros.value = response.data.nuevos_logros;

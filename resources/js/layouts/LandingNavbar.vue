@@ -22,6 +22,14 @@
 
                 <!-- Actions -->
                 <div class="flex items-center gap-3 pl-6 border-l border-gray-200 dark:border-gray-700">
+                    <!-- Puntuación del usuario logueado -->
+                    <div v-if="authStore().user?.name" 
+                         class="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-yellow-100 to-amber-100 dark:from-yellow-900/40 dark:to-amber-900/40 border border-yellow-300 dark:border-yellow-700/50 rounded-full text-yellow-800 dark:text-yellow-400 font-bold shadow-sm transition-transform hover:scale-105 cursor-default" 
+                         title="Tu puntuación">
+                        <i class="pi pi-star-fill text-yellow-500"></i>
+                        <span>{{ authStore().user?.puntuacion || 0 }}</span>
+                    </div>
+
                     <LocaleSwitcher />
 
                     <button type="button" @click="toggleDarkMode"
