@@ -152,7 +152,7 @@ class UserController extends Controller
     public function getRanking()
     {
         // Traemos solo alias y puntuacion, ordenados de mayor a menor
-        return User::select('alias', 'puntuacion')
+        return User::select('name', 'alias', 'puntuacion')
             ->orderBy('puntuacion', 'desc')
             ->limit(10) // Opcional: solo el top 10
             ->get();

@@ -21,7 +21,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
                 <!-- Card 1VS1 -->
-                <div class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-yellow-400 flex flex-col h-full">
+                <div
+                    class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-yellow-400 flex flex-col h-full">
                     <h2 class="text-4xl font-black text-purple-700 italic tracking-wide mb-6">1 VS 1</h2>
                     <!-- Avatares -->
                     <div class="flex justify-center items-center gap-4 my-6">
@@ -45,7 +46,8 @@
                 </div>
 
                 <!-- Card Modo Individual -->
-                <div class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-purple-300 relative flex flex-col h-full">
+                <div
+                    class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-purple-300 relative flex flex-col h-full">
                     <!-- Corazón decorativo esquina -->
                     <img src="/images/Home/Corazon_lila.webp" alt="Corazón"
                         class="absolute -top-6 -right-22 w-40 h-40 select-none pointer-events-none drop-shadow-lg" />
@@ -120,34 +122,69 @@
             </div>
 
             <!-- Podio: Oro en el centro más alto, Plata izquierda, Bronce derecha -->
-            <div class="flex justify-center items-end gap-6 md:gap-12 mb-10">
+            <div class="flex justify-center items-end gap-4 md:gap-8 mb-10">
 
                 <!-- 2º Plata -->
-                <div class="flex flex-col items-center">
-                    <p class="text-white font-bold text-sm mb-2 text-center">{{ topJugadores[1]?.name }}</p>
-                    <p class="text-purple-200 text-sm font-semibold mb-3 text-center">
-                        {{ topJugadores[1]?.puntuacion?.toLocaleString() || '4.900' }} pts
-                    </p>
-                    <img src="/images/Home/Ranking_Plata.webp" alt="2º Puesto" class="w-32 md:w-40 drop-shadow-2xl" />
+                <div class="flex flex-col items-center w-1/3 max-w-[200px]">
+                    <div class="relative w-full">
+                        <img src="/images/Home/Ranking_Plata.webp" alt="2º Puesto" class="w-full drop-shadow-2xl" />
+                        <!-- Nombre sobre la placa -->
+                        <div class="absolute bottom-[36%] left-1/2 -translate-x-1/2 w-[65%] text-center">
+                            <p class="text-violet-700 font-black text-xs md:text-sm truncate leading-tight"
+                                style="text-shadow: 0 0 8px rgba(255,255,255,0.6)">
+                                {{ topJugadores[1]?.alias || 'Jugador 2' }}
+                            </p>
+                        </div>
+                        <!-- Puntuación dentro del trofeo (escalón inferior) -->
+                        <div class="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-[75%] text-center">
+                            <p class="text-violet-700 font-black text-xs md:text-sm"
+                                style="text-shadow: 0 0 8px rgba(255,255,255,0.6)">
+                                {{ topJugadores[1]?.puntuacion?.toLocaleString() || '0' }} pts
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 1º Oro (más grande, más alto) -->
-                <div class="flex flex-col items-center -mb-6">
-                    <p class="text-white font-black text-base mb-1 text-center">{{ topJugadores[0]?.name }}</p>
-                    <p class="text-yellow-300 font-black text-base mb-3 text-center">
-                        {{ topJugadores[0]?.puntuacion?.toLocaleString() || '5.200' }} pts
-                    </p>
-                    <img src="/images/Home/Ranking_Oro.webp" alt="1º Puesto" class="w-40 md:w-52 drop-shadow-2xl" />
+                <div class="flex flex-col items-center w-1/3 max-w-[240px] -mb-4 md:-mb-6">
+                    <div class="relative w-full">
+                        <img src="/images/Home/Ranking_Oro.webp" alt="1º Puesto" class="w-full drop-shadow-2xl" />
+                        <!-- Nombre sobre la placa (más arriba porque la imagen es más alta) -->
+                        <div class="absolute bottom-[37%] left-1/2 -translate-x-1/2 w-[65%] text-center">
+                            <p class="text-violet-800 font-black text-sm md:text-base truncate leading-tight"
+                                style="text-shadow: 0 0 10px rgba(255,255,255,0.7)">
+                                {{ topJugadores[0]?.alias || 'Jugador 1' }}
+                            </p>
+                        </div>
+                        <!-- Puntuación dentro del trofeo (escalón inferior) -->
+                        <div class="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-[75%] text-center">
+                            <p class="text-violet-800 font-black text-sm md:text-base"
+                                style="text-shadow: 0 0 10px rgba(255,255,255,0.7)">
+                                {{ topJugadores[0]?.puntuacion?.toLocaleString() || '0' }} pts
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
-
                 <!-- 3º Bronce -->
-                <div class="flex flex-col items-center">
-                    <p class="text-white font-bold text-sm mb-2 text-center">{{ topJugadores[2]?.name }}</p>
-                    <p class="text-purple-200 text-sm font-semibold mb-3 text-center">
-                        {{ topJugadores[2]?.puntuacion?.toLocaleString() || '4.750' }} pts
-                    </p>
-                    <img src="/images/Home/Ranking_Bronce.webp" alt="3º Puesto" class="w-32 md:w-40 drop-shadow-2xl" />
+                <div class="flex flex-col items-center w-1/3 max-w-[200px]">
+                    <div class="relative w-full">
+                        <img src="/images/Home/Ranking_Bronce.webp" alt="3º Puesto" class="w-full drop-shadow-2xl" />
+                        <!-- Nombre sobre la placa -->
+                        <div class="absolute bottom-[35%] left-1/2 -translate-x-1/2 w-[65%] text-center">
+                            <p class="text-violet-700 font-black text-xs md:text-sm truncate leading-tight"
+                                style="text-shadow: 0 0 8px rgba(255,255,255,0.6)">
+                                {{ topJugadores[2]?.alias || 'Jugador 3' }}
+                            </p>
+                        </div>
+                        <!-- Puntuación dentro del trofeo (escalón inferior) -->
+                        <div class="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-[75%] text-center">
+                            <p class="text-violet-700 font-black text-xs md:text-sm"
+                                style="text-shadow: 0 0 8px rgba(255,255,255,0.6)">
+                                {{ topJugadores[2]?.puntuacion?.toLocaleString() || '0' }} pts
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
