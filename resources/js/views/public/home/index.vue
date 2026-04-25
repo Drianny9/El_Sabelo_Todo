@@ -24,19 +24,37 @@
                 <div
                     class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-yellow-400 flex flex-col h-full">
                     <h2 class="text-4xl font-black text-purple-700 italic tracking-wide mb-6">1 VS 1</h2>
-                    <!-- Avatares -->
-                    <div class="flex justify-center items-center gap-4 my-6">
-                        <div class="w-24 h-24 rounded-full bg-purple-100 border-4 border-purple-300 overflow-hidden">
-                            <img src="/images/Home/Avatar_solitario.webp" alt="Jugador 1"
-                                class="w-full h-full object-cover" />
+                    <!-- Avatares con blobs degradados -->
+                    <div class="flex justify-center items-center gap-0 my-6 relative">
+                        <!-- Jugador Izquierda -->
+                        <div class="relative w-28 h-28 md:w-32 md:h-32 flex items-center justify-center">
+                            <!-- Blob degradado de fondo -->
+                            <div class="absolute inset-0 rounded-full opacity-80"
+                                 style="background: radial-gradient(ellipse at 60% 50%, #c084fc 0%, #a855f7 40%, #7c3aed 70%, transparent 100%);
+                                        filter: blur(6px);
+                                        transform: scale(1.05) rotate(-5deg);
+                                        border-radius: 50% 40% 55% 45% / 45% 55% 40% 50%;">
+                            </div>
+                            <img src="/images/Home/Logo-izquierda.webp" alt="Jugador 1"
+                                class="relative z-10 w-24 h-24 md:w-28 md:h-28 object-contain drop-shadow-lg" />
                         </div>
-                        <div
-                            class="w-14 h-14 rounded-full bg-purple-600 flex items-center justify-center shadow-lg flex-shrink-0">
+
+                        <!-- VS Badge -->
+                        <div class="w-14 h-14 rounded-full bg-purple-600 flex items-center justify-center shadow-xl flex-shrink-0 z-20 border-4 border-purple-400 -mx-3">
                             <span class="text-white font-black text-lg">VS</span>
                         </div>
-                        <div class="w-24 h-24 rounded-full bg-purple-100 border-4 border-purple-300 overflow-hidden">
-                            <img src="/images/Home/Avatar_solitario.webp" alt="Jugador 2"
-                                class="w-full h-full object-cover" />
+
+                        <!-- Jugador Derecha -->
+                        <div class="relative w-28 h-28 md:w-32 md:h-32 flex items-center justify-center">
+                            <!-- Blob degradado de fondo -->
+                            <div class="absolute inset-0 rounded-full opacity-80"
+                                 style="background: radial-gradient(ellipse at 40% 50%, #c084fc 0%, #a855f7 40%, #7c3aed 70%, transparent 100%);
+                                        filter: blur(6px);
+                                        transform: scale(1.05) rotate(5deg);
+                                        border-radius: 45% 55% 40% 50% / 50% 40% 55% 45%;">
+                            </div>
+                            <img src="/images/Home/Logo-derecha.webp" alt="Jugador 2"
+                                class="relative z-10 w-24 h-24 md:w-28 md:h-28 object-contain drop-shadow-lg" />
                         </div>
                     </div>
                     <button @click="startGame('duel')"
