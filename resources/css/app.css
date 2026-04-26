@@ -448,9 +448,15 @@
         }
     }
 
-    /* Main Content Wrapper - Edge-to-edge layout */
+    /* Main Content Wrapper */
     .main-content-wrapper {
-        @apply p-0 m-0 w-full;
+        @apply p-4;
+    }
+
+    @media (min-width: 768px) {
+        .main-content-wrapper {
+            @apply p-6;
+        }
     }
 
     /* Breadcrumb Container */

@@ -15,7 +15,7 @@
             <!-- ===== Sidebar End ===== -->
 
             <!-- ===== Content Area Start ===== -->
-            <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-[#0f0a24]">
+            <div :class="['relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden', isAdmin ? 'bg-slate-50' : 'bg-[#1a103d]']">
                 <!-- ===== Header Start ===== -->
                 <MainHeader 
                     :sidebarOpen="sidebarOpen" 
@@ -26,7 +26,21 @@
             
                 <!-- ===== Main Content Start ===== -->
                 <main>
-                    <div class="main-content-wrapper p-0">
+                    <div :class="['main-content-wrapper', isAdmin ? '' : 'p-0']">
+                        <!-- Breadcrumbs -->
+                        <nav v-if="breadcrumbs.length > 0" :class="['mb-4', isAdmin ? 'px-0' : 'px-8 pt-6']">
+                            <ol :class="['flex items-center space-x-2 text-sm', isAdmin ? 'text-gray-600' : '']">
+                                <li>
+                                    <router-link :to="isAdmin ? '/admin' : '/app'" :class="[isAdmin ? 'hover:text-primary' : 'text-purple-400 hover:text-purple-300 font-bold transition-colors']">Inicio</router-link>
+                                </li>
+                                <li v-for="(crumb, index) in breadcrumbs" :key="index" class="flex items-center">
+                                    <span :class="['mx-2', isAdmin ? 'text-gray-400' : 'text-purple-600 font-black']">/</span>
+                                    <router-link v-if="index < breadcrumbs.length - 1" :to="crumb.route" :class="[isAdmin ? 'hover:text-primary' : 'text-purple-400 hover:text-purple-300 font-bold transition-colors']">{{ crumb.label }}</router-link>
+                                    <span v-else :class="['font-black uppercase tracking-wider', isAdmin ? 'text-gray-900' : 'text-purple-200 shadow-sm']">{{ crumb.label }}</span>
+                                </li>
+                            </ol>
+                        </nav>
+
                         <!-- Router View -->
                         <div class="router-view-container">
                             <Suspense>
@@ -93,6 +107,8 @@ const toggleSidebar = () => {
 const toggleCollapse = () => {
     isCollapsed.value = !isCollapsed.value;
 };
+
+const isAdmin = computed(() => route.path.startsWith('/admin'));
 
 const pageTitle = computed(() => {
     return route.meta?.pageTitle || route.meta?.breadCrumb || 'Dashboard';
