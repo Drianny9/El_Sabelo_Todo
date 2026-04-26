@@ -6,7 +6,7 @@
             props.isCollapsed ? 'w-[70px]' : 'w-64',
             'fixed left-0 top-0 z-50 flex h-screen flex-col overflow-hidden transition-all duration-300 ease-in-out lg:static lg:translate-x-0 shadow-lg lg:shadow-none',
             isAdmin 
-                ? 'bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800' 
+                ? 'bg-white border-r border-gray-200' 
                 : 'bg-[#1a103d]/95 backdrop-blur-xl border-r border-white/10'
         ]"
     >
@@ -14,7 +14,7 @@
         <div class="flex items-center justify-center p-4 shrink-0 transition-all duration-300"
              :class="[
                 props.isCollapsed ? 'h-16' : 'h-24',
-                isAdmin ? 'border-b border-gray-100 dark:border-gray-800' : 'mb-4 relative overflow-hidden'
+                isAdmin ? 'border-b border-gray-100' : 'mb-4 relative overflow-hidden'
              ]">
             
             <!-- Glow effect only for User (not for Admin) -->
@@ -53,7 +53,7 @@
                                class="group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200"
                                :class="[
                                    isAdmin 
-                                    ? (isActive ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900')
+                                    ? (isActive ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900')
                                     : (isActive 
                                         ? 'bg-gradient-to-r from-purple-600 to-blue-600 shadow-lg shadow-purple-900/50 text-white rounded-xl' 
                                         : 'text-purple-100/60 hover:text-white hover:bg-white/5')
@@ -63,7 +63,7 @@
                                    :class="[
                                         subItem.icon, 
                                         isAdmin 
-                                            ? (isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500')
+                                            ? (isActive ? 'text-blue-600' : 'text-gray-500')
                                             : (isActive ? 'text-white' : 'text-purple-400 group-hover:text-purple-300')
                                    ]"></i>
                                 
@@ -74,7 +74,7 @@
 
                                 <!-- Indicator Bar ONLY for USER layout -->
                                 <div v-if="!isAdmin && isActive" class="absolute left-0 top-0 w-1 h-full bg-yellow-400 rounded-r-md"></div>
-                                <span v-if="isAdmin && isActive" class="absolute right-2 w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400"></span>
+                                <span v-if="isAdmin && isActive" class="absolute right-2 w-1.5 h-1.5 rounded-full bg-blue-600"></span>
                             </a>
                         </router-link>
                      </template>
@@ -88,7 +88,7 @@
                            class="group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200"
                            :class="[
                                isAdmin 
-                                ? (isActive ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900')
+                                ? (isActive ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900')
                                 : (isActive 
                                     ? 'bg-gradient-to-r from-purple-600 to-blue-600 shadow-lg shadow-purple-900/50 text-white rounded-xl' 
                                     : 'text-purple-100/60 hover:text-white hover:bg-white/5')
@@ -98,7 +98,7 @@
                                :class="[
                                     item.icon, 
                                     isAdmin 
-                                        ? (isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500')
+                                        ? (isActive ? 'text-blue-600' : 'text-gray-500')
                                         : (isActive ? 'text-white' : 'text-purple-400 group-hover:text-purple-300')
                                ]"></i>
                             <span class="whitespace-nowrap transition-all duration-300 origin-left"
