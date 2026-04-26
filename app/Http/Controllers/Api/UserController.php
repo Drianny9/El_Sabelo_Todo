@@ -152,9 +152,32 @@ class UserController extends Controller
     public function getRanking()
     {
         // Traemos solo alias y puntuacion, ordenados de mayor a menor
-        return User::select('alias', 'puntuacion')
+        return User::select('name', 'alias', 'puntuacion')
             ->orderBy('puntuacion', 'desc')
             ->limit(10) // Opcional: solo el top 10
             ->get();
+    }
+
+    /**
+     * Devuelve una lista aleatoria de usuarios para la sección Social de la home.
+     * Solo expone datos públicos (alias, puntuacion, avatar). Sin auth requerida.
+     */
+    public function getSocialUsers()
+    {
+        $currentId = Auth::id(); //null si no hay sesión
+
+        $users = User::select('id', 'alias', 'puntuacion')
+            ->when($currentId, fn($q) => $q->where('id', '!=', $currentId))
+            ->inRandomOrder()
+            ->limit(20)
+            ->get()
+            ->map(fn($u) => [
+                'id'         => $u->id,
+                'alias'      => $u->alias ?? 'Jugador',
+                'puntuacion' => $u->puntuacion ?? 0,
+                'avatar'     => $u->getFirstMediaUrl('images/users') ?: null,
+            ]);
+
+        return response()->json($users);
     }
 }

@@ -21,21 +21,40 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
                 <!-- Card 1VS1 -->
-                <div class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-yellow-400 flex flex-col h-full">
+                <div
+                    class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-yellow-400 flex flex-col h-full">
                     <h2 class="text-4xl font-black text-purple-700 italic tracking-wide mb-6">1 VS 1</h2>
-                    <!-- Avatares -->
-                    <div class="flex justify-center items-center gap-4 my-6">
-                        <div class="w-24 h-24 rounded-full bg-purple-100 border-4 border-purple-300 overflow-hidden">
-                            <img src="/images/Home/Avatar_solitario.webp" alt="Jugador 1"
-                                class="w-full h-full object-cover" />
+                    <!-- Avatares con blobs degradados -->
+                    <div class="flex justify-center items-center gap-0 my-6 relative">
+                        <!-- Jugador Izquierda -->
+                        <div class="relative w-28 h-28 md:w-32 md:h-32 flex items-center justify-center">
+                            <!-- Blob degradado de fondo -->
+                            <div class="absolute inset-0 rounded-full opacity-80"
+                                 style="background: radial-gradient(ellipse at 60% 50%, #c084fc 0%, #a855f7 40%, #7c3aed 70%, transparent 100%);
+                                        filter: blur(6px);
+                                        transform: scale(1.05) rotate(-5deg);
+                                        border-radius: 50% 40% 55% 45% / 45% 55% 40% 50%;">
+                            </div>
+                            <img src="/images/Home/Logo-izquierda.webp" alt="Jugador 1"
+                                class="relative z-10 w-24 h-24 md:w-28 md:h-28 object-contain drop-shadow-lg" />
                         </div>
-                        <div
-                            class="w-14 h-14 rounded-full bg-purple-600 flex items-center justify-center shadow-lg flex-shrink-0">
+
+                        <!-- VS Badge -->
+                        <div class="w-14 h-14 rounded-full bg-purple-600 flex items-center justify-center shadow-xl flex-shrink-0 z-20 border-4 border-purple-400 -mx-3">
                             <span class="text-white font-black text-lg">VS</span>
                         </div>
-                        <div class="w-24 h-24 rounded-full bg-purple-100 border-4 border-purple-300 overflow-hidden">
-                            <img src="/images/Home/Avatar_solitario.webp" alt="Jugador 2"
-                                class="w-full h-full object-cover" />
+
+                        <!-- Jugador Derecha -->
+                        <div class="relative w-28 h-28 md:w-32 md:h-32 flex items-center justify-center">
+                            <!-- Blob degradado de fondo -->
+                            <div class="absolute inset-0 rounded-full opacity-80"
+                                 style="background: radial-gradient(ellipse at 40% 50%, #c084fc 0%, #a855f7 40%, #7c3aed 70%, transparent 100%);
+                                        filter: blur(6px);
+                                        transform: scale(1.05) rotate(5deg);
+                                        border-radius: 45% 55% 40% 50% / 50% 40% 55% 45%;">
+                            </div>
+                            <img src="/images/Home/Logo-derecha.webp" alt="Jugador 2"
+                                class="relative z-10 w-24 h-24 md:w-28 md:h-28 object-contain drop-shadow-lg" />
                         </div>
                     </div>
                     <button @click="startGame('duel')"
@@ -45,7 +64,8 @@
                 </div>
 
                 <!-- Card Modo Individual -->
-                <div class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-purple-300 relative flex flex-col h-full">
+                <div
+                    class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-purple-300 relative flex flex-col h-full">
                     <!-- Corazón decorativo esquina -->
                     <img src="/images/Home/Corazon_lila.webp" alt="Corazón"
                         class="absolute -top-6 -right-22 w-40 h-40 select-none pointer-events-none drop-shadow-lg" />
@@ -66,7 +86,7 @@
 
         <!-- ===== SOCIAL ===== -->
         <section class="px-4 md:px-12 pb-12 max-w-5xl mx-auto">
-            <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 shadow-xl">
+            <div class="bg-black/20 backdrop-blur-sm rounded-3xl p-6 border border-white/10 shadow-xl">
                 <!-- Header social -->
                 <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-5">
                     <div class="flex items-center gap-2 flex-shrink-0">
@@ -87,23 +107,57 @@
                     </div>
                 </div>
 
-                <!-- Sugerencias -->
+                <!-- Carrusel de sugerencias -->
                 <p class="text-white/70 text-sm mb-4 font-medium">Personas que quizá conozcas</p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div v-for="i in 4" :key="i"
-                        class="bg-white/10 rounded-2xl p-4 text-center border border-white/15 hover:bg-white/20 transition-colors cursor-pointer">
-                        <div
-                            class="w-16 h-16 rounded-full bg-purple-300/40 mx-auto mb-2 overflow-hidden border-2 border-white/30">
-                            <img src="/images/Home/Avatar_solitario.webp" alt="Usuario"
-                                class="w-full h-full object-cover" />
+
+                <!-- Estado de carga -->
+                <div v-if="socialLoading" class="flex justify-center py-6">
+                    <i class="pi pi-spin pi-spinner text-white text-2xl"></i>
+                </div>
+
+                <!-- Sin usuarios -->
+                <p v-else-if="socialUsers.length === 0" class="text-white/50 text-sm text-center py-4">
+                    No hay jugadores disponibles ahora mismo.
+                </p>
+
+                <!-- Carrusel -->
+                <div v-else class="relative">
+                    <!-- Flecha izquierda -->
+                    <button @click="scrollCarouselLeft"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-3 w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 text-white font-bold flex items-center justify-center transition-all shadow-lg">
+                        ‹
+                    </button>
+
+                    <!-- Contenedor deslizable -->
+                    <div ref="carouselRef"
+                        class="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-2 pb-2"
+                        style="scrollbar-width: none; -ms-overflow-style: none;">
+                        <div v-for="u in socialUsers" :key="u.id"
+                            class="snap-start flex-shrink-0 w-36 bg-white/10 rounded-2xl p-4 text-center border border-white/15 hover:bg-white/20 transition-colors cursor-pointer">
+                            <!-- Avatar -->
+                            <div class="w-14 h-14 rounded-full bg-purple-300/40 mx-auto mb-2 overflow-hidden border-2 border-white/30">
+                                <img
+                                    :src="u.avatar || '/images/Home/Avatar_solitario.webp'"
+                                    :alt="u.alias"
+                                    class="w-full h-full object-cover" />
+                            </div>
+                            <!-- Alias -->
+                            <p class="text-white font-bold text-sm truncate">{{ u.alias }}</p>
+                            <!-- Puntos -->
+                            <p class="text-purple-200 text-xs mb-3">{{ u.puntuacion.toLocaleString() }} pts</p>
+                            <!-- Botón añadir -->
+                            <button
+                                class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-bold text-xs py-1.5 rounded-lg transition-colors shadow-[0_3px_0_#b45309] hover:shadow-[0_1px_0_#b45309] hover:translate-y-0.5">
+                                Añadir
+                            </button>
                         </div>
-                        <p class="text-white font-bold text-sm">Usuario X</p>
-                        <p class="text-purple-200 text-xs mb-3">3 amigos en común</p>
-                        <button
-                            class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-bold text-xs py-1.5 rounded-lg transition-colors shadow-[0_3px_0_#b45309]">
-                            Añadir
-                        </button>
                     </div>
+
+                    <!-- Flecha derecha -->
+                    <button @click="scrollCarouselRight"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-3 w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 text-white font-bold flex items-center justify-center transition-all shadow-lg">
+                        ›
+                    </button>
                 </div>
             </div>
         </section>
@@ -120,34 +174,69 @@
             </div>
 
             <!-- Podio: Oro en el centro más alto, Plata izquierda, Bronce derecha -->
-            <div class="flex justify-center items-end gap-6 md:gap-12 mb-10">
+            <div class="flex justify-center items-end gap-4 md:gap-8 mb-10">
 
                 <!-- 2º Plata -->
-                <div class="flex flex-col items-center">
-                    <p class="text-white font-bold text-sm mb-2 text-center">{{ topJugadores[1]?.name }}</p>
-                    <p class="text-purple-200 text-sm font-semibold mb-3 text-center">
-                        {{ topJugadores[1]?.puntuacion?.toLocaleString() || '4.900' }} pts
-                    </p>
-                    <img src="/images/Home/Ranking_Plata.webp" alt="2º Puesto" class="w-32 md:w-40 drop-shadow-2xl" />
+                <div class="flex flex-col items-center w-1/3 max-w-[200px]">
+                    <div class="relative w-full">
+                        <img src="/images/Home/Ranking_Plata.webp" alt="2º Puesto" class="w-full drop-shadow-2xl" />
+                        <!-- Nombre sobre la placa -->
+                        <div class="absolute bottom-[36%] left-1/2 -translate-x-1/2 w-[65%] text-center">
+                            <p class="text-violet-700 font-black text-xs md:text-sm truncate leading-tight"
+                                style="text-shadow: 0 0 8px rgba(255,255,255,0.6)">
+                                {{ topJugadores[1]?.alias || 'Jugador 2' }}
+                            </p>
+                        </div>
+                        <!-- Puntuación dentro del trofeo (escalón inferior) -->
+                        <div class="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-[75%] text-center">
+                            <p class="text-violet-700 font-black text-xs md:text-sm"
+                                style="text-shadow: 0 0 8px rgba(255,255,255,0.6)">
+                                {{ topJugadores[1]?.puntuacion?.toLocaleString() || '0' }} pts
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 1º Oro (más grande, más alto) -->
-                <div class="flex flex-col items-center -mb-6">
-                    <p class="text-white font-black text-base mb-1 text-center">{{ topJugadores[0]?.name }}</p>
-                    <p class="text-yellow-300 font-black text-base mb-3 text-center">
-                        {{ topJugadores[0]?.puntuacion?.toLocaleString() || '5.200' }} pts
-                    </p>
-                    <img src="/images/Home/Ranking_Oro.webp" alt="1º Puesto" class="w-40 md:w-52 drop-shadow-2xl" />
+                <div class="flex flex-col items-center w-1/3 max-w-[240px] -mb-4 md:-mb-6">
+                    <div class="relative w-full">
+                        <img src="/images/Home/Ranking_Oro.webp" alt="1º Puesto" class="w-full drop-shadow-2xl" />
+                        <!-- Nombre sobre la placa (más arriba porque la imagen es más alta) -->
+                        <div class="absolute bottom-[37%] left-1/2 -translate-x-1/2 w-[65%] text-center">
+                            <p class="text-violet-800 font-black text-sm md:text-base truncate leading-tight"
+                                style="text-shadow: 0 0 10px rgba(255,255,255,0.7)">
+                                {{ topJugadores[0]?.alias || 'Jugador 1' }}
+                            </p>
+                        </div>
+                        <!-- Puntuación dentro del trofeo (escalón inferior) -->
+                        <div class="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-[75%] text-center">
+                            <p class="text-violet-800 font-black text-sm md:text-base"
+                                style="text-shadow: 0 0 10px rgba(255,255,255,0.7)">
+                                {{ topJugadores[0]?.puntuacion?.toLocaleString() || '0' }} pts
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
-
                 <!-- 3º Bronce -->
-                <div class="flex flex-col items-center">
-                    <p class="text-white font-bold text-sm mb-2 text-center">{{ topJugadores[2]?.name }}</p>
-                    <p class="text-purple-200 text-sm font-semibold mb-3 text-center">
-                        {{ topJugadores[2]?.puntuacion?.toLocaleString() || '4.750' }} pts
-                    </p>
-                    <img src="/images/Home/Ranking_Bronce.webp" alt="3º Puesto" class="w-32 md:w-40 drop-shadow-2xl" />
+                <div class="flex flex-col items-center w-1/3 max-w-[200px]">
+                    <div class="relative w-full">
+                        <img src="/images/Home/Ranking_Bronce.webp" alt="3º Puesto" class="w-full drop-shadow-2xl" />
+                        <!-- Nombre sobre la placa -->
+                        <div class="absolute bottom-[35%] left-1/2 -translate-x-1/2 w-[65%] text-center">
+                            <p class="text-violet-700 font-black text-xs md:text-sm truncate leading-tight"
+                                style="text-shadow: 0 0 8px rgba(255,255,255,0.6)">
+                                {{ topJugadores[2]?.alias || 'Jugador 3' }}
+                            </p>
+                        </div>
+                        <!-- Puntuación dentro del trofeo (escalón inferior) -->
+                        <div class="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-[75%] text-center">
+                            <p class="text-violet-700 font-black text-xs md:text-sm"
+                                style="text-shadow: 0 0 8px rgba(255,255,255,0.6)">
+                                {{ topJugadores[2]?.puntuacion?.toLocaleString() || '0' }} pts
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -167,12 +256,20 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import useRanking from '@/composables/ranking';
+import useSocialUsers from '@/composables/socialUsers';
 
 const router = useRouter();
 const busquedaJugador = ref('');
 
-//Usamos el composable que encapsula la lógica del ranking y comunicación con la API
+// Ranking podio
 const { topJugadores, fetchTopJugadores } = useRanking();
+
+// Carrusel social
+const { socialUsers, loading: socialLoading, fetchSocialUsers } = useSocialUsers();
+const carouselRef = ref(null);
+
+const scrollCarouselLeft  = () => carouselRef.value?.scrollBy({ left: -300, behavior: 'smooth' });
+const scrollCarouselRight = () => carouselRef.value?.scrollBy({ left:  300, behavior: 'smooth' });
 
 const startGame = (mode) => {
     if (mode === 'solo') {
@@ -188,5 +285,6 @@ const goToRanking = () => {
 
 onMounted(() => {
     fetchTopJugadores();
+    fetchSocialUsers();
 });
 </script>

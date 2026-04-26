@@ -59,5 +59,12 @@ export const authStore = defineStore("authStore", () => {
         return user.value.roles.some(role => role.name === roleName);
     }
 
-    return { user, authenticated, login, is, getUser,getUserSignIn, logout, isAdmin};
+    //Añadimos la puntuacion de usuario
+    function addScore(points) {
+        if (this.user && this.user.puntuacion != undefined) {
+            this.user.puntuacion += points;
+        }
+    }
+
+    return { user, authenticated, login, is, getUser,getUserSignIn, logout, isAdmin, addScore};
 }, {persist: true});
