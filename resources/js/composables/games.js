@@ -57,8 +57,11 @@ export default function useGame(roomCode = null){ //Aceptamos un roomCode opcion
                 puntuacion: puntuacion.value
             });
 
-            //Sumamos los puntos visualmente al usuario
-            auth.addScore(puntuacion.value);
+            //Sincronizamos la puntuación del store con el total real del backend
+            //Esto incluye puntos de la partida + puntos bonus de logros desbloqueados
+            if (response.data.puntuacion !== undefined) {
+                auth.user.puntuacion = response.data.puntuacion;
+            }
 
             //Si el backend devuelve logros nuevos, los almacenamos para mostrarlos en la vista
             if (response.data.nuevos_logros && response.data.nuevos_logros.length > 0) {
