@@ -6,7 +6,7 @@
         <section class="relative text-center pt-20 pb-10 px-4">
             <!-- Rayo decorativo izquierda -->
             <img src="/images/Home/Rayo.webp" alt="Rayo"
-                class="absolute left-6 top-14 w-28 md:w-36 select-none pointer-events-none drop-shadow-xl" />
+                class="absolute left-2 top-10 w-20 md:left-6 md:top-14 md:w-36 select-none pointer-events-none drop-shadow-xl opacity-80 md:opacity-100" />
 
             <h1 class="text-4xl md:text-6xl font-black tracking-widest uppercase text-white drop-shadow-2xl">
                 DEMUESTRA LO QUE SABES
@@ -68,7 +68,7 @@
                     class="bg-white rounded-3xl p-8 text-center shadow-2xl border-4 border-purple-300 relative flex flex-col h-full">
                     <!-- Corazón decorativo esquina -->
                     <img src="/images/Home/Corazon_lila.webp" alt="Corazón"
-                        class="absolute -top-6 -right-22 w-40 h-40 select-none pointer-events-none drop-shadow-lg" />
+                        class="absolute -top-4 -right-4 w-24 h-24 md:-top-6 md:-right-22 md:w-40 md:h-40 select-none pointer-events-none drop-shadow-lg" />
                     <h2 class="text-4xl font-black text-purple-700 italic tracking-wide mb-6">MODO INDIVIDUAL</h2>
                     <div class="flex justify-center my-6">
                         <div class="w-32 h-32 rounded-2xl bg-purple-100 border-4 border-purple-200 overflow-hidden">
@@ -124,38 +124,43 @@
                 <div v-else class="relative">
                     <!-- Flecha izquierda -->
                     <button @click="scrollCarouselLeft"
-                        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-3 w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 text-white font-bold flex items-center justify-center transition-all shadow-lg">
+                        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-3 w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 text-white font-bold hidden md:flex items-center justify-center transition-all shadow-lg">
                         ‹
                     </button>
 
                     <!-- Contenedor deslizable -->
                     <div ref="carouselRef"
-                        class="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-2 pb-2"
+                        class="grid grid-cols-2 gap-4 max-h-[400px] overflow-y-auto md:max-h-none md:flex md:flex-row md:overflow-x-auto md:overflow-y-visible scroll-smooth snap-x snap-mandatory px-2 pb-2 pt-6"
                         style="scrollbar-width: none; -ms-overflow-style: none;">
                         <div v-for="u in socialUsers" :key="u.id"
-                            class="snap-start flex-shrink-0 w-36 bg-white/10 rounded-2xl p-4 text-center border border-white/15 hover:bg-white/20 transition-colors cursor-pointer">
-                            <!-- Avatar -->
-                            <div class="w-14 h-14 rounded-full bg-purple-300/40 mx-auto mb-2 overflow-hidden border-2 border-white/30">
-                                <img
-                                    :src="u.avatar || '/images/Home/Avatar_solitario.webp'"
-                                    :alt="u.alias"
-                                    class="w-full h-full object-cover" />
+                            class="md:snap-start flex-shrink-0 w-full md:w-36 bg-white/10 md:bg-transparent rounded-2xl border-0 md:border md:border-white/15 overflow-hidden transition-transform hover:-translate-y-1 cursor-pointer flex flex-col shadow-lg">
+                            
+                            <!-- Fondo superior púrpura (Avatar area) -->
+                            <div class="h-16 md:h-20 flex items-end justify-center relative bg-white/10">
+                                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden absolute -bottom-8 md:-bottom-10 border-[3px] border-white shadow-sm bg-purple-200">
+                                    <img
+                                        :src="u.avatar || '/images/Home/Avatar_solitario.webp'"
+                                        :alt="u.alias"
+                                        class="w-full h-full object-cover" />
+                                </div>
                             </div>
-                            <!-- Alias -->
-                            <p class="text-white font-bold text-sm truncate">{{ u.alias }}</p>
-                            <!-- Puntos -->
-                            <p class="text-purple-200 text-xs mb-3">{{ u.puntuacion.toLocaleString() }} pts</p>
-                            <!-- Botón añadir -->
-                            <button
-                                class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-bold text-xs py-1.5 rounded-lg transition-colors shadow-[0_3px_0_#b45309] hover:shadow-[0_1px_0_#b45309] hover:translate-y-0.5">
-                                Añadir
-                            </button>
+
+                            <!-- Fondo inferior blanco (Info area) -->
+                            <div class="bg-white pt-10 md:pt-12 pb-3 px-2 flex-1 flex flex-col items-center">
+                                <p class="text-purple-900 font-bold text-sm truncate w-full text-center">{{ u.alias }}</p>
+                                <p class="text-gray-500 text-[10px] mb-3">{{ u.puntuacion.toLocaleString() }} pts</p>
+                                
+                                <button
+                                    class="w-[85%] mt-auto bg-gradient-to-b from-yellow-300 to-yellow-400 text-yellow-900 font-black text-xs py-1.5 rounded-full transition-all shadow-[0_3px_0_#b45309] hover:shadow-[0_2px_0_#b45309] hover:translate-y-0.5 active:shadow-none active:translate-y-[3px]">
+                                    Añadir
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Flecha derecha -->
                     <button @click="scrollCarouselRight"
-                        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-3 w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 text-white font-bold flex items-center justify-center transition-all shadow-lg">
+                        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-3 w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 text-white font-bold hidden md:flex items-center justify-center transition-all shadow-lg">
                         ›
                     </button>
                 </div>

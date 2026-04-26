@@ -30,7 +30,7 @@
                 <!-- Actions -->
                 <div class="flex items-center gap-3">
                     <!-- Puntuación del usuario logueado (CLICABLE) -->
-                    <router-link v-if="authStore().user?.name" to="/app/profile"
+                    <router-link v-if="authStore().user?.name" to="/app/mis-logros"
                          class="flex items-center gap-2 px-4 py-1.5 rounded-full hover:bg-white/10 transition-all cursor-pointer group" 
                          title="Ver mi perfil y logros">
                         <div class="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center shadow-md border border-yellow-300 group-hover:scale-110 transition-transform">
@@ -104,7 +104,7 @@
                             <i class="pi pi-star-fill text-yellow-700 text-sm"></i>
                         </div>
                         <span class="text-white font-black text-lg">{{ (authStore().user?.puntuacion || 0).toLocaleString() }} pts</span>
-                    </div>
+                    </router-link>
 
                     <!-- Nav Links -->
                     <div class="flex flex-col gap-1">
