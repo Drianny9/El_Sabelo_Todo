@@ -63,9 +63,9 @@
 
                     <div v-else class="flex items-center gap-2">
                         <button type="button" @click="toggle"
-                            class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-white/10 transition-colors text-white">
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors text-white">
                             <Avatar :image="authStore().user.avatar" :label="authStore().user.name[0]" shape="circle"
-                                size="small" />
+                                size="small" class="!bg-white !text-purple-900 font-black shadow-sm" />
                             <span class="text-sm font-bold hidden xl:inline uppercase tracking-wider">{{ authStore().user?.name }}</span>
                             <i class="pi pi-chevron-down text-xs"></i>
                         </button>
