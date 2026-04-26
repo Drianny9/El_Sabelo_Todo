@@ -142,6 +142,13 @@ export default [
                 component: () => import('../views/user/MisLogros.vue'),
                 beforeEnter: requireLogin,
             },
+            //Ruta para que el usuario pueda proponer preguntas
+            {
+                path: 'crear-pregunta',
+                name: 'app.crear-pregunta',
+                component: () => import('../views/user/CrearPreguntas.vue'),
+                beforeEnter: requireLogin,
+            },
         ]
     },
 

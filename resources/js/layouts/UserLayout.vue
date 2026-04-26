@@ -16,6 +16,11 @@ const items = ref([
                 icon: 'pi pi-th-large',
                 route: '/app/posts'
             },
+            {
+                label: 'Crear Pregunta',
+                icon: 'pi pi-plus-circle',
+                route: '/app/crear-pregunta'
+            },
         ]
     },
     {

@@ -23,7 +23,7 @@ class RoomController extends Controller
         ]);
 
         //Seleccionamos 10 IDs de preguntas de forma aleatoria
-        $questionIds = Question::inRandomOrder()->limit(10)->pluck('id');
+        $questionIds = Question::where('activa', 1)->inRandomOrder()->limit(10)->pluck('id');
 
         //Generamos un código único para la sala
         do {
