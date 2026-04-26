@@ -89,7 +89,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user->load('roles');
+        $user->load(['roles', 'logros']);
         return new UserResource($user);
     }
 

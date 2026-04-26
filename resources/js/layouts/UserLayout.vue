@@ -12,11 +12,6 @@ const items = ref([
         label: 'Contenido',
         items: [
             {
-                label: 'Posts',
-                icon: 'pi pi-th-large',
-                route: '/app/posts'
-            },
-            {
                 label: 'Crear Pregunta',
                 icon: 'pi pi-plus-circle',
                 route: '/app/crear-pregunta'

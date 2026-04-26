@@ -15,7 +15,7 @@
             <!-- ===== Sidebar End ===== -->
 
             <!-- ===== Content Area Start ===== -->
-            <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+            <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-[#0f0a24]">
                 <!-- ===== Header Start ===== -->
                 <MainHeader 
                     :sidebarOpen="sidebarOpen" 
@@ -26,7 +26,7 @@
             
                 <!-- ===== Main Content Start ===== -->
                 <main>
-                    <div class="main-content-wrapper">
+                    <div class="main-content-wrapper p-0">
                         <!-- Router View -->
                         <div class="router-view-container">
                             <Suspense>

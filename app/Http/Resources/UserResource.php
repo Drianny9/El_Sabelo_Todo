@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             'puntuacion' => $this->puntuacion,
             'roles' => RoleResource::collection($this->roles),
             'avatar' => count($this->getMedia('*')) > 0 ? $this->getMedia('*')[0]->getUrl() : null,
+            'logros_count' => $this->logros()->count(),
             'created_at' => $this->created_at->toDateString()
         ];
     }
