@@ -64,6 +64,20 @@
             <Card class="dashboard-stat-card">
                 <template #content>
                     <div class="stat-card-content">
+                        <div class="stat-card-icon stat-icon-primary">
+                            <i class="pi pi-question-circle"></i>
+                        </div>
+                        <div class="stat-card-info">
+                            <p class="stat-card-label">Preguntas</p>
+                            <p class="stat-card-value">{{ stats.questions || 0 }}</p>
+                        </div>
+                    </div>
+                </template>
+            </Card>
+
+            <Card class="dashboard-stat-card">
+                <template #content>
+                    <div class="stat-card-content">
                         <div class="stat-card-icon stat-icon-warning">
                             <i class="pi pi-shield"></i>
                         </div>
@@ -142,6 +156,20 @@
                         </router-link>
 
                         <router-link
+                            to="/admin/questions"
+                            class="dashboard-action-item"
+                        >
+                            <div class="dashboard-action-icon stat-icon-primary">
+                                <i class="pi pi-question-circle"></i>
+                            </div>
+                            <div class="dashboard-action-info">
+                                <p class="dashboard-action-title">Gestionar Preguntas</p>
+                                <p class="dashboard-action-description">Ver y editar preguntas</p>
+                            </div>
+                            <i class="pi pi-chevron-right dashboard-action-arrow"></i>
+                        </router-link>
+
+                        <router-link
                             to="/admin/permissions"
                             class="dashboard-action-item"
                         >
@@ -167,18 +195,21 @@ import useUsers from "../../composables/users";
 import usePosts from "../../composables/posts";
 import useCategories from "../../composables/categories";
 import useRoles from "../../composables/roles";
+import useQuestions from "../../composables/questions";
 
 const stats = ref({
     users: 0,
     posts: 0,
     categories: 0,
-    roles: 0
+    roles: 0,
+    questions: 0
 });
 
 const { users, getUsers } = useUsers();
 const { posts, getPosts } = usePosts();
 const { categories, getCategories } = useCategories();
 const { roles, getRoles } = useRoles();
+const { questionList, getQuestionList } = useQuestions();
 
 const loadStats = async () => {
     try {
@@ -186,14 +217,16 @@ const loadStats = async () => {
             getUsers(),
             getPosts(),
             getCategories(),
-            getRoles()
+            getRoles(),
+            getQuestionList()
         ]);
         
         stats.value = {
             users: users.value?.total || users.value?.data?.length || 0,
             posts: posts.value?.total || posts.value?.data?.length || 0,
             categories: categories.value?.total || categories.value?.data?.length || 0,
-            roles: roles.value?.total || roles.value?.data?.length || 0
+            roles: roles.value?.total || roles.value?.data?.length || 0,
+            questions: questionList.value?.length || 0
         };
     } catch (error) {
         console.error('Error loading stats:', error);
