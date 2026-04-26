@@ -2,8 +2,8 @@
     <div class="relative min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-purple-900 text-white flex items-center justify-center p-4 overflow-hidden pt-12 pb-12">
         
         <!-- Elementos 3D de fondo -->
-        <img src="/images/Home/Rayo.webp" alt="Rayo" class="absolute top-10 right-10 w-32 md:w-48 opacity-40 select-none pointer-events-none drop-shadow-2xl mix-blend-screen" />
-        <img src="/images/Home/Corazon_lila.webp" alt="Corazon" class="absolute bottom-10 left-10 w-40 md:w-56 opacity-30 select-none pointer-events-none drop-shadow-2xl mix-blend-screen" />
+        <img src="/images/Imagenes-Fondo/trofeo.webp" alt="Trofeo" class="absolute top-10 right-10 w-32 md:w-48 opacity-40 select-none pointer-events-none drop-shadow-2xl mix-blend-screen" />
+        <img src="/images/Imagenes-Fondo/Corona.webp" alt="Corona" class="absolute bottom-10 left-10 w-40 md:w-56 opacity-30 select-none pointer-events-none drop-shadow-2xl mix-blend-screen" />
         
         <div class="relative w-full max-w-2xl bg-white text-gray-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-[3rem] border-8 border-purple-300/30 overflow-hidden z-10 flex flex-col">
             <!-- Header -->

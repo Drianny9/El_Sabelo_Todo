@@ -3,9 +3,9 @@
          style="background: linear-gradient(180deg, #9333EA 0%, #7C3AED 35%, #6D28D9 100%);">
         
         <!-- Decorative Assets -->
-        <img src="/images/Home/Rayo.webp" alt="" 
+        <img src="/images/Imagenes-Fondo/Estrella.webp" alt="" 
             class="absolute right-[-2rem] top-10 w-32 md:w-48 opacity-40 rotate-12 pointer-events-none select-none" />
-        <img src="/images/Home/Rayo.webp" alt="" 
+        <img src="/images/Imagenes-Fondo/Diamante.webp" alt="" 
             class="absolute left-[-3rem] top-1/2 w-32 md:w-48 opacity-30 -rotate-45 pointer-events-none select-none" />
         
         <div class="max-w-6xl mx-auto px-6 pt-16 relative z-10">

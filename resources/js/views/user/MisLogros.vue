@@ -3,9 +3,9 @@
          style="background: linear-gradient(180deg, #9333EA 0%, #7C3AED 35%, #6D28D9 100%);">
 
         <!-- Decorative assets -->
-        <img src="/images/Home/Rayo.webp" alt=""
+        <img src="/images/Imagenes-Fondo/Estrella.webp" alt=""
             class="absolute right-6 top-8 w-20 md:w-28 select-none pointer-events-none drop-shadow-xl opacity-60 rotate-12" />
-        <img src="/images/Home/Corazon_lila.webp" alt=""
+        <img src="/images/Imagenes-Fondo/Diamante.webp" alt=""
             class="absolute left-4 top-32 w-16 md:w-20 select-none pointer-events-none drop-shadow-xl opacity-50 -rotate-12" />
 
         <div class="max-w-5xl mx-auto px-4 py-8 relative z-10">
@@ -124,7 +124,7 @@
 
                 <!-- Sin logros aún -->
                 <div v-if="logrosConseguidos.length === 0 && allLogros.length > 0" class="text-center py-10 relative">
-                    <img src="/images/Home/Rayo.webp" alt=""
+                    <img src="/images/Imagenes-Fondo/Interrogante.webp" alt=""
                         class="absolute left-1/2 -translate-x-1/2 top-0 w-16 opacity-30 pointer-events-none select-none" />
                     <p class="text-white text-lg font-black drop-shadow-md">Juega una partida para empezar a desbloquear logros 🎮</p>
                 </div>
