@@ -1,71 +1,153 @@
 <template>
-    <div class="flex justify-center items-center min-h-screen bg-gray-900 text-white p-4">
-        <Card class="w-full max-w-2xl bg-gray-800 shadow-lg rounded-lg">
-            <template #title>
-                <div class="text-center text-2xl font-bold text-yellow-400">
-                    Resultados de la Partida
-                </div>
-            </template>
-            <template #content>
-                <div v-if="loading" class="flex flex-col items-center justify-center p-10">
-                    <ProgressSpinner />
-                    <p class="mt-4 text-lg">Cargando resultados...</p>
-                </div>
-                <div v-else-if="error" class="text-center p-10 text-red-400">
-                    <h2 class="text-2xl font-bold">Error</h2>
-                    <p>{{ error }}</p>
-                </div>
-                <div v-else-if="results" class="text-center p-6">
-                    <div v-if="results.status === 'finished'">
-                        <h2 class="text-3xl font-bold mb-4 text-green-400">¡Partida Finalizada!</h2>
-                        <div class="grid grid-cols-2 gap-4 text-xl">
-                            <div class="p-4 bg-gray-700 rounded-lg">
-                                <p class="font-semibold text-white">{{ player1Name }}</p>
-                                <p class="text-4xl font-bold text-yellow-400">{{ player1Score }}</p>
-                            </div>
-                            <div class="p-4 bg-gray-700 rounded-lg">
-                                <p class="font-semibold text-white">{{ player2Name }}</p>
-                                <p class="text-4xl font-bold text-yellow-400">{{ player2Score }}</p>
-                            </div>
+    <div class="relative min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-purple-900 text-white flex items-center justify-center p-4 overflow-hidden pt-24 pb-20">
+        
+        <!-- Elementos 3D de fondo -->
+        <img src="/images/Imagenes-Fondo/Interrogante.webp" alt="Interrogante" class="absolute top-10 left-10 w-32 md:w-48 opacity-40 select-none pointer-events-none drop-shadow-2xl mix-blend-screen" />
+        <img src="/images/Imagenes-Fondo/Corona.webp" alt="Corona" class="absolute bottom-10 right-10 w-40 md:w-56 opacity-30 select-none pointer-events-none drop-shadow-2xl mix-blend-screen" />
+
+        <!-- Contenedor Principal Premium "Tarjeta" -->
+        <div class="relative w-full max-w-3xl bg-white text-gray-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-[3rem] border-8 border-purple-300/30 overflow-hidden z-10 flex flex-col">
+            
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-purple-100 to-white px-8 py-6 relative border-b-2 border-purple-200 text-center">
+                <h1 class="text-3xl md:text-4xl font-black text-purple-700 tracking-wider uppercase drop-shadow-sm">RESULTADOS DE LA PARTIDA</h1>
+                <p class="text-purple-500 font-bold mt-2 uppercase tracking-widest text-sm">Modo Duelo 1vs1</p>
+            </div>
+
+            <!-- Content -->
+            <div class="p-8 md:p-12">
+                <!-- Loading State -->
+                <div v-if="loading" class="flex flex-col items-center justify-center py-12">
+                    <div class="relative">
+                        <ProgressSpinner style="width: 80px; height: 80px" strokeWidth="4" animationDuration=".5s" />
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="pi pi-search text-2xl text-purple-500"></i>
                         </div>
-                        <div class="mt-8">
-                            <h3 v-if="winStatus === 'win'" class="text-2xl font-bold text-green-400">¡Has ganado!</h3>
-                            <h3 v-else-if="winStatus === 'lose'" class="text-2xl font-bold text-red-400">Has perdido.</h3>
-                            <h3 v-else class="text-2xl font-bold text-blue-400">¡Es un empate!</h3>
+                    </div>
+                    <p class="mt-6 text-xl font-bold text-purple-600 animate-pulse tracking-wide uppercase">Cargando resultados...</p>
+                </div>
+
+                <!-- Error State -->
+                <div v-else-if="error" class="text-center py-10 bg-red-50 rounded-[2rem] border-4 border-red-100 p-8">
+                    <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="pi pi-exclamation-triangle text-4xl text-red-500"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-red-700 uppercase mb-2">¡Ups! Algo salió mal</h2>
+                    <p class="text-red-600 font-bold">{{ error }}</p>
+                    <button @click="goToLobby" class="mt-6 px-8 py-3 bg-red-600 text-white font-black rounded-full hover:bg-red-700 transition-colors uppercase tracking-wider">
+                        Volver al Lobby
+                    </button>
+                </div>
+
+                <!-- Results State -->
+                <div v-else-if="results" class="flex flex-col items-center gap-8">
+                    
+                    <!-- Partida Finalizada -->
+                    <div v-if="results.status === 'finished'" class="w-full space-y-8">
+                        
+                        <!-- Status Banner -->
+                        <div class="text-center">
+                            <h2 v-if="winStatus === 'win'" class="text-4xl md:text-6xl font-black text-green-500 uppercase tracking-tighter drop-shadow-sm animate-bounce-in">¡HAS GANADO! 🏆</h2>
+                            <h2 v-else-if="winStatus === 'lose'" class="text-4xl md:text-6xl font-black text-red-500 uppercase tracking-tighter drop-shadow-sm animate-bounce-in">HAS PERDIDO 💀</h2>
+                            <h2 v-else class="text-4xl md:text-6xl font-black text-blue-500 uppercase tracking-tighter drop-shadow-sm animate-bounce-in">¡EMPATE! 🤝</h2>
                         </div>
 
-                        <!-- Notificación de Logros Desbloqueados -->
-                        <div v-if="nuevosLogros.length > 0" class="mt-8 space-y-3">
-                            <div v-for="(logro, index) in nuevosLogros" :key="index"
-                                 class="mx-auto max-w-md bg-gradient-to-r from-yellow-900/80 to-amber-900/80 border border-yellow-500/50 rounded-xl p-4 shadow-lg shadow-yellow-900/30 animate-bounce-in"
-                                 :style="{ animationDelay: (index * 0.3) + 's' }">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                                        <i :class="logro.icono || 'pi pi-star'" class="text-xl text-yellow-400"></i>
+                        <!-- VS Display -->
+                        <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-gray-50 p-8 rounded-[2.5rem] border-2 border-gray-100 shadow-inner">
+                            
+                            <!-- VS Badge -->
+                            <div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-purple-600 text-white font-black text-2xl items-center justify-center rounded-full border-4 border-white shadow-lg z-10">
+                                VS
+                            </div>
+
+                            <!-- Player 1 -->
+                            <div class="flex flex-col items-center gap-4 group">
+                                <div class="relative">
+                                    <div class="absolute -inset-2 bg-gradient-to-tr from-purple-500 to-blue-500 rounded-full opacity-20 blur-lg group-hover:opacity-40 transition-opacity"></div>
+                                    <img :src="player1Avatar" class="relative w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white shadow-xl object-cover" alt="P1 Avatar">
+                                    <div v-if="results.score_p1 > results.score_p2" class="absolute -top-4 -right-4 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center border-4 border-white shadow-lg rotate-12">
+                                        <i class="pi pi-star-fill text-yellow-900"></i>
                                     </div>
-                                    <div class="text-left">
-                                        <p class="text-yellow-400 text-xs font-bold uppercase tracking-widest">¡Logro Desbloqueado!</p>
-                                        <p class="text-white font-bold text-sm">{{ logro.nombre }}</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-400 font-black uppercase text-xs tracking-widest mb-1">Creador</p>
+                                    <p class="text-2xl font-black text-gray-800 uppercase">{{ player1Name }}</p>
+                                    <div class="mt-2 text-5xl font-black text-purple-600 tabular-nums">{{ player1Score }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Player 2 -->
+                            <div class="flex flex-col items-center gap-4 group">
+                                <div class="relative">
+                                    <div class="absolute -inset-2 bg-gradient-to-tr from-purple-500 to-blue-500 rounded-full opacity-20 blur-lg group-hover:opacity-40 transition-opacity"></div>
+                                    <img :src="player2Avatar" class="relative w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white shadow-xl object-cover" alt="P2 Avatar">
+                                    <div v-if="results.score_p2 > results.score_p1" class="absolute -top-4 -right-4 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center border-4 border-white shadow-lg rotate-12">
+                                        <i class="pi pi-star-fill text-yellow-900"></i>
                                     </div>
-                                    <span v-if="logro.puntos" class="ml-auto bg-yellow-500 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">+{{ logro.puntos }} pts</span>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-400 font-black uppercase text-xs tracking-widest mb-1">Rival</p>
+                                    <p class="text-2xl font-black text-gray-800 uppercase">{{ player2Name }}</p>
+                                    <div class="mt-2 text-5xl font-black text-purple-600 tabular-nums">{{ player2Score }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logros Section -->
+                        <div v-if="nuevosLogros.length > 0" class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <div class="h-px flex-1 bg-gray-100"></div>
+                                <h3 class="text-gray-400 font-black uppercase tracking-[0.2em] text-xs">Logros Desbloqueados</h3>
+                                <div class="h-px flex-1 bg-gray-100"></div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div v-for="(logro, index) in nuevosLogros" :key="index"
+                                     class="bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-100 rounded-2xl p-4 flex items-center gap-4 shadow-sm animate-bounce-in"
+                                     :style="{ animationDelay: (index * 0.2) + 's' }">
+                                    <div class="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center shadow-[0_4px_0_#b45309] shrink-0 border-2 border-yellow-200">
+                                        <i :class="logro.icono || 'pi pi-star'" class="text-2xl text-yellow-900"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-yellow-800 font-black text-sm uppercase leading-tight">{{ logro.nombre }}</p>
+                                        <p class="text-yellow-600 text-xs font-bold mt-0.5">+{{ logro.puntos }} PUNTOS EXTRA</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div v-else>
-                        <h2 class="text-3xl font-bold mb-4 text-blue-400">Esperando al rival...</h2>
-                        <p class="text-lg">Tu puntuación final es: <span class="text-2xl font-bold text-yellow-400">{{ finalScore }}</span></p>
-                        <p class="mt-4">Los resultados se mostrarán aquí cuando tu oponente termine la partida.</p>
-                        <p class="mt-2">Puedes cerrar esta ventana y volver más tarde usando la misma URL.</p>
-                        <ProgressSpinner class="mt-6" />
+
+                    <!-- Esperando al Rival -->
+                    <div v-else class="w-full flex flex-col items-center gap-8 py-6">
+                        <div class="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center border-4 border-blue-100 animate-pulse">
+                            <i class="pi pi-hourglass text-4xl text-blue-500"></i>
+                        </div>
+                        <div class="text-center space-y-2">
+                            <h2 class="text-3xl font-black text-gray-800 uppercase">ESPERANDO AL RIVAL...</h2>
+                            <p class="text-gray-500 font-bold max-w-md">Tu puntuación ha sido guardada. Los resultados finales aparecerán cuando tu oponente termine.</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 px-10 py-6 rounded-3xl border-2 border-gray-100 shadow-inner flex flex-col items-center">
+                            <p class="text-gray-400 font-black uppercase text-xs tracking-widest mb-1">Tu Puntuación</p>
+                            <span class="text-6xl font-black text-purple-600">{{ finalScore }}</span>
+                        </div>
+
+                        <div class="w-full max-w-sm h-2 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-blue-500 animate-[loading_2s_infinite]"></div>
+                        </div>
                     </div>
-                    <div class="flex justify-center gap-4 mt-8">
-                        <Button @click="goToLobby" label="Volver al Lobby" icon="pi pi-users" class="p-button-info" />
-                        <Button @click="router.push({ name: 'home' })" label="Volver al Menú" icon="pi pi-home" class="p-button-secondary" />
+
+                    <!-- Actions -->
+                    <div class="flex flex-col sm:flex-row gap-4 w-full mt-4">
+                        <button @click="goToLobby" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-black py-4 rounded-2xl transition-all shadow-[0_5px_0_#4c1d95] active:translate-y-1 active:shadow-none uppercase tracking-widest flex items-center justify-center gap-2">
+                            <i class="pi pi-users"></i> Volver al Lobby
+                        </button>
+                        <button @click="router.push({ name: 'home' })" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-black py-4 rounded-2xl transition-all border-2 border-gray-200 uppercase tracking-widest flex items-center justify-center gap-2">
+                            <i class="pi pi-home"></i> Ir al Menú
+                        </button>
                     </div>
                 </div>
-            </template>
-        </Card>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -74,8 +156,6 @@ import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { authStore } from '@/store/auth';
 import useRooms from '@/composables/rooms';
-import Card from 'primevue/card';
-import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
 
 const route = useRoute();
@@ -107,6 +187,9 @@ const player2Score = computed(() => {
 const player1Name = computed(() => results.value?.player_1_name || 'Jugador 1');
 const player2Name = computed(() => results.value?.player_2_name || 'Jugador 2');
 
+const player1Avatar = computed(() => results.value?.player_1_avatar || '/images/Home/Avatar_solitario.webp');
+const player2Avatar = computed(() => results.value?.player_2_avatar || '/images/Home/Avatar_solitario.webp');
+
 const winStatus = computed(() => {
     if (!results.value || results.value.status !== 'finished') return 'waiting';
     let myScore = results.value.player_1_id === userId.value ? results.value.score_p1 : results.value.score_p2;
@@ -117,8 +200,8 @@ const winStatus = computed(() => {
     return 'tie';
 });
 
-let pollAttempts = 0; //agregamos un contador para evitar polling infinito si el rival abandona
-const MAX_ATTEMPTS = 12; //12 intentos * 5 segundos = 1 minuto de espera
+let pollAttempts = 0; 
+const MAX_ATTEMPTS = 60; // Aumentamos a 5 minutos (60 * 5s)
 
 const fetchResults = async () => {
     try {
@@ -126,20 +209,17 @@ const fetchResults = async () => {
         if (results.value.status === 'finished') {
             loading.value = false;
             if (pollInterval) {
-                //El otro jugador ha terminado y paramos el temporizador.
                 clearInterval(pollInterval);
             }
         } else {
-            //si no ha terminado, incrementamos los intentos
             pollAttempts++;
             if (pollAttempts >= MAX_ATTEMPTS) {
-                //si el rival no termina en un tiempo razonable, paramos y avisamos
                 clearInterval(pollInterval);
-                error.value = "Parece que el oponente se ha desconectado. Finalizando espera.";
+                error.value = "El tiempo de espera ha expirado. Tu oponente tardó demasiado.";
             }
         }
     } catch (e) {
-        error.value = "No se pudieron cargar los resultados. Es posible que no seas parte de esta sala.";
+        error.value = "No se pudieron cargar los resultados.";
         loading.value = false;
         if (pollInterval) {
             clearInterval(pollInterval);
@@ -154,8 +234,7 @@ const goToLobby = () => {
 onMounted(() => {
     fetchResults().then(() => {
         if (results.value && results.value.status !== 'finished' && !error.value) {
-            loading.value = false; //Dejamos de cargar para mostrar el mensaje de espera
-            //Consultamos el estado cada 5 segundos para verificar si el rival ha terminado
+            loading.value = false;
             pollInterval = setInterval(fetchResults, 5000);
         } else {
             loading.value = false;
@@ -164,7 +243,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    //Limpiamos el intervalo cuando el componente se destruye para evitar fugas de memoria
     if (pollInterval) {
         clearInterval(pollInterval);
     }
@@ -172,29 +250,19 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.p-card {
-    border: 2px solid #4a5568;
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    50% { opacity: 1; transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
 }
 
-/* Animación de entrada para los banners de logros desbloqueados */
-@keyframes bounceIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.3) translateY(-20px);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.05);
-    }
-    70% {
-        transform: scale(0.95);
-    }
-    100% {
-        transform: scale(1) translateY(0);
-    }
+@keyframes loading {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 .animate-bounce-in {
-    animation: bounceIn 0.6s ease-out both;
+    animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 </style>

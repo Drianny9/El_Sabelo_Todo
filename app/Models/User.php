@@ -33,6 +33,8 @@ class User extends Authenticatable implements HasMedia
         'alias'
     ];
 
+    protected $appends = ['avatar'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -63,6 +65,11 @@ class User extends Authenticatable implements HasMedia
     public function logros()
     {
         return $this->belongsToMany(Logro::class)->withTimestamps();
+    }
+
+    public function getAvatarAttribute()
+    {
+        return $this->getFirstMediaUrl('images/users') ?: '/images/Home/Avatar_solitario.webp';
     }
 
     public function registerMediaCollections(): void

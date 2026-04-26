@@ -49,7 +49,7 @@
                             @click="confirmJoin(room)">
                             <div class="flex items-center gap-4">
                                 <div class="w-14 h-14 rounded-full bg-purple-100 border-2 border-purple-300 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
-                                    <img src="/images/Home/Avatar_solitario.webp" alt="Avatar" class="w-full h-full object-cover">
+                                    <img :src="room.player1?.avatar" alt="Avatar" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <span class="font-black text-lg md:text-xl text-purple-900 group-hover:text-yellow-600 transition-colors uppercase tracking-wide truncate max-w-[150px] md:max-w-[200px] block">{{ room.name }}</span>

@@ -92,6 +92,14 @@ class RoomController extends Controller
                     ->where('created_at', '>=', now()->subHours(2)) // Ocultarlas si quedaron abandonadas
                     ->where('player_1_id', '!=', Auth::id())
                     ->get();
+
+        // Aseguramos que el atributo avatar esté disponible en el JSON
+        $rooms->each(function($room) {
+            if ($room->player1) {
+                $room->player1->append('avatar');
+            }
+        });
+
         return response()->json($rooms);
     }
 
@@ -124,6 +132,8 @@ class RoomController extends Controller
         $roomData = $room->toArray();
         $roomData['player_1_name'] = $player1 ? $player1->name : 'Jugador 1';
         $roomData['player_2_name'] = $player2 ? $player2->name : 'Jugador 2';
+        $roomData['player_1_avatar'] = $player1 ? $player1->avatar : '/images/Home/Avatar_solitario.webp';
+        $roomData['player_2_avatar'] = $player2 ? $player2->avatar : '/images/Home/Avatar_solitario.webp';
 
         //devolvemos el estado real de cada jugador para no bloquear la pantalla de resultados
         $roomData['p1_finished'] = $room->p1_finished;
