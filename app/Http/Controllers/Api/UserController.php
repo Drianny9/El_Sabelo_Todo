@@ -151,10 +151,10 @@ class UserController extends Controller
     // En RankingController.php o UserController.php
     public function getRanking()
     {
-        // Traemos solo alias y puntuacion, ordenados de mayor a menor
-        return User::select('name', 'alias', 'puntuacion')
+        // Traemos ID, para identificar el usuario actual en el front
+        return User::select('id', 'name', 'alias', 'puntuacion')
             ->orderBy('puntuacion', 'desc')
-            ->limit(10) // Opcional: solo el top 10
+            ->limit(50) // Aumentamos un poco el límite para el ranking global
             ->get();
     }
 
