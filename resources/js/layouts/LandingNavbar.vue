@@ -97,9 +97,10 @@
 
                 <!-- Content -->
                 <div class="flex flex-col gap-2 p-4 h-[calc(100%-5rem)] overflow-y-auto">
-                    <!-- Puntuación mobile -->
-                    <div v-if="authStore().user?.name" 
-                         class="flex items-center gap-3 p-3 bg-white/10 rounded-xl mb-2">
+                    <!-- Puntuación mobile (CLICABLE) -->
+                    <router-link v-if="authStore().user?.name" to="/app/mis-logros"
+                         @click="visibleMobileMenu = false"
+                         class="flex items-center gap-3 p-3 bg-white/10 rounded-xl mb-2 hover:bg-white/20 active:scale-95 transition-all cursor-pointer">
                         <div class="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center shadow-md border border-yellow-300">
                             <i class="pi pi-star-fill text-yellow-700 text-sm"></i>
                         </div>

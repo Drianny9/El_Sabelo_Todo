@@ -128,7 +128,7 @@ class UserController extends Controller
 
         if ($request->hasFile('picture')) {
             $user->media()->delete();
-            $media = $user->addMediaFromRequest('picture')->preservingOriginal()->toMediaCollection('images-users');
+            $media = $user->addMediaFromRequest('picture')->preservingOriginal()->toMediaCollection('images/users');
         }
         $user =  User::with('media')->find($request->id);
         return new UserResource($user);
