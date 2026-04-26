@@ -117,7 +117,7 @@
                          :class="isAdmin ? 'text-gray-600 hover:bg-gray-50' : 'text-purple-300/50 hover:text-white hover:bg-white/5 group'">
                 <i class="pi pi-home text-lg shrink-0" :class="!isAdmin ? 'group-hover:scale-110' : ''"></i>
                 <span class="whitespace-nowrap transition-all duration-300 origin-left" :class="[props.isCollapsed ? 'hidden' : 'w-auto opacity-100']">
-                    {{ isAdmin ? 'Volver a Home' : 'Cerrar Sesión' }}
+                    Volver a Home
                 </span>
             </router-link>
         </div>
