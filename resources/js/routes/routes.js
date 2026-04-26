@@ -116,6 +116,15 @@ export default [
                 path: 'game/individual/ranking',
                 name: 'game.individual.ranking',
                 component: () => import('../views/public/ranking/ranking.vue'),
+            },
+            {
+                path: 'ranking',
+                redirect: { name: 'game.individual.ranking' }
+            },
+            {
+                path: 'como-jugar',
+                name: 'public.how-to-play',
+                component: () => import('../views/public/HowToPlay.vue'),
             }
         ]
     },

@@ -29,15 +29,15 @@
 
                 <!-- Actions -->
                 <div class="flex items-center gap-3">
-                    <!-- Puntuación del usuario logueado -->
-                    <div v-if="authStore().user?.name" 
-                         class="flex items-center gap-2 px-4 py-1.5 rounded-full cursor-default transition-transform hover:scale-105" 
-                         title="Tu puntuación">
-                        <div class="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center shadow-md border border-yellow-300">
-                            <i class="pi pi-star-fill text-yellow-700 text-xs"></i>
+                    <!-- Puntuación del usuario logueado (CLICABLE) -->
+                    <router-link v-if="authStore().user?.name" to="/app/profile"
+                         class="flex items-center gap-2 px-4 py-1.5 rounded-full hover:bg-white/10 transition-all cursor-pointer group" 
+                         title="Ver mi perfil y logros">
+                        <div class="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center shadow-md border border-yellow-300 group-hover:scale-110 transition-transform">
+                            <i class="pi pi-star-fill text-yellow-700 text-[10px]"></i>
                         </div>
                         <span class="text-white font-black text-sm tracking-wide">{{ (authStore().user?.puntuacion || 0).toLocaleString() }}</span>
-                    </div>
+                    </router-link>
 
                     <LocaleSwitcher />
 
@@ -172,7 +172,9 @@ const { processing, logout } = useAuth();
 const { toggleDarkMode, isDarkTheme, setDefaultMode } = useLayout();
 
 const navLinks = [
-    { label: 'Inicio', route: '/', icon: 'pi pi-home' }
+    { label: 'Inicio', route: '/', icon: 'pi pi-home' },
+    { label: 'Cómo Jugar', route: '/como-jugar', icon: 'pi pi-info-circle' },
+    { label: 'Ranking', route: '/ranking', icon: 'pi pi-chart-bar' }
 ];
 
 const items = computed(() => [
