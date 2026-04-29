@@ -39,13 +39,6 @@
                         <span class="text-white font-black text-sm tracking-wide">{{ (authStore().user?.puntuacion || 0).toLocaleString() }}</span>
                     </router-link>
 
-                    <LocaleSwitcher />
-
-                    <button type="button" @click="toggleDarkMode"
-                        class="p-2 rounded-lg hover:bg-white/10 transition-colors text-white/80 hover:text-white">
-                        <i :class="isDarkTheme ? 'pi-moon' : 'pi-sun'" class="pi text-lg"></i>
-                    </button>
-
                     <template v-if="!authStore().user?.name">
                         <router-link to="/login">
                             <button
@@ -159,7 +152,7 @@
 import { useLayout } from "@/composables/layout.js";
 import useAuth from "@/composables/auth";
 import { authStore } from "../store/auth";
-import LocaleSwitcher from "../components/LocaleSwitcher.vue";
+
 import { ref, computed, onBeforeMount, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 
@@ -170,7 +163,7 @@ const isScrolled = ref(false);
 const isDesktop = ref(window.innerWidth >= 992);
 
 const { processing, logout } = useAuth();
-const { toggleDarkMode, isDarkTheme, setDefaultMode } = useLayout();
+const { setDefaultMode } = useLayout();
 
 const navLinks = [
     { label: 'Inicio', route: '/', icon: 'pi pi-home' },

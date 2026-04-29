@@ -24,12 +24,7 @@
 
             <div class="flex items-center gap-2 sm:gap-3">
                 <ul class="flex items-center gap-1.5 sm:gap-2">
-                    <!-- Dark Mode Toggle -->
-                    <li>
-                        <button @click="toggleDarkMode" class="header-icon-button relative flex h-10 w-10 items-center justify-center rounded-lg border transition-all duration-200" title="Cambiar tema">
-                            <i :class="isDarkTheme ? 'pi pi-sun' : 'pi pi-moon'" class="text-base"></i>
-                        </button>
-                    </li>
+
 
                     <!-- User Dropdown -->
                     <li>
@@ -112,7 +107,7 @@ const props = defineProps({
 
 const emit = defineEmits(['toggleSidebar', 'toggleCollapse']);
 
-const { toggleDarkMode, isDarkTheme } = useLayout();
+// variables de layout no utilizadas eliminadas conforme a la solicitud del usuario
 const { logout: logoutAuth } = useAuth();
 const auth = authStore();
 const dropdownOpen = ref(false);
