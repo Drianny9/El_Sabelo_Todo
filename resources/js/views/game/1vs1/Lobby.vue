@@ -16,7 +16,7 @@
             <div class="p-6 md:p-10 flex flex-col flex-grow">
                 <!-- Botones Cabecera -->
                 <div class="flex flex-col sm:flex-row justify-center gap-6 mb-10 w-full max-w-2xl mx-auto">
-                    <button @click="showCreateModal = true" class="flex-1 bg-gradient-to-b from-green-400 to-green-500 hover:from-green-300 hover:to-green-400 text-green-950 font-black text-xl md:text-2xl py-4 rounded-full border-4 border-green-300/50 shadow-[0_8px_0_#15803d] hover:shadow-[0_5px_0_#15803d] hover:translate-y-1 active:shadow-[0_0px_0_#15803d] active:translate-y-3 transition-all duration-150 uppercase tracking-wider sans-serif flex items-center justify-center gap-3">
+                    <button @click="showCreateModal = true" class="flex-1 bg-gradient-to-b from-yellow-300 to-yellow-400 hover:from-yellow-200 hover:to-yellow-300 text-yellow-900 font-black text-xl md:text-2xl py-4 rounded-full border-4 border-yellow-200/50 shadow-[0_8px_0_#b45309] hover:shadow-[0_5px_0_#b45309] hover:translate-y-1 active:shadow-[0_0px_0_#b45309] active:translate-y-3 transition-all duration-150 uppercase tracking-wider sans-serif flex items-center justify-center gap-3">
                         <i class="pi pi-plus font-black"></i> Crear Partida
                     </button>
                     <button @click="showSearchModal = true" class="flex-1 bg-gradient-to-b from-blue-400 to-blue-500 hover:from-blue-300 hover:to-blue-400 text-blue-950 font-black text-xl md:text-2xl py-4 rounded-full border-4 border-blue-300/50 shadow-[0_8px_0_#1d4ed8] hover:shadow-[0_5px_0_#1d4ed8] hover:translate-y-1 active:shadow-[0_0px_0_#1d4ed8] active:translate-y-3 transition-all duration-150 uppercase tracking-wider sans-serif flex items-center justify-center gap-3">
@@ -49,7 +49,7 @@
                             @click="confirmJoin(room)">
                             <div class="flex items-center gap-4">
                                 <div class="w-14 h-14 rounded-full bg-purple-100 border-2 border-purple-300 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
-                                    <img :src="room.player1?.avatar" alt="Avatar" class="w-full h-full object-cover">
+                                    <img src="/images/Home/Avatar_solitario.webp" alt="Avatar" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <span class="font-black text-lg md:text-xl text-purple-900 group-hover:text-yellow-600 transition-colors uppercase tracking-wide truncate max-w-[150px] md:max-w-[200px] block">{{ room.name }}</span>
