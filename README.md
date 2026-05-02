@@ -1,123 +1,104 @@
-# Laravel 10 + Vue 3 API Base Project
+# El Sabelotodo
 
-Este proyecto es una base sólida diseñada para estudiantes y desarrolladores que deseen aprender a construir aplicaciones SPA (Single Page Application) modernas utilizando Laravel como API backend y Vue 3 como frontend.
+El Sabelotodo es una aplicacion web interactiva tipo trivial disenada para poner a prueba los conocimientos de los usuarios mediante diferentes modos de juego, incluyendo un modo 1vs1 en tiempo real y un modo individual contrarreloj. Cuenta con un sistema de logros, perfiles de usuario y un panel de administracion completo.
 
-## 🚀 Características Principales
+## Caracteristicas Principales
 
-### Backend (Laravel 10)
-- **API RESTful**: Estructura robusta para servir datos al frontend.
-- **Autenticación Sanctum**: Sistema seguro de autenticación basado en cookies/tokens.
-- **Roles y Permisos**: Implementación de `spatie/laravel-permission` para gestión granular de accesos.
-- **Recursos API**: Uso de API Resources para transformar datos de manera consistente.
+*   **Modos de Juego:**
+    *   **1vs1 en tiempo real:** Compite contra otros jugadores en salas privadas o publicas.
+    *   **Modo Individual:** Responde la mayor cantidad de preguntas en el menor tiempo posible para escalar en el ranking.
+*   **Gestion de Usuarios y Roles:** Sistema de autenticacion seguro, con roles (Administrador y Usuario) gestionados a traves de Spatie Permission.
+*   **Gamificacion:** Sistema de puntuacion global, ranking de los mejores jugadores y un sistema de Logros que otorga puntos extra al cumplir ciertos retos.
+*   **Panel de Administracion:** Un CRUD completo para gestionar usuarios, roles, permisos, categorias y las preguntas del trivial.
+*   **Diseno Premium y Responsive:** Interfaz moderna y atractiva adaptada a dispositivos moviles (verificado en iPhone 14 Pro) y escritorio.
 
-### Frontend (Vue 3)
-- **Composition API**: Uso moderno de Vue 3 con `<script setup>`.
-- **Pinia**: Gestión de estado modular y persistente.
-- **Vue Router**: Enrutamiento dinámico con protecciones de navegación (Guards).
-- **PrimeVue**: Suite de componentes UI profesional y personalizable.
-- **Tailwind CSS**: Estilizado utilitario para un diseño rápido y responsivo.
-- **i18n**: Soporte multi-idioma (Español, Inglés, Francés, etc.).
-- **Validación**: Formularios robustos con `yup`
+## Arquitectura y Tecnologias Utilizadas
 
-## 🛠️ Requisitos Previos
+Este proyecto se basa en una arquitectura cliente-servidor integrada en el mismo repositorio:
 
-- PHP >= 8.1
-- Composer
-- Node.js >= 16
-- MySQL / MariaDB
+### Frontend (Client-side)
+*   **Vue 3 (Composition API):** Framework para construir la interfaz de usuario.
+*   **Pinia:** Gestor de estado global para manejar la informacion de la aplicacion y la sesion del usuario de forma reactiva.
+*   **Tailwind CSS & PrimeVue:** Para la maquetacion responsiva y diseno de componentes.
+*   **Axios:** Para la comunicacion asincrona (AJAX) con la API del servidor, gestionando los tokens Bearer para la seguridad.
+*   **Composables:** Uso de composables para encapsular y reutilizar la logica de las llamadas a la API (ej. `useRooms`, `useLogros`).
 
-## ⚙️ Instalación y Configuración
+### Backend (Server-side)
+*   **Laravel 10:** Framework PHP para la creacion de la API RESTful.
+*   **Eloquent ORM:** Gestion de base de datos relacional y relaciones N:M complejas.
+*   **Spatie Media Library:** Para la gestion, subida y optimizacion de imagenes asociadas a modelos (avatares de usuario).
+*   **Spatie Permission:** Para el control estricto de roles y permisos.
 
-Sigue estos pasos para levantar el proyecto en tu entorno local:
+---
 
-### 1. Clonar el Repositorio
+## Manual de Instalacion y Despliegue
+
+Sigue estos pasos para desplegar el proyecto en tu entorno local de desarrollo. 
+Requisitos previos: PHP, Composer, Node.js y MySQL/MariaDB.
+
+### 1. Clonar el repositorio
 ```bash
 git clone <url-del-repositorio>
-cd Laravel-VUE-API-Base-Clase
+cd ELSABELOTODO
 ```
 
-### 2. Configurar Backend (Laravel)
-
-Instalar dependencias de PHP:
+### 2. Configuracion del Backend (Laravel)
+Instala las dependencias de PHP mediante Composer:
 ```bash
 composer install
 ```
 
-Configurar variables de entorno:
+Configura las variables de entorno. Duplica el archivo de ejemplo y renombralo a `.env`:
 ```bash
 cp .env.example .env
 ```
 
-Generar clave de aplicación:
-```bash
-php artisan key:generate
-```
-
-Configurar base de datos en `.env`:
-Abre el archivo `.env` y ajusta las credenciales de tu base de datos:
-```dotenv
+Abre el archivo `.env` recien creado y configura los datos de conexion a tu base de datos local:
+```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=nombre_de_tu_bd
+DB_DATABASE=elsabelotodo
 DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-Configurar dominio para Sanctum (Importante para autenticación):
-```dotenv
-SANCTUM_STATEFUL_DOMAINS=localhost:8000
-APP_URL=http://localhost:8000
-FRONTEND_URL=http://localhost:8000
-```
-
-Ejecutar migraciones y seeders:
+Genera la clave de encriptacion de la aplicacion y crea el enlace simbolico para que las imagenes sean accesibles publicamente:
 ```bash
-php artisan migrate --seed
+php artisan key:generate
+php artisan storage:link
 ```
-*Esto creará, categorías para un blog, usuarios, roles y permisos iniciales.*
 
-### Credenciales de Acceso (Seeders)
-Los siguientes usuarios son creaados por defecto:
-- **Admin**: `admin@demo.com` / `12345678`
-- **Usuario**: `user@demo.com` / `12345678`
+Migra la base de datos y ejecuta los seeders. Este paso es fundamental para cargar la estructura de la base de datos, las preguntas iniciales, los roles y los usuarios de prueba:
+```bash
+php artisan migrate:fresh --seed
+```
 
-### 3. Configurar Frontend (Vue)
-
-Instalar dependencias de Node:
+### 3. Configuracion del Frontend (Vue)
+Instala las dependencias de Node.js necesarias para compilar los assets del frontend:
 ```bash
 npm install
 ```
 
-### 4. Ejecutar la Aplicación
+### 4. Ejecucion del Proyecto
+Para que la aplicacion funcione correctamente, debes levantar ambos servidores de desarrollo simultaneamente en dos terminales distintas.
 
-Necesitarás dos terminales:
-
-Terminal 1 (Backend):
+**Terminal 1 (Servidor Backend de Laravel):**
 ```bash
 php artisan serve
 ```
+El servidor backend estara disponible en `http://localhost:8000`.
 
-Terminal 2 (Frontend):
+**Terminal 2 (Servidor Frontend con Vite):**
 ```bash
 npm run dev
 ```
 
-Accede a la aplicación en: `http://localhost:8000`
+---
 
-## 📂 Estructura del Proyecto
+## Usuarios de Prueba (Seeders)
 
-### Backend (`app/`)
-- `Http/Controllers/Api`: Controladores que manejan las peticiones API.
-- `Http/Resources`: Transformadores de datos JSON.
-- `Models`: Modelos Eloquent.
+La base de datos se inicializa con los siguientes usuarios para facilitar el acceso y las pruebas del sistema. La contrasena por defecto para todos ellos es `12345678`.
 
-### Frontend (`resources/js/`)
-- `components`: Componentes Vue reutilizables (Botones, Inputs, etc.).
-- `composables`: Lógica reutilizable (Hooks) para API, validación, etc.
-- `layouts`: Plantillas principales (Admin, User, Guest).
-- `pages` / `views`: Vistas de la aplicación organizadas por módulos.
-- `store`: Estados globales con Pinia (Auth, Lang, etc.).
-- `routes`: Definición de rutas y guards.
-
-
+*   **Usuario Administrador:** `admin@demo.com` (Acceso total al panel de administracion y CRUDs)
+*   **Usuario Estandar:** `user@demo.com` (Acceso a las funciones estandar de juego y perfil)
