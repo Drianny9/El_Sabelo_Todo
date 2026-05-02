@@ -141,14 +141,14 @@
                     <!-- Submit Button -->
                     <div class="mt-8 pt-6 border-t-2 border-gray-100">
                         <button
-                            type="submit"
-                            :disabled="processing"
-                            class="w-full bg-gradient-to-b from-blue-400 to-blue-500 hover:from-blue-300 hover:to-blue-400 text-blue-950 font-black text-xl py-4 rounded-full border-4 border-blue-300/50 shadow-[0_6px_0_#1d4ed8] hover:shadow-[0_4px_0_#1d4ed8] hover:translate-y-0.5 active:shadow-none active:translate-y-2 transition-all duration-150 uppercase tracking-wider flex items-center justify-center gap-3"
-                        >
-                            <span v-if="!processing">{{ $t('register') }}</span>
-                            <i v-if="!processing" class="pi pi-user-plus font-black"></i>
-                            <i v-else class="pi pi-spin pi-spinner text-2xl"></i>
-                        </button>
+    type="submit"
+    :disabled="processing"
+    class="w-full bg-gradient-to-b from-yellow-300 to-yellow-400 hover:from-yellow-200 hover:to-yellow-300 text-yellow-900 font-black text-xl py-4 rounded-full border-4 border-yellow-200/50 shadow-[0_6px_0_#b45309] hover:shadow-[0_4px_0_#b45309] hover:translate-y-0.5 active:shadow-none active:translate-y-2 transition-all duration-150 uppercase tracking-wider flex items-center justify-center gap-3"
+>
+    <span v-if="!processing">{{ $t('register') }}</span>
+    <i v-if="!processing" class="pi pi-user-plus font-black"></i>
+    <i v-else class="pi pi-spin pi-spinner text-2xl"></i>
+</button>
                     </div>
 
                     <!-- Login link -->

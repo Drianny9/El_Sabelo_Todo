@@ -247,10 +247,12 @@
 
             <!-- Botón ver ranking completo -->
             <div class="flex justify-center">
-                <button @click="goToRanking"
-                    class="bg-purple-600/80 hover:bg-purple-500 text-white font-bold px-14 py-3.5 rounded-full border border-purple-400/40 shadow-lg hover:shadow-purple-900/50 transition-all text-base tracking-wide">
-                    Ver ranking completo
-                </button>
+                <button 
+  @click="goToRanking"
+  class="bg-gradient-to-b from-yellow-300 to-yellow-400 hover:from-yellow-200 text-yellow-900 font-black px-14 py-3.5 rounded-full border-4 border-yellow-200/50 shadow-[0_4px_0_#b45309] hover:shadow-[0_2px_0_#b45309] hover:translate-y-0.5 active:shadow-none active:translate-y-1 transition-all text-base tracking-wide uppercase"
+>
+    Ver ranking completo
+</button>
             </div>
         </section>
 

@@ -89,10 +89,19 @@
                     <template #footer v-if="!roomCode">
                         <div class="flex justify-end gap-4 mt-6 border-t-2 border-gray-100 pt-6">
                             <button @click="showCreateModal = false" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-black py-3 px-6 rounded-full transition-colors uppercase text-sm tracking-wider">Cancelar</button>
-                            <button @click="createRoom" :disabled="isCreating" class="bg-gradient-to-b from-green-400 to-green-500 hover:from-green-300 text-green-950 font-black py-3 px-8 rounded-full shadow-[0_4px_0_#15803d] hover:shadow-[0_2px_0_#15803d] hover:translate-y-0.5 active:shadow-none active:translate-y-1 transition-all uppercase text-sm tracking-wider flex items-center justify-center min-w-[140px]">
-                                <ProgressSpinner v-if="isCreating" style="width: 20px; height: 20px" strokeWidth="6" class="absolute"/> 
-                                <span :class="{'opacity-0': isCreating}">Crear Sala</span>
-                            </button>
+                            <button 
+  @click="createRoom" 
+  :disabled="isCreating" 
+  class="bg-gradient-to-b from-yellow-300 to-yellow-400 hover:from-yellow-200 text-yellow-900 font-black py-3 px-8 rounded-full border-4 border-yellow-200/50 shadow-[0_4px_0_#b45309] hover:shadow-[0_2px_0_#b45309] hover:translate-y-0.5 active:shadow-none active:translate-y-1 transition-all uppercase text-sm tracking-wider flex items-center justify-center min-w-[140px]"
+>
+    <ProgressSpinner 
+      v-if="isCreating" 
+      style="width: 20px; height: 20px" 
+      strokeWidth="6" 
+      class="absolute"
+    /> 
+    <span :class="{'opacity-0': isCreating}">Crear Sala</span>
+</button>
                         </div>
                     </template>
                 </Dialog>
