@@ -64,7 +64,7 @@
                 </div>
 
                 <!-- Modal: Crear Partida -->
-                <Dialog v-model:visible="showCreateModal" header="Crear Nueva Partida" :modal="true" :style="{width: '450px'}" :pt="{root: {class: 'bg-white text-gray-800 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-purple-200'}, header: {class: 'bg-purple-50 text-purple-900 border-b-2 border-purple-100 p-6'}, content: {class: 'bg-white p-8'}, title: {class: 'text-2xl font-black uppercase tracking-wide'} }">
+                <Dialog v-model:visible="showCreateModal" header="Crear Nueva Partida" :modal="true" :style="{width: '450px'}" :pt="{root: {class: 'bg-white text-gray-800 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-blue-200'}, header: {class: 'bg-blue-50 text-blue-900 border-b-2 border-blue-100 p-6'}, content: {class: 'bg-white p-8'}, title: {class: 'text-2xl font-black uppercase tracking-wide'} }">
                     <div class="flex flex-col gap-6 mt-2">
                         <div class="flex flex-col gap-2">
                             <label class="text-gray-600 font-black uppercase tracking-wider text-sm">Nombre de la Sala (Opcional)</label>
