@@ -74,7 +74,7 @@
             <!-- ===== RANKING LIST ===== -->
             <div class="bg-white rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 mb-8 text-gray-800">
                 <div v-for="(user, index) in ranking" :key="user.id || index" 
-                     class="flex items-center px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+                     class="flex items-center px-6 py-4 border-b border-gray-600 last:border-0 hover:bg-gray-50 transition-colors">
                     
                     <div class="w-12 font-black text-xl text-purple-600">
                         {{ index + 1 }}.
