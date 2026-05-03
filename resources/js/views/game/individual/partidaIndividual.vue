@@ -158,7 +158,7 @@ const claseOpcion = (option) => {
                         <button @click="reiniciarPartida" class="bg-gradient-to-b from-yellow-300 to-yellow-500 hover:from-yellow-200 hover:to-yellow-400 text-yellow-900 font-black sans-serif px-8 py-4 rounded-full border-2 border-yellow-200 shadow-[0_6px_0_#b45309] hover:shadow-[0_2px_0_#b45309] hover:translate-y-1 transition-all uppercase tracking-wider flex items-center justify-center gap-2">
                             <i class="pi pi-replay font-black"></i> Jugar de Nuevo
                         </button>
-                        <button @click="router.push({ name: 'home' })" class="bg-gradient-to-b from-gray-200 to-gray-300 hover:from-gray-100 hover:to-gray-200 text-gray-700 font-black sans-serif px-8 py-4 rounded-full border-2 border-gray-100 shadow-[0_6px_0_#9ca3af] hover:shadow-[0_2px_0_#9ca3af] hover:translate-y-1 transition-all uppercase tracking-wider flex items-center justify-center gap-2">
+                        <button @click="router.push({ name: 'home' })" class="bg-gradient-to-b from-blue-400 to-blue-500 hover:from-blue-300 hover:to-blue-400 text-blue-950 font-black sans-serif px-8 py-4 rounded-full border-4 border-blue-300/50 shadow-[0_8px_0_#1d4ed8] hover:shadow-[0_5px_0_#1d4ed8] hover:translate-y-1 active:shadow-[0_0px_0_#1d4ed8] active:translate-y-3 transition-all duration-150 uppercase tracking-wider flex items-center justify-center gap-2">
                             <i class="pi pi-home font-black"></i> Volver al Menú
                         </button>
                     </div>
@@ -219,14 +219,14 @@ const claseOpcion = (option) => {
                             <button
                                 v-if="preguntaActualIndex < questions.length - 1"
                                 @click="siguientePregunta"
-                                class="bg-gradient-to-b from-blue-400 to-blue-500 hover:from-blue-300 hover:to-blue-400 text-blue-950 font-black sans-serif px-10 py-4 rounded-full border-2 border-blue-300 shadow-[0_8px_0_#1d4ed8] hover:shadow-[0_3px_0_#1d4ed8] hover:translate-y-1.5 transition-all text-xl uppercase tracking-wider flex items-center gap-3"
+                                class="bg-gradient-to-b from-yellow-300 to-yellow-400 hover:from-yellow-200 hover:to-yellow-300 text-yellow-900 font-black sans-serif px-10 py-4 rounded-full border-2 border-yellow-200 shadow-[0_8px_0_#b45309] hover:shadow-[0_3px_0_#b45309] hover:translate-y-1.5 transition-all text-xl uppercase tracking-wider flex items-center gap-3"
                             >
                                 Siguiente <i class="pi pi-arrow-right font-black"></i>
                             </button>
                             <button
                                 v-else
                                 @click="siguientePregunta"
-                                class="bg-gradient-to-b from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white font-black sans-serif px-10 py-4 rounded-full border-2 border-purple-400 shadow-[0_8px_0_#5b21b6] hover:shadow-[0_3px_0_#5b21b6] hover:translate-y-1.5 transition-all text-xl uppercase tracking-wider flex items-center gap-3"
+                                class="bg-gradient-to-b from-yellow-300 to-yellow-400 hover:from-yellow-200 hover:to-yellow-300 text-yellow-900 font-black sans-serif px-10 py-4 rounded-full border-2 border-yellow-200 shadow-[0_8px_0_#b45309] hover:shadow-[0_3px_0_#b45309] hover:translate-y-1.5 transition-all text-xl uppercase tracking-wider flex items-center gap-3"
                             >
                                 Finalizar <i class="pi pi-check font-black"></i>
                             </button>

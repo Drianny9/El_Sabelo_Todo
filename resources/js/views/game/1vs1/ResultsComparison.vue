@@ -138,10 +138,10 @@
 
                     <!-- Actions -->
                     <div class="flex flex-col sm:flex-row gap-4 w-full mt-4">
-                        <button @click="goToLobby" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-black py-4 rounded-2xl transition-all shadow-[0_5px_0_#4c1d95] active:translate-y-1 active:shadow-none uppercase tracking-widest flex items-center justify-center gap-2">
+                        <button @click="goToLobby" class="flex-1 bg-gradient-to-b from-yellow-300 to-yellow-400 hover:from-yellow-200 hover:to-yellow-300 text-yellow-900 font-black py-4 rounded-2xl transition-all shadow-[0_6px_0_#b45309] hover:shadow-[0_2px_0_#b45309] hover:translate-y-1 uppercase tracking-widest flex items-center justify-center gap-2">
                             <i class="pi pi-users"></i> Volver al Lobby
                         </button>
-                        <button @click="router.push({ name: 'home' })" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-black py-4 rounded-2xl transition-all border-2 border-gray-200 uppercase tracking-widest flex items-center justify-center gap-2">
+                        <button @click="router.push({ name: 'home' })" class="flex-1 bg-gradient-to-b from-blue-400 to-blue-500 hover:from-blue-300 hover:to-blue-400 text-blue-950 font-black py-4 rounded-2xl transition-all border-4 border-blue-300/50 shadow-[0_8px_0_#1d4ed8] hover:shadow-[0_5px_0_#1d4ed8] hover:translate-y-1 active:shadow-[0_0px_0_#1d4ed8] active:translate-y-3 uppercase tracking-widest flex items-center justify-center gap-2">
                             <i class="pi pi-home"></i> Ir al Menú
                         </button>
                     </div>
