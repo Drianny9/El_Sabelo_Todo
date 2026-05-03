@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full z-50 transition-all duration-300" style="background-color: #9333EA;">
+    <div class="w-full z-50 transition-all duration-300" :style="{ backgroundColor: isAppRoute ? '#1a103d' : '#9333EA' }">
         <nav class="mx-4 mt-2 px-6 py-3 flex items-center justify-between rounded-2xl shadow-xl"
              style="background: linear-gradient(135deg, #7B2FF2 0%, #5B1DA8 50%, #4A1590 100%); border: 2px solid rgba(255,255,255,0.15);">
             <!-- Logo / Branding -->
@@ -154,9 +154,11 @@ import useAuth from "@/composables/auth";
 import { authStore } from "../store/auth";
 
 import { ref, computed, onBeforeMount, onMounted, onUnmounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
+const route = useRoute();
 const router = useRouter();
+const isAppRoute = computed(() => route.path.startsWith('/app')); //Comprobamos si el usuario esta dentro de las rutas /app para que tenga un fondo u otro
 const menu = ref();
 const visibleMobileMenu = ref(false);
 const isScrolled = ref(false);
