@@ -73,9 +73,9 @@
                         </div>
                         <router-link
                             :to="{ name: 'auth.forgot-password' }"
-                            class="text-sm font-black text-purple-600 hover:text-purple-800 transition-colors uppercase tracking-wide"
+                            class="text-sm font-black text-purple-600 hover:text-purple-800 transition-colors uppercase tracking-tighter whitespace-nowrap"
                         >
-                            {{ $t('forgot_password') }}
+                            {{ $t('forgot_password') }} 
                         </router-link>
                     </div>
 
@@ -98,7 +98,7 @@
                             ¿No tienes una cuenta?
                             <router-link
                                 :to="{ name: 'auth.register' }"
-                                class="font-black text-blue-500 hover:text-blue-700 transition-colors uppercase tracking-wide ml-1"
+                                class="font-black text-purple-600 hover:text-purple-800 transition-colors uppercase tracking-wide ml-1"
                             >
                                 Regístrate aquí
                             </router-link>

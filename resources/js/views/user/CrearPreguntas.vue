@@ -2,16 +2,14 @@
     <div class="min-h-screen bg-gradient-to-tr from-[#9333EA] via-[#7C3AED] to-[#6D28D9] p-4 md:p-12">
         <div class="max-w-4xl mx-auto">
             <!-- ===== CABECERA ===== -->
-            <div class="mb-10 text-center">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white shadow-xl mb-6 transform -rotate-3 hover:rotate-0 transition-transform duration-300">
-                    <i class="pi pi-question-circle text-purple-600 text-4xl"></i>
+            <div class="flex items-center gap-4 mb-10">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center shadow-[0_6px_0_#b45309] border-2 border-yellow-300">
+                    <i class="pi pi-question-circle text-3xl text-yellow-800"></i>
                 </div>
-                <h1 class="text-3xl md:text-5xl font-black tracking-widest uppercase text-white drop-shadow-lg">
-                    Proponer una Pregunta
-                </h1>
-                <p class="text-purple-100 mt-3 font-medium max-w-lg mx-auto">
-                    ¿Tienes una idea genial? Tu contribución hace que el juego sea mejor para todos.
-                </p>
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-black text-white leading-none uppercase tracking-wider drop-shadow-lg">Proponer Pregunta</h1>
+                    <p class="text-purple-200 mt-2 text-base font-bold">¿Tienes una idea genial? Tu contribución hace que el juego sea mejor para todos.</p>
+                </div>
             </div>
 
             <!-- ===== ALERTAS ===== -->

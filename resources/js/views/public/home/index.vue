@@ -86,6 +86,15 @@
 
         <!-- ===== SOCIAL ===== -->
         <section class="px-4 md:px-12 pb-12 max-w-5xl mx-auto">
+            <!-- Título con líneas decorativas -->
+            <div class="flex items-center gap-4 mb-10">
+                <div class="flex-1 h-px bg-white/30"></div>
+                <h2 class="text-white font-black text-2xl md:text-3xl tracking-widest uppercase whitespace-nowrap">
+                    COMUNIDAD
+                </h2>
+                <div class="flex-1 h-px bg-white/30"></div>
+            </div>
+
             <div class="bg-black/20 backdrop-blur-sm rounded-3xl p-6 border border-white/10 shadow-xl">
                 <!-- Header social -->
                 <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-5">

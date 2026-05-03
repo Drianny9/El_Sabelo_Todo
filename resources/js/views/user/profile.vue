@@ -3,11 +3,14 @@
         <div class="max-w-6xl mx-auto">
             
             <!-- ===== CABECERA ===== -->
-            <div class="mb-10 text-center md:text-left">
-                <h1 class="text-4xl md:text-6xl font-black tracking-widest uppercase text-white drop-shadow-lg inline-block text-center md:text-left">
-                    Mi Perfil
-                    <div class="h-2 w-full bg-yellow-400 mt-2 rounded-full shadow-lg shadow-yellow-500/50"></div>
-                </h1>
+            <div class="flex items-center gap-4 mb-10">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center shadow-[0_6px_0_#b45309] border-2 border-yellow-300">
+                    <i class="pi pi-user text-3xl text-yellow-800"></i>
+                </div>
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-black text-white leading-none uppercase tracking-wider drop-shadow-lg">Mi Perfil</h1>
+                    <p class="text-purple-200 mt-2 text-base font-bold">Gestiona tu información personal y cuenta</p>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">

@@ -4,14 +4,14 @@
         :class="[
             props.sidebarOpen ? 'translate-x-0' : '-translate-x-full',
             props.isCollapsed ? 'w-[70px]' : 'w-64',
-            'fixed left-0 top-0 z-50 flex h-screen flex-col overflow-hidden transition-all duration-300 ease-in-out lg:static lg:translate-x-0 shadow-lg lg:shadow-none',
+            'fixed left-0 top-0 z-50 flex h-full flex-col overflow-hidden transition-all duration-300 ease-in-out lg:static lg:translate-x-0 shadow-lg lg:shadow-none',
             isAdmin 
                 ? 'bg-white border-r border-gray-200' 
                 : 'bg-[#1a103d]/95 backdrop-blur-xl border-r border-white/10'
         ]"
     >
         <!-- Sidebar Header (Logo Section) -->
-        <div class="flex items-center justify-center p-4 shrink-0 transition-all duration-300"
+        <div v-if="isAdmin" class="flex items-center justify-center p-4 shrink-0 transition-all duration-300"
              :class="[
                 props.isCollapsed ? 'h-16' : 'h-24',
                 isAdmin ? 'border-b border-gray-100' : 'mb-4 relative overflow-hidden'

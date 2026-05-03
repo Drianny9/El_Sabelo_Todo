@@ -1,9 +1,9 @@
 <template>
-    
-    <div >
-        <!-- ===== Page Wrapper Start ===== -->
-        <div class="flex h-screen overflow-hidden">
-            <!-- ===== Sidebar Start ===== -->
+    <div class="flex flex-col h-screen overflow-hidden">
+        <!-- ===== Top Navbar (Only for Users) ===== -->
+        <LandingNavbar v-if="!isAdmin" />
+
+        <div class="flex flex-1 overflow-hidden relative">
             <!-- ===== Sidebar Start ===== -->
             <MainSidebar 
                 :sidebarOpen="sidebarOpen" 
@@ -16,8 +16,8 @@
 
             <!-- ===== Content Area Start ===== -->
             <div :class="['relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden', isAdmin ? 'bg-slate-50' : 'bg-[#1a103d]']">
-                <!-- ===== Header Start ===== -->
-                <MainHeader 
+                <!-- ===== Header Start (Only for Admin) ===== -->
+                <MainHeader v-if="isAdmin"
                     :sidebarOpen="sidebarOpen" 
                     :isCollapsed="isCollapsed"
                     @toggleSidebar="toggleSidebar"
@@ -41,7 +41,6 @@
             </div>
             <!-- ===== Content Area End ===== -->
         </div>
-        <!-- ===== Page Wrapper End ===== -->
     </div>
 </template>
 
@@ -51,6 +50,7 @@ import { useRoute } from 'vue-router';
 import { useLayout } from '../composables/layout';
 import MainSidebar from './MainSidebar.vue';
 import MainHeader from './MainHeader.vue';
+import LandingNavbar from './LandingNavbar.vue';
 
 const props = defineProps({
     menuItems: {
