@@ -103,6 +103,29 @@ class RoomController extends Controller
         return response()->json($rooms);
     }
 
+    //Lista todas las salas (solo para admins)
+    public function adminIndex(Request $request)
+    {
+        $query = Room::with(['player1:id,name,alias', 'player2:id,name,alias'])
+            ->orderBy('created_at', 'desc');
+
+        // Filtro por estado si se pasa como query param
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        $rooms = $query->paginate(15);
+
+        return response()->json($rooms);
+    }
+
+    //Elimina una sala (solo para admins)
+    public function adminDestroy(Room $room)
+    {
+        $room->delete();
+        return response()->json(['message' => 'Sala eliminada correctamente.']);
+    }
+
     //Obtiene las preguntas para una sala específica
     public function getQuestions(Room $room)
     {

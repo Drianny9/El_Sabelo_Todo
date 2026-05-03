@@ -88,6 +88,20 @@
                     </div>
                 </template>
             </Card>
+
+            <Card class="dashboard-stat-card">
+                <template #content>
+                    <div class="stat-card-content">
+                        <div class="stat-card-icon stat-icon-info">
+                            <i class="pi pi-table"></i>
+                        </div>
+                        <div class="stat-card-info">
+                            <p class="stat-card-label">Salas</p>
+                            <p class="stat-card-value">{{ stats.rooms || 0 }}</p>
+                        </div>
+                    </div>
+                </template>
+            </Card>
         </div>
 
         <!-- Quick Actions Card -->
@@ -182,6 +196,20 @@
                             </div>
                             <i class="pi pi-chevron-right dashboard-action-arrow"></i>
                         </router-link>
+
+                        <router-link
+                            to="/admin/rooms"
+                            class="dashboard-action-item"
+                        >
+                            <div class="dashboard-action-icon stat-icon-info">
+                                <i class="pi pi-table"></i>
+                            </div>
+                            <div class="dashboard-action-info">
+                                <p class="dashboard-action-title">Gestionar Salas</p>
+                                <p class="dashboard-action-description">Ver y eliminar salas de juego</p>
+                            </div>
+                            <i class="pi pi-chevron-right dashboard-action-arrow"></i>
+                        </router-link>
                     </div>
                 </div>
             </template>
@@ -196,13 +224,15 @@ import usePosts from "../../composables/posts";
 import useCategories from "../../composables/categories";
 import useRoles from "../../composables/roles";
 import useQuestions from "../../composables/questions";
+import useAdminRooms from "../../composables/adminRooms";
 
 const stats = ref({
     users: 0,
     posts: 0,
     categories: 0,
     roles: 0,
-    questions: 0
+    questions: 0,
+    rooms: 0
 });
 
 const { users, getUsers } = useUsers();
@@ -210,6 +240,7 @@ const { posts, getPosts } = usePosts();
 const { categories, getCategories } = useCategories();
 const { roles, getRoles } = useRoles();
 const { questionList, getQuestionList } = useQuestions();
+const { adminRooms, getAdminRooms } = useAdminRooms();
 
 const loadStats = async () => {
     try {
@@ -218,7 +249,8 @@ const loadStats = async () => {
             getPosts(),
             getCategories(),
             getRoles(),
-            getQuestionList()
+            getQuestionList(),
+            getAdminRooms()
         ]);
         
         stats.value = {
@@ -226,7 +258,8 @@ const loadStats = async () => {
             posts: posts.value?.total || posts.value?.data?.length || 0,
             categories: categories.value?.total || categories.value?.data?.length || 0,
             roles: roles.value?.total || roles.value?.data?.length || 0,
-            questions: questionList.value?.length || 0
+            questions: questionList.value?.length || 0,
+            rooms: adminRooms.value?.total || adminRooms.value?.data?.length || 0
         };
     } catch (error) {
         console.error('Error loading stats:', error);
@@ -239,6 +272,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.stat-icon-info {
+    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+}
+
 .dashboard-container {
     display: flex;
     flex-direction: column;

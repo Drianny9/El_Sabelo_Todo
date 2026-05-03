@@ -50,6 +50,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('/rooms/{room:code}/submit', [RoomController::class, 'submit']);
     Route::get('/rooms/{room:code}/status', [RoomController::class, 'getStatus']);
 
+    // Rutas de administración de salas (solo para admins)
+    Route::get('/admin/rooms', [RoomController::class, 'adminIndex']);
+    Route::delete('/admin/rooms/{room}', [RoomController::class, 'adminDestroy']);
+
     Route::get('abilities', function(Request $request) {
         return $request->user()->roles()->with('permissions')
             ->get()

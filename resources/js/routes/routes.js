@@ -333,6 +333,23 @@ export default [
                 ]
             },
 
+            {
+                name: 'rooms',
+                path: 'rooms',
+                meta: { breadCrumb: 'Salas' },
+                children: [
+                    {
+                        name: 'rooms.index',
+                        path: '',
+                        component: () => import('../views/admin/rooms/Index.vue'),
+                        meta: {
+                            breadCrumb: 'Salas',
+                            hideBreadcrumb: true
+                        }
+                    }
+                ]
+            },
+
         ]
     },
     {

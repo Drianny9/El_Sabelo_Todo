@@ -174,7 +174,8 @@ const menuModel = computed(() => {
             items: [
                 { label: 'Usuarios', icon: 'pi pi-users', route: '/admin/users', permission: 'user-list' },
                 { label: 'Roles', icon: 'pi pi-shield', route: '/admin/roles', permission: 'role-list' },
-                { label: 'Permisos', icon: 'pi pi-key', route: '/admin/permissions', permission: 'permission-list' }
+                { label: 'Permisos', icon: 'pi pi-key', route: '/admin/permissions', permission: 'permission-list' },
+                { label: 'Salas', icon: 'pi pi-table', route: '/admin/rooms', permission: 'all' }
             ]
         },
         {
