@@ -15,7 +15,7 @@
             </div>
 
             <!-- ===== ALERTAS ===== -->
-            <Transition name="slide-fade">
+            <Transition enter-active-class="transition-all duration-300 ease-out" enter-from-class="-translate-y-5 opacity-0" leave-active-class="transition-all duration-200 ease-in" leave-to-class="-translate-y-5 opacity-0">
                 <div v-if="enviado" class="mb-8 bg-green-500 text-white p-5 rounded-2xl flex items-center gap-4 shadow-lg border-b-4 border-green-700">
                     <i class="pi pi-check-circle text-2xl"></i>
                     <span class="font-bold">¡Pregunta enviada correctamente! Está en fase de revisión.</span>
@@ -25,7 +25,7 @@
                 </div>
             </Transition>
 
-            <Transition name="slide-fade">
+            <Transition enter-active-class="transition-all duration-300 ease-out" enter-from-class="-translate-y-5 opacity-0" leave-active-class="transition-all duration-200 ease-in" leave-to-class="-translate-y-5 opacity-0">
                 <div v-if="errorGeneral" class="mb-8 bg-red-500 text-white p-5 rounded-2xl flex items-center gap-4 shadow-lg border-b-4 border-red-700">
                     <i class="pi pi-exclamation-circle text-2xl"></i>
                     <span class="font-bold">{{ errorGeneral }}</span>
@@ -312,12 +312,3 @@ async function enviarPregunta() {
     }
 }
 </script>
-
-<style scoped>
-.slide-fade-enter-active { transition: all 0.3s ease-out; }
-.slide-fade-leave-active { transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1); }
-.slide-fade-enter-from, .slide-fade-leave-to {
-  transform: translateY(-20px);
-  opacity: 0;
-}
-</style>

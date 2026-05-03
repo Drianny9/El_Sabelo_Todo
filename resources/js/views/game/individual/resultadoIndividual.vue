@@ -1,33 +1,68 @@
 <template>
-  <main class="results-container">
-    <div class="content-card">
-      <h1 class="title">Has terminado</h1>
-      
-      <p class="subtitle">Has obtenido una puntuación de:</p>
-      
-      <div class="score-display">
-        {{ score }}
-      </div>
-      
-      <div class="stats">
-        <p>Has acertado <strong>{{ correctAnswers }}</strong> preguntas</p>
-        <p>Has fallado <strong>{{ incorrectAnswers }}</strong> preguntas</p>
-      </div>
-      
-      <div class="actions">
-        <button class="action-btn" @click="playAgain">
-          Volver a jugar
-        </button>
-        <button class="action-btn" @click="exitGame">
-          Salir
-        </button>
-      </div>
+    <div class="relative min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-purple-900 text-white flex items-center justify-center p-4 overflow-hidden pt-24 pb-20">
+        
+        <!-- Elementos 3D de fondo -->
+        <img src="/images/Imagenes-Fondo/Estrella.webp" alt="Estrella" class="absolute top-10 left-10 w-32 md:w-48 opacity-40 select-none pointer-events-none drop-shadow-2xl mix-blend-screen" />
+        <img src="/images/Imagenes-Fondo/trofeo.webp" alt="Trofeo" class="absolute bottom-10 right-10 w-40 md:w-56 opacity-30 select-none pointer-events-none drop-shadow-2xl mix-blend-screen" />
+
+        <!-- Contenedor Principal Premium "Tarjeta" -->
+        <div class="relative w-full max-w-2xl bg-white text-gray-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-[3rem] border-8 border-purple-300/30 overflow-hidden z-10 flex flex-col">
+            
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-purple-100 to-white px-8 py-6 relative border-b-2 border-purple-200 text-center">
+                <h1 class="text-3xl md:text-4xl font-black text-purple-700 tracking-wider uppercase drop-shadow-sm">¡HAS TERMINADO!</h1>
+                <p class="text-purple-500 font-bold mt-2 uppercase tracking-widest text-sm">Resumen de tu partida</p>
+            </div>
+
+            <!-- Content -->
+            <div class="p-8 md:p-12 flex flex-col items-center gap-6">
+                
+                <p class="text-gray-500 font-bold text-xl uppercase tracking-wider text-center">Puntuación Final</p>
+                
+                <!-- Score Display -->
+                <div class="inline-block bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-[2rem] px-16 py-8 shadow-[0_10px_20px_rgba(234,179,8,0.3)] mb-4 border-4 border-yellow-200">
+                    <p class="text-7xl md:text-8xl font-black text-yellow-900 drop-shadow-md leading-none">{{ score }}</p>
+                </div>
+
+                <!-- Stats -->
+                <div class="w-full bg-gray-50 rounded-[2rem] border-2 border-gray-100 p-6 flex justify-around shadow-inner mb-6">
+                    <div class="text-center">
+                        <p class="text-gray-400 font-black uppercase text-xs tracking-widest mb-1">Aciertos</p>
+                        <p class="text-3xl font-black text-green-500">{{ correctAnswers }}</p>
+                    </div>
+                    <div class="w-1 bg-gray-200 rounded-full"></div>
+                    <div class="text-center">
+                        <p class="text-gray-400 font-black uppercase text-xs tracking-widest mb-1">Fallos</p>
+                        <p class="text-3xl font-black text-red-500">{{ incorrectAnswers }}</p>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex flex-col sm:flex-row gap-4 w-full mt-4">
+                    <button 
+                        @click="playAgain" 
+                        class="flex-1 bg-gradient-to-b from-yellow-300 to-yellow-500 hover:from-yellow-200 hover:to-yellow-400 text-yellow-900 font-black py-4 rounded-2xl border-2 border-yellow-200 shadow-[0_6px_0_#b45309] hover:shadow-[0_2px_0_#b45309] hover:translate-y-1 transition-all uppercase tracking-widest flex items-center justify-center gap-3"
+                    >
+                        <i class="pi pi-replay font-black text-xl"></i> Volver a jugar
+                    </button>
+                    <button 
+                        @click="exitGame" 
+                        class="flex-1 bg-gradient-to-b from-gray-200 to-gray-300 hover:from-gray-100 hover:to-gray-200 text-gray-700 font-black py-4 rounded-2xl border-2 border-gray-100 shadow-[0_6px_0_#9ca3af] hover:shadow-[0_2px_0_#9ca3af] hover:translate-y-1 transition-all uppercase tracking-widest flex items-center justify-center gap-3"
+                    >
+                        <i class="pi pi-home font-black text-xl"></i> Salir
+                    </button>
+                </div>
+                
+            </div>
+        </div>
     </div>
-  </main>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 // Variables de estado (sustituye estos valores por los reales de tu lógica de juego)
 const score = ref(7);
@@ -36,126 +71,10 @@ const incorrectAnswers = ref(2);
 
 // Funciones para los botones
 const playAgain = () => {
-  console.log("Reiniciando el juego...");
-  // Aquí puedes emitir un evento al componente padre o cambiar la ruta
-  // router.push({ name: 'Juego' });
+  // router.push({ name: 'game.individual.play' }); // Descomentar cuando la ruta esté lista
 };  
 
 const exitGame = () => {
-  console.log("Saliendo al menú principal...");
-  // Aquí puedes redirigir al home
-  // router.push({ name: 'Home' });
+  router.push({ name: 'home' });
 };
 </script>
-
-<style scoped>
-/* Contenedor principal con fondo morado */
-.results-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 200px); /* Ajusta si tienes nav/footer */
-  background-color: #8331d6;
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Tarjeta blanca central */
-.content-card {
-  background-color: #ffffff;
-  border-radius: 24px;
-  padding: 4rem 3rem;
-  text-align: center;
-  max-width: 700px;
-  width: 100%;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-/* Tipografía de títulos */
-.title {
-  color: #000000;
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-}
-
-.subtitle {
-  color: #333333;
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
-}
-
-/* El número gigante del centro */
-.score-display {
-  font-size: 6rem;
-  font-weight: 800;
-  color: #000000;
-  margin: 1rem 0 2rem 0;
-  line-height: 1;
-}
-
-/* Textos de aciertos y fallos */
-.stats {
-  color: #444444;
-  font-size: 1.2rem;
-  margin-bottom: 3.5rem;
-  line-height: 1.8;
-}
-
-.stats p {
-  margin: 0;
-}
-
-/* Contenedor de botones (para ponerlos uno al lado del otro) */
-.actions {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-}
-
-/* Estilo unificado para los botones (naranja/amarillo) */
-.action-btn {
-  background: linear-gradient(180deg, #ffdf60 0%, #fcad21 100%);
-  color: #5a2e00;
-  font-size: 1.3rem;
-  font-weight: 700;
-  padding: 1rem 3rem;
-  border: 2px solid #fff;
-  border-radius: 50px;
-  cursor: pointer;
-  min-width: 200px;
-  box-shadow: 0 6px 0 #cc8110, 0 10px 10px rgba(0, 0, 0, 0.15);
-  transition: all 0.1s ease-in-out;
-}
-
-/* Animaciones de botón interactivo */
-.action-btn:hover {
-  filter: brightness(1.05);
-  transform: translateY(-2px);
-}
-
-.action-btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 2px 0 #cc8110, 0 4px 4px rgba(0, 0, 0, 0.15);
-}
-
-/* Responsive para que en móviles los botones se pongan uno encima del otro */
-@media (max-width: 600px) {
-  .actions {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .content-card {
-    padding: 3rem 1.5rem;
-  }
-  
-  .title {
-    font-size: 2.2rem;
-  }
-  
-  .score-display {
-    font-size: 5rem;
-  }
-}
-</style>

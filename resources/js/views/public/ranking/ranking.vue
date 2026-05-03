@@ -137,7 +137,3 @@ onMounted(() => {
     fetchRanking();
 });
 </script>
-
-<style scoped>
-/* Estilos adicionales si fueran necesarios, pero usamos Tailwind mayoritariamente */
-</style>
