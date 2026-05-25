@@ -32,7 +32,7 @@ class Room extends Model
     //Relación con el usuario que creó la sala (Jugador 1)
     public function player1()
     {
-        return $this->belongsTo(User::class, 'player_1_id');
+        return $this->belongsTo(User::class, 'player_1_id'); //El segundo parametro lo usamos para que encuentre el jugador 1 explicitamente, ya que al tener 2 users eloquent cogeria el primero que encontrara
     }
 
     //Relación con el usuario que se unió a la sala (Jugador 2)

@@ -11,7 +11,7 @@ const router = useRouter();
 const props = defineProps({
     code: {
         type: String,
-        default: null
+        default: null //Null si es partida individual ya que no hay codigo, en el 1vs1 si hay.
     }
 });
 
@@ -30,7 +30,7 @@ const {
     procesarRespuesta,
     avanzarPregunta,
     reiniciarPartida
-} = useGame(props.code); // Pasamos el código de la sala al composable
+} = useGame(props.code); // Pasamos el código de la sala al composable, asi tambien sabe si jugamos al modo individual o al 1vs1
 
 onMounted(fetchQuestions);
 

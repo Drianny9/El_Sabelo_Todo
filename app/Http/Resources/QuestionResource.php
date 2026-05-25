@@ -15,7 +15,8 @@ class QuestionResource extends JsonResource
             'tipo' => $this->tipo,
             'enunciado' => $this->enunciado,
             'creada_por_user_id' => $this->creada_por_user_id,
-            'created_by' => $this->whenLoaded('createdByUser', function() {
+            //Usamos whenLoaded para evitar el problema N+1. Si la relación no se ha cargado, no la devuelve.
+            'created_by' => $this->whenLoaded('createdByUser', function () {
                 return [
                     'id' => $this->createdByUser->id,
                     'name' => $this->createdByUser->name,

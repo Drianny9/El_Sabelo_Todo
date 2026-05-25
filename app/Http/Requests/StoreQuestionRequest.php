@@ -19,7 +19,7 @@ class StoreQuestionRequest extends FormRequest
             'enunciado' => 'required|string|min:10',
             'activa' => 'sometimes|boolean',
             'opciones' => 'required|array|min:2|max:4',
-            'opciones.*.texto' => 'required|string',
+            'opciones.*.texto' => 'required|string', //.* es cada elemento del array y .texto es una propiedad dentro de cada elemento
             'opciones.*.es_correcta' => 'required|boolean',
             'opciones.*.orden' => 'sometimes|integer'
         ];

@@ -98,10 +98,10 @@ export default [
                 beforeEnter: requireLogin
             },
             {
-                path: 'game/1vs1/play/:code',
+                path: 'game/1vs1/play/:code', //los : indican que el parametro es dinamico, ya que puede cambiar el codigo.
                 name: 'game.1vs1.play',
-                component: () => import('../views/game/individual/partidaIndividual.vue'),
-                props: true, //Pasa los parámetros de la ruta como props al componente
+                component: () => import('../views/game/individual/partidaIndividual.vue'), //Con la funcion de flecha indicamos que solo cargue el archivo cuando se entre especificamente en el
+                props: true, //Coge el valor de :code y se lo da al componente como una prop normal.
                 beforeEnter: requireLogin
             },
             {

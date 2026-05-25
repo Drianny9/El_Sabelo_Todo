@@ -30,7 +30,7 @@ class RoomController extends Controller
             $code = Str::random(6);
         } while (Room::where('code', $code)->exists());
 
-        $roomName = $request->name ?: 'Sala de ' . Auth::user()->name;
+        $roomName = $request->name ?: 'Sala de ' . Auth::user()->name; //?: si el valor de la izquierda no es nulo coge ese, si esta vacio coge el de la derecha
 
         //Creamos la sala en la base de datos
         $room = Room::create([
@@ -48,14 +48,14 @@ class RoomController extends Controller
     //Permite a un segundo jugador unirse a una sala existente
     public function join(Request $request) //Informacion que la app le envia al servidor
     {
-        $request->validate(['code' => 'required|string']); 
+        $request->validate(['code' => 'required|string']);
 
         //Comprobamos la primera fila donde coincide el código exacto O el nombre exacto de una sala abierta
         $room = Room::where('status', 'open')
-                    ->where(function($query) use ($request) {
-                        $query->where('code', $request->code)
-                              ->orWhere('name', $request->code);
-                    })->first();
+            ->where(function ($query) use ($request) {
+                $query->where('code', $request->code)
+                    ->orWhere('name', $request->code);
+            })->first();
 
         if (!$room) {
             return response()->json(['message' => 'No se ha encontrado ninguna sala disponible con ese código o nombre.'], 404);
@@ -86,15 +86,15 @@ class RoomController extends Controller
     {
         //recuperamos las salas que tengan estado open, sean recientes (últimas 2h) y el creador no haya finalizado aún
         $rooms = Room::with('player1:id,name')
-                    ->where('status', 'open')
-                    ->where('is_public', true)
-                    ->where('p1_finished', false) // Si el creador ya terminó, ocultarla de la pantalla
-                    ->where('created_at', '>=', now()->subHours(2)) // Ocultarlas si quedaron abandonadas
-                    ->where('player_1_id', '!=', Auth::id())
-                    ->get();
+            ->where('status', 'open')
+            ->where('is_public', true)
+            ->where('p1_finished', false) // Si el creador ya terminó, ocultarla de la pantalla
+            ->where('created_at', '>=', now()->subHours(2)) // Ocultarlas si quedaron abandonadas
+            ->where('player_1_id', '!=', Auth::id())
+            ->get();
 
         // Aseguramos que el atributo avatar esté disponible en el JSON
-        $rooms->each(function($room) {
+        $rooms->each(function ($room) {
             if ($room->player1) {
                 $room->player1->append('avatar');
             }
@@ -135,6 +135,7 @@ class RoomController extends Controller
         }
 
         //Obtenemos las preguntas usando los IDs almacenados
+        //Uso de Eager Loading(with) para traer las preguntas y sus opciones todo a la vez.
         $questions = Question::with('options')->whereIn('id', $room->questions_ids)->get();
 
         return QuestionResource::collection($questions);
