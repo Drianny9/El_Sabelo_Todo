@@ -49,7 +49,7 @@
                             @click="confirmJoin(room)">
                             <div class="flex items-center gap-4">
                                 <div class="w-14 h-14 rounded-full bg-purple-100 border-2 border-purple-300 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
-                                    <img src="/images/Home/Avatar_solitario.webp" alt="Avatar" class="w-full h-full object-cover">
+                                    <img :src="room.image || '/images/Home/Avatar_solitario.webp'" alt="Imagen de sala" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <span class="font-black text-lg md:text-xl text-purple-900 group-hover:text-yellow-600 transition-colors uppercase tracking-wide truncate max-w-[150px] md:max-w-[200px] block">{{ room.name }}</span>
@@ -76,6 +76,20 @@
                                 <option :value="true">🌍 Pública (Visible en la lista)</option>
                                 <option :value="false">🔒 Privada (Oculta, con clave)</option>
                             </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-gray-600 font-black uppercase tracking-wider text-sm">Imagen de la Sala (Opcional)</label>
+                            <div class="flex items-center gap-4">
+                                <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-purple-200 bg-purple-50 shadow-inner flex-shrink-0">
+                                    <img :src="newRoomImagePreview || '/images/Home/Avatar_solitario.webp'" alt="Preview sala" class="w-full h-full object-cover" />
+                                </div>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    @change="onRoomImageChange"
+                                    class="w-full text-sm font-bold text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-purple-100 file:text-purple-700 file:font-black hover:file:bg-purple-200"
+                                />
+                            </div>
                         </div>
                         
                         <div v-if="roomCode" class="mt-6 p-6 border-4 border-green-300 bg-green-50 rounded-[2rem] text-center shadow-inner">
@@ -185,9 +199,13 @@ const isCreating = ref(false);
 const isJoining = ref(false);
 
 // Create Room state
+//Preview de la imagen que selecciono antes de crear la sala
+const newRoomImagePreview = ref('');
+
 const newRoom = ref({
     name: '',
-    is_public: true
+    is_public: true,
+    room_image: null
 });
 
 const selectedRoom = ref(null);
@@ -210,13 +228,35 @@ onMounted(() => {
 
 onUnmounted(() => {
     if (pullInterval) clearInterval(pullInterval);
+    if (newRoomImagePreview.value) URL.revokeObjectURL(newRoomImagePreview.value);
 });
+
+//Guardo el archivo seleccionado y creo una preview temporal para verlo antes de crear la sala
+const onRoomImageChange = (event) => {
+    const file = event.target.files?.[0] ?? null;
+
+    if (newRoomImagePreview.value) {
+        URL.revokeObjectURL(newRoomImagePreview.value);
+    }
+
+    newRoom.value.room_image = file;
+    newRoomImagePreview.value = file ? URL.createObjectURL(file) : '';
+};
 
 // Función para crear sala
 const createRoom = async () => {
     isCreating.value = true;
     try {
-        await createRoomApi(newRoom.value);
+        const formData = new FormData();
+        formData.append('name', newRoom.value.name || '');
+        formData.append('is_public', newRoom.value.is_public ? '1' : '0');
+
+        //Si hay imagen seleccionada, la envio junto con los datos de la sala
+        if (newRoom.value.room_image) {
+            formData.append('room_image', newRoom.value.room_image);
+        }
+
+        await createRoomApi(formData);
         fetchRooms(); // actualizamos la lista global por detrás
     } catch (error) {
         alert("No se pudo crear la sala.");

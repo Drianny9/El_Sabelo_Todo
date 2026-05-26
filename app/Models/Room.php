@@ -8,7 +8,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 
-class Room extends Model
+class Room extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
