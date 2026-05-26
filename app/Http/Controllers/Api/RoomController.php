@@ -19,7 +19,8 @@ class RoomController extends Controller
     {
         $request->validate([
             'name' => 'nullable|string|max:20',
-            'is_public' => 'boolean'
+            'is_public' => 'boolean',
+            'room_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
         //Seleccionamos 10 IDs de preguntas de forma aleatoria
@@ -40,9 +41,18 @@ class RoomController extends Controller
             'player_1_id' => Auth::id(),
             'questions_ids' => $questionIds,
         ]);
+        
+        //Lo guardamos en la coleccion "images/rooms" de Spatie Media Library
+        if ($request->hasFile('room_image')) {
+            $room->addMediaFromRequest('room_image')
+                ->toMediaCollection('images/rooms');
+        }
 
-        //Devolvemos el código de la sala para que el jugador pueda compartirlo
-        return response()->json(['code' => $room->code], 201);
+        //Devolvemos el código de la sala para que el jugador pueda compartirlo y la imagen
+        return response()->json([
+            'code' => $room->code,
+            'image' => $room->image
+            ], 201);
     }
 
     //Permite a un segundo jugador unirse a una sala existente
@@ -85,7 +95,7 @@ class RoomController extends Controller
     public function getRooms()
     {
         //recuperamos las salas que tengan estado open, sean recientes (últimas 2h) y el creador no haya finalizado aún
-        $rooms = Room::with('player1:id,name')
+        $rooms = Room::with('player1:id,name', 'media')
             ->where('status', 'open')
             ->where('is_public', true)
             ->where('p1_finished', false) // Si el creador ya terminó, ocultarla de la pantalla
