@@ -142,8 +142,8 @@
                 <!-- Modal: Confirmación -->
                 <Dialog v-model:visible="showConfirmModal" header="Confirmar Duelo" :modal="true" :style="{width: '400px'}" :pt="{root: {class: 'bg-white text-gray-800 rounded-[2rem] shadow-2xl border-4 border-purple-200'}, header: {class: 'bg-purple-50 text-purple-900 border-b-2 border-purple-100 p-6'}, content: {class: 'bg-white p-8'}, title: {class: 'text-xl font-black uppercase tracking-wide'}}">
                     <div class="text-center mt-2" v-if="selectedRoom">
-                        <div class="mx-auto bg-yellow-100 w-20 h-20 rounded-full flex items-center justify-center mb-6 shadow-inner border-4 border-yellow-200">
-                             <i class="pi pi-bolt text-5xl text-yellow-500"></i>
+                        <div class="mx-auto bg-purple-100 w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-inner border-4 border-purple-200 overflow-hidden">
+                            <img :src="selectedRoom.image || '/images/Home/Avatar_solitario.webp'" alt="Imagen de sala" class="w-full h-full object-cover" />
                          </div>
                         <p class="text-base text-gray-500 font-bold uppercase tracking-wider mb-2">Preparando Arena:</p>
                         <p class="text-3xl font-black text-purple-700 mt-1 uppercase">{{ selectedRoom.name }}</p>
